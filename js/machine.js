@@ -11,8 +11,8 @@
 // blits each with no clipping, and the resolution steps down by itself if a
 // slow device can't keep up.
 
-import { letterOf } from './bingo.js';
-import { spritesFor, drawBall, randomFrame, rotate, cross, normalize } from './balls.js';
+import { letterOf } from './bingo.js?v=3f6ee08f';
+import { spritesFor, drawBall, randomFrame, rotate, cross, normalize } from './balls.js?v=3dc5c925';
 
 // How the machine is dressed. A themed edition can pass its own `balls`
 // (sprites and drawing), `stand` (pedestal colours and lettering) and an
@@ -26,7 +26,7 @@ const CLASSIC_STAND = {
   glow: 'rgba(255,236,170,',
 };
 
-export { BALL_COLORS, LABEL_INK } from './balls.js';
+export { BALL_COLORS, LABEL_INK } from './balls.js?v=3dc5c925';
 
 const TAU = Math.PI * 2;
 const IDLE = 0.42;

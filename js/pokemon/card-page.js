@@ -2,14 +2,14 @@
 // (js/card-page.js) with Pokémon on it: each card is dealt for a route, the
 // route the caller is playing, so its Pokémon match the blower's.
 
-import { dealCard, isValidCard, completedSets, FREE } from '../bingo.js';
-import { createCardView } from '../cardview.js';
-import { DAUBERS as INKS, dauberSVG } from '../dauber.js';
-import { sealPokemonCard, openPokemonCard, shareUrl, extractToken } from '../codec.js';
-import { sound } from '../sound.js';
-import { store, toast, openSheet, copyText, formatTime, confirmSheet } from '../ui.js';
-import { pokemonOf, nameOf, isRoute, MAX_ROUTE } from './dex.js';
-import { paintPokemonFace } from './cardface.js';
+import { dealCard, isValidCard, completedSets, FREE } from '../bingo.js?v=3f6ee08f';
+import { createCardView } from '../cardview.js?v=66979a92';
+import { DAUBERS as INKS, dauberSVG } from '../dauber.js?v=31409a63';
+import { sealPokemonCard, openPokemonCard, shareUrl, extractToken } from '../codec.js?v=86133dcf';
+import { sound } from '../sound.js?v=36bb5e44';
+import { store, toast, openSheet, copyText, formatTime, confirmSheet } from '../ui.js?v=f98984b4';
+import { pokemonOf, nameOf, isRoute, MAX_ROUTE } from './dex.js?v=b5b23e78';
+import { paintPokemonFace } from './cardface.js?v=72e1f0df';
 
 const CARD_KEY = 'bingo:pokemon:card';
 const DAUBER_KEY = 'bingo:pokemon:dauber';
@@ -366,3 +366,6 @@ if (sharedToken) {
 }
 // Pasting a different card link into this tab only changes the hash.
 addEventListener('hashchange', () => location.reload());
+
+// Booted: tells the page's load check the game started.
+document.documentElement.setAttribute('data-ready', '');

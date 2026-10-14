@@ -6,16 +6,22 @@
     <title>Your Card · Poké Bingo</title>
     <meta name="description" content="Your own one-of-a-kind Pokémon Bingo card. Daub the Pokémon as they're called." />
     <meta name="theme-color" content="#18347f" />
-    <link rel="icon" href="../assets/img/pokeball.svg" type="image/svg+xml" />
-    <link rel="preload" href="../assets/pokemon/sprites.webp" as="image" />
-    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../assets/fonts/press-start-2p.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../css/base.css" />
-    <link rel="stylesheet" href="../css/cardview.css" />
-    <link rel="stylesheet" href="../css/card.css" />
-    <link rel="stylesheet" href="../css/pokemon/theme.css" />
-    <link rel="stylesheet" href="../css/pokemon/card.css" />
+    <link rel="icon" href="../assets/img/pokeball.svg?v=d2fb6ab3" type="image/svg+xml" />
+    <link rel="preload" href="../assets/pokemon/sprites.webp?v=1472e9f4" as="image" />
+    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2?v=3877b522" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2?v=4a5633a0" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="../assets/fonts/press-start-2p.woff2?v=afec8699"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="../css/base.css?v=e2307bd2" />
+    <link rel="stylesheet" href="../css/cardview.css?v=0151b63e" />
+    <link rel="stylesheet" href="../css/card.css?v=ed3a7eff" />
+    <link rel="stylesheet" href="../css/pokemon/theme.css?v=5959b7d0" />
+    <link rel="stylesheet" href="../css/pokemon/card.css?v=dd6c452d" />
   </head>
   <body class="table card-page poke">
     <header class="topbar">
@@ -110,6 +116,26 @@
       </form>
     </dialog>
 
-    <script type="module" src="../js/pokemon/card-page.js"></script>
+    <script>
+      // If the game's scripts can't start (say, a half-updated browser cache),
+      // say so and offer a reload instead of leaving an empty table.
+      addEventListener('load', function () {
+        setTimeout(function () {
+          if (document.documentElement.hasAttribute('data-ready')) return;
+          var p = document.createElement('p');
+          p.id = 'load-fail';
+          p.setAttribute('role', 'alert');
+          p.style.cssText =
+            'position:fixed;left:50%;top:50%;z-index:99;transform:translate(-50%,-50%);width:min(320px,calc(100vw - 32px));margin:0;padding:18px 20px;border-radius:14px;background:#fff;color:#1d2230;font:600 1rem/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45)';
+          p.innerHTML =
+            'The game didn\u2019t load properly.<br><button type="button" style="margin-top:12px;padding:10px 22px;border:0;border-radius:999px;background:#f0b429;color:#1d2230;font:inherit">Reload</button>';
+          p.querySelector('button').onclick = function () {
+            location.reload();
+          };
+          document.body.appendChild(p);
+        }, 800);
+      });
+    </script>
+    <script type="module" src="../js/pokemon/card-page.js?v=ad2372d0"></script>
   </body>
 </html>

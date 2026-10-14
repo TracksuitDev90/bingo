@@ -9,16 +9,22 @@
       content="The caller's Poké Ball blower. Blow the balls, call the Pokémon, check the cards."
     />
     <meta name="theme-color" content="#18347f" />
-    <link rel="icon" href="../assets/img/pokeball.svg" type="image/svg+xml" />
-    <link rel="preload" href="../assets/pokemon/sprites.webp" as="image" />
-    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../assets/fonts/press-start-2p.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../css/base.css" />
-    <link rel="stylesheet" href="../css/cardview.css" />
-    <link rel="stylesheet" href="../css/blower.css" />
-    <link rel="stylesheet" href="../css/pokemon/theme.css" />
-    <link rel="stylesheet" href="../css/pokemon/blower.css" />
+    <link rel="icon" href="../assets/img/pokeball.svg?v=d2fb6ab3" type="image/svg+xml" />
+    <link rel="preload" href="../assets/pokemon/sprites.webp?v=1472e9f4" as="image" />
+    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2?v=3877b522" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2?v=4a5633a0" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="../assets/fonts/press-start-2p.woff2?v=afec8699"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="../css/base.css?v=e2307bd2" />
+    <link rel="stylesheet" href="../css/cardview.css?v=0151b63e" />
+    <link rel="stylesheet" href="../css/blower.css?v=fcac92c4" />
+    <link rel="stylesheet" href="../css/pokemon/theme.css?v=5959b7d0" />
+    <link rel="stylesheet" href="../css/pokemon/blower.css?v=c3dbef31" />
   </head>
   <body class="table blower-page poke">
     <header class="b-top">
@@ -38,13 +44,15 @@
           id="voice"
           type="button"
           aria-pressed="false"
-          aria-label="Announce Pokémon out loud"
-          title="Announce Pokémon out loud"
+          aria-label="Call each Pokémon out loud"
+          title="Call each Pokémon out loud"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z" />
-            <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
-            <path class="slash" d="M4 4l16 16" />
+            <path
+              d="M5.5 21v-3.4C3.6 16 2.6 14 2.6 11.6a6.6 6.6 0 0 1 13.1-1.1l1.6 3.2-1.8.4V16a1.8 1.8 0 0 1-1.8 1.8h-1.6V21"
+            />
+            <path class="wave" d="M19 9a4.2 4.2 0 0 1 0 6M21.4 6.6a7.6 7.6 0 0 1 0 10.8" />
+            <path class="slash" d="M3 3l18 18" />
           </svg>
         </button>
         <button
@@ -181,6 +189,26 @@
       </form>
     </dialog>
 
-    <script type="module" src="../js/pokemon/blower-page.js"></script>
+    <script>
+      // If the game's scripts can't start (say, a half-updated browser cache),
+      // say so and offer a reload instead of leaving an empty table.
+      addEventListener('load', function () {
+        setTimeout(function () {
+          if (document.documentElement.hasAttribute('data-ready')) return;
+          var p = document.createElement('p');
+          p.id = 'load-fail';
+          p.setAttribute('role', 'alert');
+          p.style.cssText =
+            'position:fixed;left:50%;top:50%;z-index:99;transform:translate(-50%,-50%);width:min(320px,calc(100vw - 32px));margin:0;padding:18px 20px;border-radius:14px;background:#fff;color:#1d2230;font:600 1rem/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45)';
+          p.innerHTML =
+            'The game didn\u2019t load properly.<br><button type="button" style="margin-top:12px;padding:10px 22px;border:0;border-radius:999px;background:#f0b429;color:#1d2230;font:inherit">Reload</button>';
+          p.querySelector('button').onclick = function () {
+            location.reload();
+          };
+          document.body.appendChild(p);
+        }, 800);
+      });
+    </script>
+    <script type="module" src="../js/pokemon/blower-page.js?v=860191bc"></script>
   </body>
 </html>

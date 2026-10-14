@@ -1,9 +1,9 @@
-import { dealCard, isValidCard, completedSets, FREE } from './bingo.js';
-import { createCardView } from './cardview.js';
-import { DAUBERS, dauberById, dauberSVG } from './dauber.js';
-import { sealCard, openCard, shareUrl, extractToken } from './codec.js';
-import { sound } from './sound.js';
-import { store, toast, confirmSheet, openSheet, copyText, formatTime } from './ui.js';
+import { dealCard, isValidCard, completedSets, FREE } from './bingo.js?v=3f6ee08f';
+import { createCardView } from './cardview.js?v=66979a92';
+import { DAUBERS, dauberById, dauberSVG } from './dauber.js?v=31409a63';
+import { sealCard, openCard, shareUrl, extractToken } from './codec.js?v=86133dcf';
+import { sound } from './sound.js?v=36bb5e44';
+import { store, toast, confirmSheet, openSheet, copyText, formatTime } from './ui.js?v=f98984b4';
 
 const CARD_KEY = 'bingo:card';
 const DAUBER_KEY = 'bingo:dauber';
@@ -275,3 +275,6 @@ if (sharedToken) {
 }
 // Pasting a different card link into this tab only changes the hash.
 addEventListener('hashchange', () => location.reload());
+
+// Booted: tells the page's load check the game started.
+document.documentElement.setAttribute('data-ready', '');

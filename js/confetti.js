@@ -1,6 +1,6 @@
 // A short burst of paper confetti in dauber colours.
 
-import { DAUBERS } from './dauber.js';
+import { DAUBERS } from './dauber.js?v=31409a63';
 
 export function confetti({ count = 180, duration = 3200, colors = [...DAUBERS.map((d) => d.color), '#f6ecd6'] } = {}) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;

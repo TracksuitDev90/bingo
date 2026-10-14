@@ -1,14 +1,14 @@
-import { BALLS, LETTERS, PATTERNS, letterOf, callName, checkCard, patternPreview } from './bingo.js';
-import { randomInt, hash } from './rng.js';
-import { BlowerMachine, BALL_COLORS, LABEL_INK } from './machine.js';
-import { ballCanvas, clearSpriteCache, spritesFor } from './balls.js';
-import { flyBall } from './flight.js';
-import { paintSplotch, markJitter } from './dauber.js';
-import { openCard, extractToken } from './codec.js';
-import { createCardView } from './cardview.js';
-import { sound } from './sound.js';
-import { confetti } from './confetti.js';
-import { store, toast, confirmSheet, openSheet, formatTime } from './ui.js';
+import { BALLS, LETTERS, PATTERNS, letterOf, callName, checkCard, patternPreview } from './bingo.js?v=3f6ee08f';
+import { randomInt, hash } from './rng.js?v=d7e59606';
+import { BlowerMachine, BALL_COLORS, LABEL_INK } from './machine.js?v=1f0b3b9a';
+import { ballCanvas, clearSpriteCache, spritesFor } from './balls.js?v=3dc5c925';
+import { flyBall } from './flight.js?v=21700ca4';
+import { paintSplotch, markJitter } from './dauber.js?v=31409a63';
+import { openCard, extractToken } from './codec.js?v=86133dcf';
+import { createCardView } from './cardview.js?v=66979a92';
+import { sound } from './sound.js?v=36bb5e44';
+import { confetti } from './confetti.js?v=fe532583';
+import { store, toast, confirmSheet, openSheet, formatTime } from './ui.js?v=f98984b4';
 
 const GAME_KEY = 'bingo:game';
 const VOICE_KEY = 'bingo:voice';
@@ -595,3 +595,6 @@ if (linked) {
   history.replaceState(null, '', location.pathname);
   openCheck(linked);
 }
+
+// Booted: tells the page's load check the game started.
+document.documentElement.setAttribute('data-ready', '');

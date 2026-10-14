@@ -1,7 +1,7 @@
 // A sample card for the "Get a card" action: real card, a line half daubed, no taps.
 
-import { dealCard } from './bingo.js';
-import { createCardView } from './cardview.js';
+import { dealCard } from './bingo.js?v=3f6ee08f';
+import { createCardView } from './cardview.js?v=66979a92';
 
 const LEMON = 4;
 const card = dealCard();
