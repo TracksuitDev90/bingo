@@ -14,6 +14,18 @@
 import { letterOf } from './bingo.js';
 import { spritesFor, drawBall, randomFrame, rotate, cross, normalize } from './balls.js';
 
+// How the machine is dressed. A themed edition can pass its own `balls`
+// (sprites and drawing), `stand` (pedestal colours and lettering) and an
+// `effects(ctx, machine)` hook drawn over the balls, inside the glass.
+const CLASSIC_BALLS = { spritesFor, drawBall };
+const CLASSIC_STAND = {
+  body: ['#18466f', '#3a8fd0', '#2f80c0', '#123a5e'],
+  text: 'bingo',
+  font: '"Titan One", sans-serif',
+  ink: '#f4ead4',
+  glow: 'rgba(255,236,170,',
+};
+
 export { BALL_COLORS, LABEL_INK } from './balls.js';
 
 const TAU = Math.PI * 2;
@@ -30,8 +42,11 @@ function layer(w, h) {
 }
 
 export class BlowerMachine {
-  constructor(canvas, { onClack, onPoke } = {}) {
+  constructor(canvas, { onClack, onPoke, balls = CLASSIC_BALLS, stand, effects } = {}) {
     this.canvas = canvas;
+    this.kit = balls;
+    this.stand = { ...CLASSIC_STAND, ...stand };
+    this.effects = effects;
     this.ctx = canvas.getContext('2d');
     this.onClack = onClack;
     this.onPoke = onPoke;
@@ -90,7 +105,7 @@ export class BlowerMachine {
   /** (Re)build ball sprites and the static layers. Call again once fonts load. */
   buildSprites() {
     if (!this.geo) return;
-    this.sprites = spritesFor(this.geo.r * 2 * this.dpr);
+    this.sprites = this.kit.spritesFor(this.geo.r * 2 * this.dpr);
     this.sprites.labels.clear();
     this.buildLayers();
   }
@@ -366,18 +381,20 @@ export class BlowerMachine {
 
     ctx.drawImage(this.back, 0, 0, this.W, this.H);
     const drawn = this.flyer?.ball;
+    const { drawBall } = this.kit;
     for (const b of this.balls) if (b !== drawn) drawBall(ctx, sprites, b.n, b.x, b.y, r, b);
     if (drawn) {
       // A glow in the neck as the chosen ball rides up.
       if (this.flyer.phase === 'rise') {
         const g = ctx.createRadialGradient(cx, drawn.y, 0, cx, drawn.y, r * 3);
-        g.addColorStop(0, 'rgba(255,236,170,0.55)');
-        g.addColorStop(1, 'rgba(255,236,170,0)');
+        g.addColorStop(0, `${this.stand.glow}0.55)`);
+        g.addColorStop(1, `${this.stand.glow}0)`);
         ctx.fillStyle = g;
         ctx.fillRect(cx - r * 3, drawn.y - r * 3, r * 6, r * 6);
       }
       drawBall(ctx, sprites, drawn.n, drawn.x, drawn.y, r, drawn);
     }
+    this.effects?.(ctx, this);
     ctx.drawImage(this.front, 0, 0, this.W, this.H);
     this.drawBulbs();
   }
@@ -534,6 +551,7 @@ export class BlowerMachine {
   /** Painted-blue enamel pedestal, printed like the cards. */
   paintStand(ctx) {
     const { cx, cy, R } = this.geo;
+    const look = this.stand;
     const y0 = cy + R * 0.86;
     const y1 = Math.min(this.H - 4, cy + R * 1.5);
     this.standBox = { y0, y1 };
@@ -555,10 +573,7 @@ export class BlowerMachine {
     shape.quadraticCurveTo(cx - w1 * 1.02, y1, cx - w1, y1 - R * 0.05);
     shape.quadraticCurveTo(cx - w0 * 1.05, y1 - R * 0.1, cx - w0, y0);
     const body = ctx.createLinearGradient(cx - w1, 0, cx + w1, 0);
-    body.addColorStop(0, '#18466f');
-    body.addColorStop(0.3, '#3a8fd0');
-    body.addColorStop(0.55, '#2f80c0');
-    body.addColorStop(1, '#123a5e');
+    [0, 0.3, 0.55, 1].forEach((at, i) => body.addColorStop(at, look.body[i]));
     ctx.fillStyle = body;
     ctx.fill(shape);
     ctx.save();
@@ -576,11 +591,11 @@ export class BlowerMachine {
     // Lowercase "bingo", like the top of a card.
     const room = y1 - y0 - R * 0.28;
     const size = Math.min(R * 0.2, room * 0.95);
-    ctx.fillStyle = '#f4ead4';
+    ctx.fillStyle = look.ink;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = `${size}px "Titan One", sans-serif`;
-    ctx.fillText('bingo', cx, y0 + R * 0.12 + room * 0.5);
+    ctx.font = `${size}px ${look.font}`;
+    ctx.fillText(look.text, cx, y0 + R * 0.12 + room * 0.5);
   }
 
   buildBulbs() {

@@ -43,6 +43,9 @@ function cell(i) {
 }
 const pct = (v, of) => `${((v / of) * 100).toFixed(4)}%`;
 
+/** The card's layout, for editions that paint their own face on it. */
+export const GEOMETRY = Object.freeze({ W, H, SIDE, GAP, BORDER, GRID_TOP, GRID_H, COL_W, CELL_W, CELL_H, colX, cell });
+
 // --- Shared resources ---------------------------------------------------------
 
 let fontsReady;
@@ -299,10 +302,16 @@ const placeStyle = (i) => {
   return `left:${pct(b.x, W)};top:${pct(b.y, H)};width:${pct(b.w, W)};height:${pct(b.h, H)}`;
 };
 
-export function createCardView(card, { interactive = false, onTap, onCancel } = {}) {
+/**
+ * A card on the page. A themed edition can pass its own `face` painter
+ * (async (card, px) → canvas, using GEOMETRY) and a `name` for each number,
+ * which screen readers hear in place of "B 12".
+ */
+export function createCardView(card, { interactive = false, onTap, onCancel, face = paintFace, name } = {}) {
   const root = document.createElement('div');
   root.className = 'card';
-  const label = (i) => (i === FREE ? 'Free spot' : `${letterOf(card.numbers[i])} ${card.numbers[i]}`);
+  const label = (i) =>
+    i === FREE ? 'Free spot' : name ? name(card.numbers[i]) : `${letterOf(card.numbers[i])} ${card.numbers[i]}`;
   root.innerHTML = `<canvas class="card__canvas" aria-hidden="true"></canvas><div class="card__marks" aria-hidden="true"></div>${
     interactive
       ? `<div class="card__hits" role="group" aria-label="Bingo card">${columnsOf(
@@ -444,7 +453,7 @@ export function createCardView(card, { interactive = false, onTap, onCancel } = 
     const next = Math.round(w * dpr());
     if (next === px && painted) return;
     const token = ++paintToken;
-    const f = await paintFace(card, next);
+    const f = await face(card, next);
     if (token !== paintToken) return;
     const sizeChanged = next !== px;
     px = next;

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Your Card · Poké Bingo</title>
+    <meta name="description" content="Your own one-of-a-kind Pokémon Bingo card. Daub the Pokémon as they're called." />
+    <meta name="theme-color" content="#18347f" />
+    <link rel="icon" href="../assets/img/pokeball.svg" type="image/svg+xml" />
+    <link rel="preload" href="../assets/pokemon/sprites.webp" as="image" />
+    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/press-start-2p.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/cardview.css" />
+    <link rel="stylesheet" href="../css/card.css" />
+    <link rel="stylesheet" href="../css/pokemon/theme.css" />
+    <link rel="stylesheet" href="../css/pokemon/card.css" />
+  </head>
+  <body class="table card-page poke">
+    <header class="topbar">
+      <div class="topbar__left">
+        <a class="tag" href="./" aria-label="Home"
+          ><span aria-hidden="true">←</span><span class="tag__text">Home</span></a
+        >
+        <p class="brand"><span class="brand__poke">Poké</span><span class="brand__bingo">Bingo</span></p>
+      </div>
+      <p class="hint" id="hint">tap a Pokémon to daub it</p>
+      <div class="topbar__right">
+        <button class="route-chip" id="route-chip" type="button" aria-label="Change route" hidden>
+          <small>Route</small><b id="route-num"></b>
+        </button>
+        <button class="icon-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound effects">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9h4l5-4v14l-5-4H4z" />
+            <path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="desk">
+      <div class="stage" id="stage"></div>
+
+      <section class="tray" id="tray" aria-label="Choose your dauber">
+        <div class="tray__bottles" id="bottles" role="radiogroup" aria-label="Dauber colour"></div>
+        <p class="tray__name" id="dauber-name"></p>
+      </section>
+
+      <section class="shared" id="shared" hidden>
+        <p class="shared__title poke-outline">Shared card</p>
+        <p class="shared__meta" id="shared-meta"></p>
+        <a class="btn btn--gold" id="shared-check" href="blower.html">Check it on my blower</a>
+        <a class="btn btn--small btn--ghost" href="card.html">Get my own card</a>
+      </section>
+    </main>
+
+    <footer class="actions" id="actions">
+      <button class="btn btn--small btn--ghost" id="new-card" type="button">New card</button>
+      <button class="btn btn--gold btn--bingo" id="bingo" type="button">BINGO!</button>
+      <button class="btn btn--small btn--ghost" id="wipe" type="button">Wipe daubs</button>
+    </footer>
+
+    <dialog class="sheet" id="route-sheet" aria-labelledby="route-title">
+      <form method="dialog" class="sheet__body">
+        <button class="sheet__close" value="close" aria-label="Close" id="route-close">×</button>
+        <h2 id="route-title">Which route?</h2>
+        <p>
+          Pick the route number on the caller's screen (it's on the sign by the blower). Everyone on the same route
+          plays with the same Pokémon.
+        </p>
+        <div class="stepper" role="group" aria-label="Route number">
+          <button type="button" class="stepper__btn" id="route-down" aria-label="Previous route">−</button>
+          <input
+            class="stepper__num"
+            id="route-input"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            max="999"
+            aria-label="Route"
+          />
+          <button type="button" class="stepper__btn" id="route-up" aria-label="Next route">+</button>
+        </div>
+        <p class="route-note" id="route-note"></p>
+        <div class="sheet__actions">
+          <button class="btn btn--small" value="cancel" id="route-cancel">Cancel</button>
+          <button type="button" class="btn btn--small btn--gold" id="route-go">Deal me in</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="sheet" id="share-sheet" aria-labelledby="share-title">
+      <form method="dialog" class="sheet__body">
+        <button class="sheet__close" value="close" aria-label="Close">×</button>
+        <h2 id="share-title">Call it in!</h2>
+        <p>
+          Send this link to your caller. It carries your card and every daub, sealed so nobody can read or change it.
+          They paste it into the blower to check your bingo.
+        </p>
+        <div class="field">
+          <input id="share-url" readonly aria-label="Your sealed card link" />
+          <button type="button" class="btn btn--ink" id="copy">Copy</button>
+        </div>
+        <p class="share__note" id="share-note"></p>
+        <div class="sheet__actions">
+          <button type="button" class="btn btn--small" id="native-share" hidden>Share…</button>
+          <button class="btn btn--small btn--gold" value="close">Done</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="../js/pokemon/card-page.js"></script>
+  </body>
+</html>

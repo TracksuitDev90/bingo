@@ -6,7 +6,14 @@
 // Drawn on a temporary canvas that only covers the flight path.
 
 import { letterOf } from './bingo.js';
-import { BALL_COLORS, spritesFor, drawBall, FRONT, rotate, normalize } from './balls.js';
+import {
+  BALL_COLORS,
+  spritesFor as classicSprites,
+  drawBall as classicDraw,
+  FRONT,
+  rotate,
+  normalize,
+} from './balls.js';
 
 const TAU = Math.PI * 2;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -58,11 +65,18 @@ function drawSpark(ctx, p, k) {
  * Fly ball `n` from `from` {x, y, r, frame} to `to` {x, y, r}, both in
  * viewport pixels. Calls onBounce(strength) on each landing; `quality`
  * scales the resolution down on slow devices; `sprites` are the ball
- * sprites to draw with (pass the resting ball's, built ahead). Resolves when
- * the ball has settled; the canvas is removed on the next frame so the
- * caller can put the resting ball in place first.
+ * sprites to draw with (pass the resting ball's, built ahead). A themed
+ * edition passes its own `balls` ({ spritesFor, drawBall }) and spark
+ * `color`. Resolves when the ball has settled; the canvas is removed on the
+ * next frame so the caller can put the resting ball in place first.
  */
-export function flyBall(n, from, to, { onBounce, quality = 1, sprites } = {}) {
+export function flyBall(
+  n,
+  from,
+  to,
+  { onBounce, quality = 1, sprites, balls = { spritesFor: classicSprites, drawBall: classicDraw }, color } = {},
+) {
+  const { spritesFor, drawBall } = balls;
   // Motion hides softness, so the flight never needs more than 1.5x.
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5) * quality;
   const { x: x0, y: y0, r: r0 } = from;
@@ -103,7 +117,7 @@ export function flyBall(n, from, to, { onBounce, quality = 1, sprites } = {}) {
   // Ideally the resting ball's own sprites, built while the balls mixed.
   sprites ??= spritesFor(R1 * 2 * Math.min(window.devicePixelRatio || 1, 2));
 
-  const color = BALL_COLORS[letterOf(n)];
+  color ??= BALL_COLORS[letterOf(n)];
   let particles = sparks(x0 - left, y0 - top - r0, 16, { color });
   const trail = [];
   let ring = null;

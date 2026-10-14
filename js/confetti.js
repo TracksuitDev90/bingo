@@ -2,7 +2,7 @@
 
 import { DAUBERS } from './dauber.js';
 
-export function confetti({ count = 180, duration = 3200 } = {}) {
+export function confetti({ count = 180, duration = 3200, colors = [...DAUBERS.map((d) => d.color), '#f6ecd6'] } = {}) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const c = document.createElement('canvas');
   c.className = 'confetti';
@@ -15,7 +15,6 @@ export function confetti({ count = 180, duration = 3200 } = {}) {
   c.height = H * dpr;
   const g = c.getContext('2d');
   g.scale(dpr, dpr);
-  const colors = [...DAUBERS.map((d) => d.color), '#f6ecd6'];
   const bits = Array.from({ length: count }, (_, i) => {
     const side = i % 2 ? 1 : -1;
     return {

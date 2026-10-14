@@ -2,6 +2,8 @@
 
 Online 75-ball bingo for a group of friends, printed like a hand-painted paper bingo card: cream card stock, sky-blue ink, a deep blue table, and balls in teal, tomato, cream, avocado and harvest gold. One person picks **Host a game**, which opens the ball blower, and streams it; everyone else picks **Get a card** on their own phone or laptop and daubs along.
 
+There's also a **Pokémon edition**, Poké Bingo, picked from the home page: Poké Balls in the blower and Pokémon on the cards. See [Pokémon edition](#pokémon-edition) below.
+
 No server, no accounts, no build step. It's a static site, so GitHub Pages can host it as-is.
 
 ## How a game goes
@@ -18,6 +20,26 @@ The **Playing for** button at the top of the blower picks the winning pattern: A
 Blower shortcuts: <kbd>Space</kbd> blows the next ball, <kbd>C</kbd> opens the card check, <kbd>F</kbd> toggles full screen. The microphone button reads each number out loud; it's off by default.
 
 Both screens fit on a single phone screen with no scrolling, in portrait or on its side, and spread out on tablets and computers.
+
+## Pokémon edition
+
+Poké Bingo lives in `pokemon/` and is reached from the yellow **Poké Bingo** panel on the home page. It's the same game (same blower, same cards, same fairness and sealed links) dressed in Pikachu yellow, Poké Ball red and logo blue, with lightning crackling in the globe.
+
+- **Balls are Poké Balls.** Each column has its own ball: B Poké Ball, I Great Ball, N Ultra Ball, G Safari Ball, O Master Ball. The button on each ball shows the Pokémon's sprite and name, and the cap and band roll with it as the ball tumbles.
+- **Cards are trading cards.** A yellow-bordered card with the Pokémon in their columns, names under the sprites, and Pikachu on the free spot. The inks are named after types (Electric, Fire, Water…).
+- **The board is "Who's that Pokémon?"** Every Pokémon in the game starts as a silhouette and pops into colour when it's called. Calls read like `G · #143 SNORLAX`, and the voice says "G. Snorlax."
+
+### Routes: which Pokémon are in play
+
+Bingo needs 75 balls, and there are 251 Pokémon in Gen 1 and Gen 2, so each game is played on a numbered **route** that decides which 75 are in it. Every device works out the same 75 from the route number alone, so nothing has to be sent between the caller and the players:
+
+- The route is on the signpost next to the globe. Tapping it lets the caller pick another route or copy a player link (`pokemon/card.html#route=12`) that deals a card for it.
+- Players pick the route when they get a card. It's printed on the card and shown in the top bar. **New card** suggests the next route, since a new game on the blower moves on one.
+- Each route has **60 Kanto and 15 Johto** Pokémon, in Pokédex order, so B to G are Gen 1 and O is always Gen 2.
+- Routes **rotate** through the Pokédex rather than picking at random: every Gen 1 Pokémon comes up exactly twice in each run of five routes, and every Gen 2 Pokémon three times in each run of twenty. Each run is shuffled afresh, so the groups change too.
+- A sealed Pokémon card link carries its route. Checking a card from another route says so, and each edition points the other's links at the right blower.
+
+The two editions keep their games, cards and dauber choices apart, so one browser can have both on the go.
 
 ## Keeping it smooth
 
@@ -36,7 +58,7 @@ Both screens fit on a single phone screen with no scrolling, in portrait or on i
 
 ## Sealed card links
 
-The BINGO! link packs the card's numbers, every daub (and its colour), the serial number and the deal time into 30 bytes. It's encrypted with AES-256-GCM and the result goes in the URL fragment (`card.html#s=…`). The fragment never reaches a web server.
+The BINGO! link packs the card's numbers, every daub (and its colour), the serial number and the deal time into 30 bytes (Pokémon cards add their route, which is sealed too). It's encrypted with AES-256-GCM and the result goes in the URL fragment (`card.html#s=…`). The fragment never reaches a web server.
 
 - Nobody can read a card from its link.
 - Change any character and the seal breaks, so the blower rejects the link.
@@ -70,22 +92,32 @@ npm test
 
 ## What's where
 
-| Path | What it does |
-| --- | --- |
-| `index.html`, `css/home.css` | Home screen: Get a card, Host a game, and how it works |
-| `blower.html`, `js/blower-page.js` | Caller screen: draws, board, rack of recent balls, pattern, card check |
-| `js/machine.js` | The globe: canvas physics, glass, pedestal and marquee lights, the draw |
-| `js/balls.js` | Ball sprites with 3D-rolling labels, shared by the globe, the flight and the rack |
-| `js/flight.js` | The drawn ball's pop, tumble and bounce into the "now calling" spot |
-| `card.html`, `js/card-page.js` | Player screen: card on the table, daubers, line sparkle, BINGO! sharing, shared-card view |
-| `js/cardview.js`, `css/cardview.css` | The paper card itself, painted on canvas (used by every page) |
-| `js/dauber.js` | Ink splotch painter and the dauber bottles |
-| `js/bingo.js` | Rules: ranges, dealing, patterns, `checkCard` |
-| `js/codec.js` | Sealed links (AES-GCM) |
-| `js/rng.js` | Unbiased crypto randomness |
-| `js/sound.js` | Synthesised sound effects (no audio files) |
-| `tools/` | Script that generated the paper texture |
+| Path                                                   | What it does                                                                              |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| `index.html`, `css/home.css`                           | Home screen: Get a card, Host a game, and how it works                                    |
+| `blower.html`, `js/blower-page.js`                     | Caller screen: draws, board, rack of recent balls, pattern, card check                    |
+| `js/machine.js`                                        | The globe: canvas physics, glass, pedestal and marquee lights, the draw                   |
+| `js/balls.js`                                          | Ball sprites with 3D-rolling labels, shared by the globe, the flight and the rack         |
+| `js/flight.js`                                         | The drawn ball's pop, tumble and bounce into the "now calling" spot                       |
+| `card.html`, `js/card-page.js`                         | Player screen: card on the table, daubers, line sparkle, BINGO! sharing, shared-card view |
+| `js/cardview.js`, `css/cardview.css`                   | The paper card itself, painted on canvas (used by every page)                             |
+| `js/dauber.js`                                         | Ink splotch painter and the dauber bottles                                                |
+| `js/bingo.js`                                          | Rules: ranges, dealing, patterns, `checkCard`                                             |
+| `js/codec.js`                                          | Sealed links (AES-GCM)                                                                    |
+| `js/rng.js`                                            | Unbiased crypto randomness                                                                |
+| `js/sound.js`                                          | Synthesised sound effects (no audio files)                                                |
+| `pokemon/`, `css/pokemon/`                             | Pokémon edition pages (home, blower, card) and their skin over the classic layouts        |
+| `js/pokemon/dex.js`                                    | Routes: which 75 Pokémon are in play, and the rotation                                    |
+| `js/pokemon/pokeballs.js`                              | Poké Ball sprites (same API as `js/balls.js`) and the column emblems                      |
+| `js/pokemon/cardface.js`                               | The trading-card face, painted on the classic card's grid                                 |
+| `js/pokemon/sprites.js`, `pokedex-data.js`             | Crisp pixel-art sprites from the sheet; names and sheet positions (generated)             |
+| `js/pokemon/blower-page.js`, `card-page.js`, `home.js` | The Pokémon edition's screens                                                             |
+| `tools/`                                               | Scripts that generated the paper texture and the Pokémon sprite sheet                     |
 
 ## Credits
 
 Fonts: Fraunces (the "Fireside" wordmark), Titan One, Fredoka and Itim, all under the SIL Open Font License (see `assets/fonts/OFL.txt`). The paper texture is procedurally generated by `tools/make_paper.py`.
+
+Pokémon edition: Press Start 2P and Pixelify Sans (SIL Open Font License) and Luckiest Guy (Apache License 2.0, see `assets/fonts/LICENSE-Apache.txt`). The sprites are the Black/White (Gen 5) sprites shown on [pokemondb.net/sprites](https://pokemondb.net/sprites); `tools/make_pokemon_atlas.py` fetches them, and the names, from the [PokeAPI](https://github.com/PokeAPI) repositories and packs them into `assets/pokemon/sprites.webp`.
+
+Poké Bingo is a fan-made game for playing with friends, not affiliated with or endorsed by Nintendo. Pokémon, the Pokémon names and the sprites are © Nintendo, Creatures Inc., GAME FREAK inc. and The Pokémon Company.
