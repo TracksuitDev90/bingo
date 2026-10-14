@@ -1,4 +1,4 @@
-import { dealCard, isValidCard, PATTERNS, FREE } from './bingo.js';
+import { dealCard, isValidCard, completedSets, FREE } from './bingo.js';
 import { createCardView } from './cardview.js';
 import { DAUBERS, dauberById, dauberSVG } from './dauber.js';
 import { sealCard, openCard, shareUrl, extractToken } from './codec.js';
@@ -14,6 +14,7 @@ const stage = $('stage');
 let card;
 let view;
 let dauber = store.get(DAUBER_KEY, 1);
+let lines = new Set();
 
 // --- Card on the table --------------------------------------------------------
 
@@ -22,14 +23,29 @@ function loadCard() {
   if (saved && isValidCard(saved.numbers) && Array.isArray(saved.marks) && saved.marks.length === 25) return saved;
   return null;
 }
-const saveCard = () => store.set(CARD_KEY, card);
 
-function placeCard({ deal = false, interactive = true } = {}) {
+// Saving is batched off the tap so inking never waits on storage.
+let saveTimer = 0;
+function saveCard({ now = false } = {}) {
+  clearTimeout(saveTimer);
+  saveTimer = 0;
+  if (now) store.set(CARD_KEY, card);
+  else saveTimer = setTimeout(() => saveCard({ now: true }), 250);
+}
+const flush = () => saveTimer && saveCard({ now: true });
+addEventListener('pagehide', flush);
+document.addEventListener('visibilitychange', () => document.hidden && flush());
+
+async function placeCard({ deal = false, interactive = true } = {}) {
   stage.replaceChildren();
-  view = createCardView(card, { interactive, onTap });
+  stage.classList.remove('is-dealing');
+  view = createCardView(card, { interactive, onTap, onCancel });
   stage.append(view.el);
+  lines = new Set(completedSets(card.marks).map((s) => s.id));
+  syncBingo();
+  await view.ready;
+  if (interactive) view.prewarm(dauber);
   if (deal) {
-    stage.classList.remove('is-dealing');
     void stage.offsetWidth;
     stage.classList.add('is-dealing');
     sound.shuffle();
@@ -40,12 +56,56 @@ function onTap(i) {
   const next = card.marks[i] ? 0 : dauber;
   card.marks[i] = next;
   view.setMark(i, next, { animate: true });
-  saveCard();
   if (next) {
     sound.daub();
-    navigator.vibrate?.(14);
+    navigator.vibrate?.(12);
+    dip();
     $('hint').classList.add('is-gone');
+  } else {
+    sound.lift();
   }
+  checkLines();
+  saveCard();
+}
+
+/** The press turned into a scroll: take the ink back off. */
+function onCancel(i) {
+  card.marks[i] = 0;
+  view.setMark(i, 0, { animate: true });
+  checkLines();
+  saveCard();
+}
+
+function checkLines() {
+  const done = completedSets(card.marks);
+  const fresh = done.filter((s) => !lines.has(s.id));
+  lines = new Set(done.map((s) => s.id));
+  syncBingo();
+  if (!fresh.length) return;
+  // Start the BINGO! button dancing again for the new line.
+  const btn = $('bingo');
+  btn.classList.remove('is-ready');
+  requestAnimationFrame(() => requestAnimationFrame(syncBingo));
+  // Celebrate the newest, smallest win (a line before a blackout).
+  const best = fresh.sort((a, b) => a.cells.length - b.cells.length)[0];
+  view.celebrate(best.cells);
+  setTimeout(() => sound.line(), 120);
+  navigator.vibrate?.([12, 60, 24]);
+}
+const syncBingo = () => $('bingo').classList.toggle('is-ready', lines.size > 0);
+
+/** The bottle in your hand gives a little stamp with every daub. */
+function dip() {
+  $('bottles')
+    .querySelector('[aria-checked="true"]')
+    ?.animate(
+      [
+        { transform: 'translateY(-12px)' },
+        { transform: 'translateY(-3px) scale(1.07, 0.9)', offset: 0.4 },
+        { transform: 'translateY(-12px)' },
+      ],
+      { duration: 260, easing: 'cubic-bezier(.3,.7,.4,1.4)' },
+    );
 }
 
 async function newCard() {
@@ -65,7 +125,7 @@ async function newCard() {
   await new Promise((r) => setTimeout(r, 330));
   stage.classList.remove('is-leaving');
   card = dealCard();
-  saveCard();
+  saveCard({ now: true });
   placeCard({ deal: true });
 }
 
@@ -79,7 +139,10 @@ async function wipe() {
   if (!ok) return;
   card.marks.forEach((m, i) => m && view.setMark(i, 0, { animate: true }));
   card.marks = new Array(25).fill(0);
-  saveCard();
+  lines = new Set();
+  syncBingo();
+  saveCard({ now: true });
+  view.prewarm(dauber);
 }
 
 // --- Daubers ------------------------------------------------------------------
@@ -98,6 +161,7 @@ function chooseDauber(id, { announce = false } = {}) {
   $('dauber-name').textContent = `${d.name} ink`;
   for (const b of $('bottles').children) b.setAttribute('aria-checked', String(+b.dataset.id === id));
   if (announce) sound.daub();
+  view?.prewarm(id);
 }
 
 function buildTray() {
@@ -128,16 +192,8 @@ function buildTray() {
 
 // --- Calling bingo --------------------------------------------------------------
 
-function completedPattern() {
-  const on = (i) => i === FREE || card.marks[i] > 0;
-  for (const key of ['line', 'corners', 'x', 'blackout']) {
-    const hit = PATTERNS[key].sets.find((s) => s.cells.every(on));
-    if (hit) return hit.label;
-  }
-  return null;
-}
-
 async function callBingo() {
+  flush();
   const sheet = $('share-sheet');
   let url;
   try {
@@ -150,11 +206,11 @@ async function callBingo() {
   const input = $('share-url');
   input.value = url;
   const daubs = card.marks.filter((m, i) => m && i !== FREE).length;
-  const pattern = completedPattern();
+  const done = completedSets(card.marks).sort((a, b) => a.cells.length - b.cells.length)[0];
   const note = $('share-note');
-  note.classList.toggle('is-warn', !pattern);
-  note.textContent = pattern
-    ? `Card No ${card.serial} · ${daubs} daubs · ${pattern} complete. Good luck!`
+  note.classList.toggle('is-warn', !done);
+  note.textContent = done
+    ? `Card No ${card.serial} · ${daubs} daubs · ${done.label} complete. Good luck!`
     : `Heads up: your daubs don't make a line yet. You can still send it.`;
   const nativeBtn = $('native-share');
   nativeBtn.hidden = !navigator.share;
@@ -207,10 +263,9 @@ if (sharedToken) {
 } else {
   buildTray();
   card = loadCard();
-  const fresh = !card;
-  if (fresh) {
+  if (!card) {
     card = dealCard();
-    saveCard();
+    saveCard({ now: true });
   }
   if (card.marks.some(Boolean)) $('hint').classList.add('is-gone');
   placeCard({ deal: true });

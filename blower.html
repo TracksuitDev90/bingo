@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>The Blower · Fireside Bingo</title>
     <meta name="description" content="The caller's ball blower. Blow the balls, call the numbers, check the cards." />
-    <meta name="theme-color" content="#3a2414" />
+    <meta name="theme-color" content="#173f66" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/itim.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="assets/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/cardview.css" />
     <link rel="stylesheet" href="css/blower.css" />
   </head>
-  <body class="blower-page">
+  <body class="table blower-page">
     <header class="b-top">
       <div class="b-left-tools">
-        <a class="tag" href="./"><span aria-hidden="true">←</span> Home</a>
+        <a class="tag" href="./" aria-label="Home"
+          ><span aria-hidden="true">←</span><span class="tag__text">Home</span></a
+        >
         <p class="brand"><span class="brand__fire">Fireside</span><span class="brand__bingo">bingo</span></p>
       </div>
       <button class="b-pattern" id="pattern-btn" type="button" aria-label="Change winning pattern">
@@ -60,30 +62,37 @@
 
     <main class="b-main">
       <section class="b-machine">
-        <canvas id="globe" role="img" aria-label="Glass ball blower full of bingo balls"></canvas>
+        <canvas id="globe" role="img" aria-label="Glass ball blower full of bingo balls. Tap it to stir them."></canvas>
         <p class="b-left" id="left"></p>
       </section>
 
       <section class="b-caller">
         <div class="b-now">
-          <div class="b-now__slot" id="now-slot"></div>
+          <div class="b-now__slot is-empty" id="now-slot">
+            <canvas id="now-ball" role="img"></canvas>
+            <span class="b-now__hint" id="now-hint">Press Blow to start</span>
+          </div>
           <div class="b-now__text">
             <p class="b-call" id="call-text" aria-live="assertive"></p>
             <p class="b-count" id="count"></p>
+            <div class="b-recent" id="recent" aria-label="Previous balls"></div>
           </div>
         </div>
-        <div class="b-recent" id="recent" aria-label="Previous balls"></div>
         <div class="b-controls">
-          <button class="btn btn--red btn--blow" id="blow" type="button">Blow next ball <kbd>Space</kbd></button>
-          <div class="b-controls__row">
-            <button class="btn btn--small" id="check" type="button">Check a card</button>
-            <button class="btn btn--small btn--ghost" id="new-game" type="button">New game</button>
-          </div>
+          <button class="btn btn--paper btn--side" id="check" type="button">
+            <span>Check<span class="long"> a card</span></span>
+          </button>
+          <button class="btn btn--gold btn--blow" id="blow" type="button">
+            <span id="blow-label">Blow next ball</span> <kbd>Space</kbd>
+          </button>
+          <button class="btn btn--ghost btn--side" id="new-game" type="button">
+            <span>New<span class="long"> game</span></span>
+          </button>
         </div>
       </section>
-    </main>
 
-    <section class="b-board" id="board" aria-label="Called numbers"></section>
+      <section class="b-board" id="board" aria-label="Called numbers"></section>
+    </main>
 
     <dialog class="sheet sheet--wide" id="check-sheet" aria-labelledby="check-title">
       <form method="dialog" class="sheet__body">
@@ -102,7 +111,7 @@
             aria-label="Player's card link"
             autofocus
           />
-          <button type="button" class="btn btn--teal" id="check-go">Check</button>
+          <button type="button" class="btn btn--ink" id="check-go">Check</button>
         </div>
         <p class="check-error" id="check-error" role="alert" hidden></p>
         <div class="check-result" id="check-result" hidden>

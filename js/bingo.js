@@ -86,6 +86,20 @@ export const PATTERNS = {
   },
 };
 
+/**
+ * Every pattern a card's daubs complete, whatever has been called. Used on
+ * the player's side to cheer a finished line; only checkCard decides a win.
+ */
+export function completedSets(marks) {
+  const on = (i) => i === FREE || marks[i] > 0;
+  const out = [];
+  for (const [key, p] of Object.entries(PATTERNS)) {
+    for (const s of p.sets)
+      if (s.cells.every(on)) out.push({ id: `${key}:${s.label}`, label: s.label, cells: s.cells });
+  }
+  return out;
+}
+
 /** Cells to light up in a small pattern diagram. */
 export function patternPreview(key) {
   if (key === 'line') return [10, 11, 12, 13, 14];

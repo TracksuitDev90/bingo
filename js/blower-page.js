@@ -1,6 +1,8 @@
 import { BALLS, LETTERS, PATTERNS, letterOf, callName, checkCard, patternPreview } from './bingo.js';
 import { randomInt, hash } from './rng.js';
 import { BlowerMachine, BALL_COLORS, LABEL_INK } from './machine.js';
+import { ballCanvas, clearSpriteCache, spritesFor } from './balls.js';
+import { flyBall } from './flight.js';
 import { paintSplotch, markJitter } from './dauber.js';
 import { openCard, extractToken } from './codec.js';
 import { createCardView } from './cardview.js';
@@ -10,6 +12,8 @@ import { store, toast, confirmSheet, openSheet, formatTime } from './ui.js';
 
 const GAME_KEY = 'bingo:game';
 const VOICE_KEY = 'bingo:voice';
+// The caller's board is daubed in green, like a real hall.
+const BOARD_INK = '#0f9a52';
 const $ = (id) => document.getElementById(id);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -43,20 +47,6 @@ const remaining = () => {
   return Array.from({ length: BALLS }, (_, i) => i + 1).filter((n) => !c.has(n));
 };
 
-// --- Balls ---------------------------------------------------------------------------
-
-function ballEl(n) {
-  const L = letterOf(n);
-  const el = document.createElement('div');
-  el.className = `ball ball--${L}`;
-  el.style.setProperty('--c', BALL_COLORS[L]);
-  el.style.setProperty('--t', LABEL_INK[L]);
-  el.setAttribute('role', 'img');
-  el.setAttribute('aria-label', `${L} ${n}`);
-  el.innerHTML = `<div class="ball__label"><span class="ball__letter">${L}</span><span class="ball__num">${n}</span></div>`;
-  return el;
-}
-
 // --- Board -----------------------------------------------------------------------------
 
 const tiles = new Map();
@@ -69,7 +59,7 @@ function buildBoard() {
     badge.className = 'b-row__letter';
     badge.textContent = L;
     badge.style.setProperty('--c', BALL_COLORS[L]);
-    if (L === 'N') badge.style.setProperty('--t-on', 'var(--brown)');
+    if (L === 'N') badge.style.setProperty('--t-on', LABEL_INK.N);
     const nums = document.createElement('div');
     nums.className = 'b-row__nums';
     for (let k = 1; k <= 15; k++) {
@@ -98,17 +88,17 @@ function daubTile(n, animate) {
   const tile = tiles.get(n);
   tile.classList.add('is-called');
   tile.querySelector('.daub')?.remove();
-  const size = Math.round(Math.min(tile.offsetWidth, tile.offsetHeight) * 1.38);
+  const size = Math.round(Math.min(tile.offsetWidth, tile.offsetHeight) * 1.3);
   if (!size) return;
   const seed = hash(game.id, n);
   const j = markJitter(seed);
   const daub = document.createElement('div');
-  daub.className = 'daub' + (animate ? ' daub--fresh' : '');
+  daub.className = 'daub' + (animate && !reduceMotion ? ' daub--fresh' : '');
   daub.style.setProperty('--dx', `${j.dx * 60}%`);
   daub.style.setProperty('--dy', `${j.dy * 60}%`);
   daub.style.setProperty('--rot', `${j.rot}deg`);
   const c = document.createElement('canvas');
-  paintSplotch(c, { color: '#d63a22', seed, size });
+  paintSplotch(c, { color: BOARD_INK, seed, size });
   daub.append(c);
   tile.append(daub);
 }
@@ -119,49 +109,126 @@ function renderBoard() {
     t.querySelector('.daub')?.remove();
   }
   for (const n of calledNumbers()) daubTile(n, false);
-  const last = game.draws.at(-1);
-  if (last) tiles.get(last.n).classList.add('is-latest');
+  markLatest(game.draws.at(-1)?.n);
+}
+function markLatest(n) {
+  for (const t of tiles.values()) t.classList.remove('is-latest');
+  if (n) tiles.get(n).classList.add('is-latest');
 }
 
 // --- Caller panel --------------------------------------------------------------------
 
-function renderNow({ fresh = false } = {}) {
-  const last = game.draws.at(-1);
+let slotN = null;
+
+/** Sprites for a ball the size of the "now calling" spot (shared with the flight). */
+const slotSprites = () => spritesFor(Math.round($('now-slot').clientWidth * Math.min(window.devicePixelRatio || 1, 2)));
+
+/** Put ball `n` (or nothing) in the "now calling" spot. */
+function drawSlot(n) {
+  slotN = n;
   const slot = $('now-slot');
-  slot.replaceChildren();
-  slot.classList.toggle('is-empty', !last);
-  if (last) {
-    const b = ballEl(last.n);
-    if (fresh) b.classList.add('is-landing');
-    slot.append(b);
-  } else {
-    slot.textContent = 'Press Blow to start';
-  }
+  slot.classList.toggle('is-empty', n == null);
+  slot.classList.remove('is-waiting');
+  $('now-hint').hidden = n != null || game.draws.length > 0;
+  if (n == null) return;
+  const c = $('now-ball');
+  ballCanvas(n, slot.clientWidth, c);
+  c.setAttribute('aria-label', `${letterOf(n)} ${n}`);
+}
+
+function renderCall({ fresh = false } = {}) {
+  const last = game.draws.at(-1);
   const text = $('call-text');
   text.textContent = last ? callName(last.n) : '';
-  text.classList.remove('is-new');
-  if (fresh) {
+  text.classList.remove('is-new', 'is-dim');
+  if (fresh && !reduceMotion) {
     void text.offsetWidth;
     text.classList.add('is-new');
   }
-  $('count').textContent = last ? `Ball ${game.draws.length} of ${BALLS}` : 'Ready when you are';
-  const recent = $('recent');
-  recent.replaceChildren(
-    ...game.draws
-      .slice(-7, -1)
-      .reverse()
-      .map((d) => ballEl(d.n)),
-  );
-  const left = BALLS - game.draws.length;
+  $('count').textContent = last ? `Ball ${game.draws.length} of ${BALLS}` : '';
+  renderLeft(BALLS - game.draws.length);
+  setBlowState();
+}
+
+function renderLeft(left) {
   $('left').textContent = left ? `${left} ball${left === 1 ? '' : 's'} in the globe` : 'Globe empty';
-  const blowBtn = $('blow');
-  blowBtn.disabled = busy || left === 0;
-  blowBtn.firstChild.textContent = left === 0 ? 'All 75 called ' : 'Blow next ball ';
+}
+
+function setBlowState() {
+  const left = BALLS - game.draws.length;
+  const btn = $('blow');
+  btn.disabled = left === 0;
+  btn.classList.toggle('is-busy', busy);
+  $('blow-label').textContent = left === 0 ? 'All 75 called' : 'Blow next ball';
+}
+
+// Balls called before the one in the slot, newest first.
+const rackMax = () => (innerWidth < 600 ? 5 : 6);
+const rackList = () =>
+  game.draws
+    .slice(0, -1)
+    .slice(-rackMax())
+    .reverse()
+    .map((d) => d.n);
+
+/** Redraw the rack, sliding balls to their new places (and in from the slot). */
+function renderRack({ fromSlot = null } = {}) {
+  const rack = $('recent');
+  const before = new Map([...rack.children].map((el) => [+el.dataset.n, el.getBoundingClientRect()]));
+  const slotRect = fromSlot != null ? $('now-slot').getBoundingClientRect() : null;
+  rack.replaceChildren(
+    ...rackList().map((n) => {
+      const s = document.createElement('span');
+      s.className = 'rball';
+      s.dataset.n = n;
+      s.setAttribute('role', 'img');
+      s.setAttribute('aria-label', `${letterOf(n)} ${n}`);
+      return s;
+    }),
+  );
+  const size = rack.clientHeight;
+  for (const el of rack.children) el.append(ballCanvas(+el.dataset.n, size));
+  if (reduceMotion) return;
+  for (const el of rack.children) {
+    const n = +el.dataset.n;
+    const r = el.getBoundingClientRect();
+    const timing = { duration: 560, easing: 'cubic-bezier(.3,.75,.3,1.15)' };
+    if (n === fromSlot && slotRect) {
+      const dx = slotRect.left + slotRect.width / 2 - (r.left + r.width / 2);
+      const dy = slotRect.top + slotRect.height / 2 - (r.top + r.height / 2);
+      const k = slotRect.width / r.width;
+      el.animate(
+        [
+          { transform: `translate(${dx}px, ${dy}px) scale(${k}) rotate(0deg)` },
+          {
+            transform: `translate(${dx * 0.4}px, ${dy * 0.4 - r.height * 0.8}px) scale(${1 + (k - 1) * 0.3}) rotate(200deg)`,
+            offset: 0.55,
+          },
+          { transform: 'translate(0, 0) scale(1) rotate(360deg)' },
+        ],
+        { duration: 620, easing: 'cubic-bezier(.35,.6,.3,1)' },
+      );
+    } else if (before.has(n)) {
+      const o = before.get(n);
+      const dx = o.left - r.left;
+      if (dx) el.animate([{ transform: `translateX(${dx}px) rotate(${-dx * 2}deg)` }, { transform: 'none' }], timing);
+    } else {
+      el.animate(
+        [
+          { transform: 'scale(0)', opacity: 0 },
+          { transform: 'none', opacity: 1 },
+        ],
+        timing,
+      );
+    }
+  }
 }
 
 const renderAll = () => {
   renderBoard();
-  renderNow();
+  drawSlot(game.draws.at(-1)?.n ?? null);
+  renderCall();
+  renderRack();
   renderPattern();
 };
 
@@ -175,14 +242,31 @@ async function blow() {
   const pool = remaining();
   if (!pool.length) return;
   busy = true;
-  $('blow').disabled = true;
+  setBlowState();
 
   // The fair part: one uniformly random pick from the balls still in the globe.
   const n = pool[randomInt(pool.length)];
   const t = Date.now();
   game.startedAt ??= t;
+  const prev = slotN;
   game.draws.push({ n, t });
   save();
+
+  // Clear the stage: last ball rolls off into the rack while the air roars.
+  drawSlot(null);
+  $('now-slot').classList.add('is-waiting');
+  $('now-hint').hidden = true;
+  if (prev != null) renderRack({ fromSlot: prev });
+  $('call-text').classList.add('is-dim');
+  $('count').textContent = 'Here it comes…';
+
+  // Build the big ball's sprites while the balls mix, not as it pops out.
+  setTimeout(() => {
+    const sp = slotSprites();
+    sp.body(letterOf(n));
+    sp.label(n);
+    void sp.overlay;
+  }, 80);
 
   const stop = sound.whoosh(1.8);
   let from;
@@ -194,39 +278,23 @@ async function blow() {
     stop();
   }
   sound.pop();
-  if (from && !reduceMotion) await flyToSlot(n, from);
-  for (const t of tiles.values()) t.classList.remove('is-latest');
-  daubTile(n, true);
-  tiles.get(n).classList.add('is-latest');
+  renderLeft(machine.count);
+  if (from && !reduceMotion) {
+    const rect = $('now-slot').getBoundingClientRect();
+    await flyBall(
+      n,
+      from,
+      { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, r: rect.width / 2 },
+      { onBounce: (s) => sound.bounce(s), quality: machine.quality, sprites: slotSprites() },
+    );
+  }
+  drawSlot(n);
   busy = false;
-  renderNow({ fresh: true });
+  renderCall({ fresh: true });
+  markLatest(n);
+  daubTile(n, true);
+  navigator.vibrate?.(20);
   speak(n);
-}
-
-async function flyToSlot(n, from) {
-  const slot = $('now-slot');
-  const rect = slot.getBoundingClientRect();
-  const size = rect.width;
-  const fly = ballEl(n);
-  fly.classList.add('is-flying');
-  fly.style.setProperty('--size', `${size}px`);
-  document.body.append(fly);
-  const s0 = (from.r * 2) / size;
-  const x0 = from.x - size / 2;
-  const y0 = from.y - size / 2;
-  const x1 = rect.left;
-  const y1 = rect.top;
-  const midY = Math.min(y0, y1) - size * 0.3;
-  const anim = fly.animate(
-    [
-      { transform: `translate(${x0}px, ${y0}px) scale(${s0}) rotate(-120deg)` },
-      { transform: `translate(${x0 + (x1 - x0) * 0.4}px, ${midY}px) scale(${0.35 + s0}) rotate(-40deg)`, offset: 0.4 },
-      { transform: `translate(${x1}px, ${y1}px) scale(1) rotate(0deg)` },
-    ],
-    { duration: 820, easing: 'cubic-bezier(.35,.6,.25,1)' },
-  );
-  await anim.finished.catch(() => {});
-  fly.remove();
 }
 
 let voiceOn = store.get(VOICE_KEY, false);
@@ -481,16 +549,34 @@ addEventListener('storage', (e) => {
 
 // --- Boot ------------------------------------------------------------------------------
 
-machine = new BlowerMachine($('globe'), { onClack: (s) => sound.clack(s) });
+machine = new BlowerMachine($('globe'), {
+  onClack: (s) => sound.clack(s),
+  onPoke: () => sound.puff(),
+});
 machine.load(remaining());
-Promise.all([document.fonts.load('40px "Titan One"'), document.fonts.load('italic 800 40px Fraunces')]).then(() =>
-  machine.buildSprites(),
-);
 
 buildBoard();
 buildPatternSheet();
 initToggles();
 renderAll();
+
+// Balls print their numbers in Titan One: redraw them once it has loaded.
+Promise.all([document.fonts.load('40px "Titan One"'), document.fonts.load('40px Itim')]).then(() => {
+  clearSpriteCache();
+  machine.buildSprites();
+  drawSlot(busy ? null : slotN);
+  renderRack();
+});
+
+// Keep the resting ball and the rack sharp when the layout changes size.
+let lastSlot = 0;
+new ResizeObserver(() => {
+  const w = $('now-slot').clientWidth;
+  if (w === lastSlot) return;
+  lastSlot = w;
+  if (slotN != null) drawSlot(slotN);
+  if (!busy) renderRack();
+}).observe($('now-slot'));
 
 $('blow').addEventListener('click', blow);
 $('new-game').addEventListener('click', newGame);

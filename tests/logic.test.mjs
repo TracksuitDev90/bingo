@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { randomInt, shuffle, sample } from '../js/rng.js';
-import { dealCard, isValidCard, checkCard, columnOf, FREE, PATTERNS } from '../js/bingo.js';
+import { dealCard, isValidCard, checkCard, completedSets, columnOf, FREE, PATTERNS } from '../js/bingo.js';
 import { sealCard, openCard, extractToken, SealError } from '../js/codec.js';
 
 test('randomInt is uniform (chi-squared)', () => {
@@ -89,6 +89,26 @@ test('checkCard: valid line, bad daubs, sleepers', () => {
   r = checkCard(fresh, row2, 'line');
   assert.ok(!r.bingo);
   assert.equal(r.sleepers[0].label, 'Row 3');
+});
+
+test('completedSets finds lines the daubs make, counting the free spot', () => {
+  const marks = new Array(25).fill(0);
+  assert.deepEqual(completedSets(marks), []);
+  // Middle row: the free spot fills the gap.
+  [10, 11, 13, 14].forEach((i) => (marks[i] = 3));
+  assert.deepEqual(
+    completedSets(marks).map((s) => s.id),
+    ['line:Row 3'],
+  );
+  // Add the four corners: that pattern completes too, the X doesn't.
+  [0, 4, 20, 24].forEach((i) => (marks[i] = 1));
+  const ids = completedSets(marks).map((s) => s.id);
+  assert.ok(ids.includes('corners:Four corners'));
+  assert.ok(!ids.includes('x:The X'));
+  // Every square daubed: all twelve lines plus every other pattern.
+  const all = completedSets(new Array(25).fill(1));
+  assert.equal(all.filter((s) => s.id.startsWith('line:')).length, 12);
+  assert.ok(all.some((s) => s.id === 'blackout:Blackout'));
 });
 
 test('sealed links round-trip and reject tampering', async () => {

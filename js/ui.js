@@ -62,7 +62,7 @@ export function confirmSheet({ title, body, ok = 'OK', cancel = 'Cancel', danger
       <h2></h2><p></p>
       <div class="sheet__actions">
         <button class="btn btn--small" value="cancel"></button>
-        <button class="btn btn--small ${danger ? 'btn--red' : 'btn--teal'}" value="ok"></button>
+        <button class="btn btn--small ${danger ? 'btn--danger' : 'btn--ink'}" value="ok"></button>
       </div>
     </form>`;
   d.querySelector('h2').textContent = title;

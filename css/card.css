@@ -1,4 +1,6 @@
 .card-page {
+  /* Bottle width; the card is sized from what's left once they fit. */
+  --bottle: clamp(30px, min(9.5vw, 5.4vh), 46px);
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
@@ -12,7 +14,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: max(12px, env(safe-area-inset-top)) 16px 4px;
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 4px
+    max(16px, env(safe-area-inset-left));
 }
 .topbar__left {
   display: flex;
@@ -26,41 +29,19 @@
 }
 .hint {
   margin: 0;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 800;
-  font-size: 1.2rem;
-  color: rgba(255, 232, 200, 0.85);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  font-family: var(--hand);
+  font-size: 1.25rem;
+  color: rgba(247, 239, 221, 0.9);
+  text-align: center;
   transition: opacity 0.5s;
 }
 .hint.is-gone {
   opacity: 0;
 }
-.icon-btn {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.28);
-  color: var(--cream);
-}
-.icon-btn svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.icon-btn[aria-pressed='false'] .wave {
-  opacity: 0.15;
-}
-.icon-btn:focus-visible {
-  outline: 3px solid var(--gold);
+@media (max-width: 400px) {
+  .hint {
+    font-size: 1.05rem;
+  }
 }
 
 .desk {
@@ -74,9 +55,10 @@
 }
 
 .stage {
-  --w: min(calc(100vw - 28px), calc((100dvh - 300px) / 1.31), 540px);
+  --w: min(calc(100vw - 28px), calc((100vh - 214px - var(--bottle) * 2.75) / 1.31), 540px);
+  --w: min(calc(100vw - 28px), calc((100dvh - 214px - var(--bottle) * 2.75) / 1.31), 540px);
   width: var(--w);
-  rotate: -1.2deg;
+  transform: rotate(-1.2deg);
 }
 .stage .card {
   transform-origin: 50% 60%;
@@ -89,14 +71,12 @@
 }
 @keyframes deal {
   from {
-    translate: -18vw -85vh;
-    rotate: -28deg;
+    transform: translate(-18vw, -85vh) rotate(-28deg);
   }
 }
 @keyframes leave {
   to {
-    translate: 70vw 12vh;
-    rotate: 24deg;
+    transform: translate(70vw, 12vh) rotate(24deg);
   }
 }
 
@@ -114,19 +94,19 @@
 }
 .bottle {
   position: relative;
-  width: clamp(30px, min(9.5vw, 5.4dvh), 46px);
-  aspect-ratio: 60 / 160;
+  width: var(--bottle);
+  aspect-ratio: 64 / 176;
   padding: 0;
   border: 0;
   background: none;
-  transition: translate 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  touch-action: manipulation;
 }
 .bottle svg {
   display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.35));
 }
 /* Picking a bottle up pops its cap off to show the foam tip. */
 .bottle .cap {
@@ -139,11 +119,11 @@
 }
 @media (hover: hover) {
   .bottle:not([aria-checked='true']):hover {
-    translate: 0 -4px;
+    transform: translateY(-4px);
   }
 }
 .bottle[aria-checked='true'] {
-  translate: 0 -12px;
+  transform: translateY(-12px);
 }
 .bottle[aria-checked='true']::after {
   content: '';
@@ -152,7 +132,7 @@
   bottom: -10px;
   width: 7px;
   height: 7px;
-  translate: -50% 0;
+  transform: translateX(-50%);
   border-radius: 50%;
   background: var(--gold);
   box-shadow: 0 0 8px var(--gold);
@@ -167,8 +147,7 @@
   min-height: 1.4em;
   font-family: var(--hand);
   font-size: 1.2rem;
-  color: rgba(255, 240, 215, 0.9);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  color: rgba(247, 239, 221, 0.92);
 }
 
 .actions {
@@ -189,11 +168,59 @@
   font-size: 1.7rem;
   letter-spacing: 0.04em;
 }
+/* A line is complete on the card: the button dances for a few beats, then
+   keeps a steady glow (no endless animation draining the battery). */
+.btn--bingo.is-ready {
+  animation: bingo-ready 1.5s ease-in-out 4;
+  box-shadow:
+    0 4px 0 var(--edge),
+    0 0 0 4px rgba(240, 180, 41, 0.35),
+    0 8px 24px rgba(240, 180, 41, 0.45);
+}
+.btn--bingo.is-ready::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 3px solid var(--gold);
+  opacity: 0;
+  animation: bingo-ring 1.5s ease-out 4;
+  pointer-events: none;
+}
+@keyframes bingo-ready {
+  0%,
+  60%,
+  100% {
+    transform: none;
+  }
+  70% {
+    transform: rotate(-4deg) scale(1.08);
+  }
+  80% {
+    transform: rotate(4deg) scale(1.08);
+  }
+  90% {
+    transform: rotate(-2deg) scale(1.04);
+  }
+}
+@keyframes bingo-ring {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.12, 1.25);
+  }
+}
+.btn--bingo:active {
+  animation: none;
+}
 
 .share__note {
   margin: 12px 0 0 !important;
   font-size: 0.92rem;
-  color: #5a6482 !important;
+  color: #5b6b80 !important;
 }
 .share__note.is-warn {
   color: #a3401a !important;
@@ -209,16 +236,13 @@
 }
 .shared__title {
   margin: 0;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 800;
+  font-family: var(--display);
   font-size: 1.7rem;
   color: var(--cream);
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
 }
 .shared__meta {
   margin: 0 0 4px;
-  color: rgba(255, 240, 215, 0.85);
+  color: rgba(247, 239, 221, 0.85);
 }
 .is-shared .tray,
 .is-shared .actions,
@@ -233,6 +257,7 @@
     gap: clamp(28px, 5vw, 80px);
   }
   .stage {
+    --w: min(540px, calc((100vh - 160px) / 1.31));
     --w: min(540px, calc((100dvh - 160px) / 1.31));
   }
   .tray__bottles {
@@ -248,6 +273,43 @@
   }
 }
 
+/* Phones on their side: card on the left at full height, the rest beside it. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .card-page {
+    --bottle: clamp(26px, 8vh, 36px);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'top top' 'stage tray' 'stage actions';
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+  }
+  .topbar {
+    grid-area: top;
+    padding-top: max(6px, env(safe-area-inset-top));
+  }
+  .desk {
+    display: contents;
+  }
+  .stage {
+    --w: min(calc((100vh - 66px) / 1.31), 46vw);
+    --w: min(calc((100dvh - 66px) / 1.31), 46vw);
+    grid-area: stage;
+    align-self: center;
+    margin: 0 max(16px, env(safe-area-inset-left)) 8px;
+  }
+  .tray,
+  .shared {
+    grid-area: tray;
+    align-self: end;
+  }
+  .actions {
+    grid-area: actions;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+}
+
 @media (max-width: 420px) {
   .actions {
     gap: 8px;
@@ -260,4 +322,9 @@
     font-size: 1.45rem;
     padding: 0.3em 1em;
   }
+}
+
+/* Hold the card back until its face is painted, then deal it in. */
+.stage .card:not(.is-ready) {
+  opacity: 0;
 }
