@@ -90,12 +90,18 @@ test('Windows line endings give the same stamps', () => {
   }
 });
 
-test('a wrong stamp is caught and fixed', () => {
-  const dir = site({ 'index.html': '<script type="module" src="a.js?v=00000000"></script>', 'a.js': 'export {};\n' });
+test('a wrong or hand-written stamp is caught and fixed in one run', () => {
+  const dir = site({
+    'index.html': '<script type="module" src="a.js?v=00000000"></script>',
+    'a.js': "import { b } from './b.js?v=2';\nexport const a = b;\n",
+    'b.js': 'export const b = 2;\n',
+  });
   try {
     assert.equal(stamp(dir, '--check').status, 1);
     assert.equal(stamp(dir).status, 0);
     assert.doesNotMatch(read(dir, 'index.html'), /v=00000000/);
+    assert.match(read(dir, 'a.js'), /b\.js\?v=[0-9a-f]{8}'/);
+    assert.equal(stamp(dir, '--check').status, 0, 'one run is enough');
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

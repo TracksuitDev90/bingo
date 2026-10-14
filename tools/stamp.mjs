@@ -42,7 +42,7 @@ const PATTERNS = {
 };
 // Text files are hashed with Unix line endings, so a Windows checkout agrees.
 const TEXT = new Set(['.js', '.html', '.css', '.svg', '.json', '.txt']);
-const STAMP = /\?v=[0-9a-f]{8}/g;
+const STAMP = /\?v=[0-9a-f]+/g;
 
 /** The site files that get stamped: tracked or new files, not tests or tools. */
 function siteFiles() {
