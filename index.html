@@ -3,16 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Bingo Night</title>
+    <title>Fireside Bingo</title>
     <meta
       name="description"
-      content="Online bingo for friends. One person runs the ball blower, everyone else grabs a one-of-a-kind card."
+      content="Fireside Bingo: online bingo for friends. One person runs the ball blower, everyone else grabs a one-of-a-kind card."
     />
     <meta name="theme-color" content="#2a160a" />
-    <meta property="og:title" content="Bingo Night" />
+    <meta property="og:title" content="Fireside Bingo" />
     <meta property="og:description" content="Grab a card. Daub the numbers. Shout BINGO!" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/img/wood.jpg" as="image" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/cardview.css" />
@@ -20,10 +21,11 @@
   </head>
   <body class="table home">
     <header class="sign">
-      <h1 class="sign__word" aria-label="Bingo">
-        <span>b</span><span>i</span><span>n</span><span>g</span><span>o</span>
+      <h1 class="sign__title">
+        <span class="sign__fire">Fireside</span>
+        <span class="sign__word"><span>b</span><span>i</span><span>n</span><span>g</span><span>o</span></span>
       </h1>
-      <p class="sign__tag">night</p>
+      <i class="sign__stripes" aria-hidden="true"></i>
     </header>
 
     <main class="choices">
@@ -33,14 +35,14 @@
             <defs>
               <radialGradient id="glass" cx=".4" cy=".35" r=".7">
                 <stop offset="0" stop-color="#fff" stop-opacity=".22" />
-                <stop offset=".8" stop-color="#9cc3ff" stop-opacity=".08" />
-                <stop offset="1" stop-color="#061642" stop-opacity=".45" />
+                <stop offset=".8" stop-color="#ffcf94" stop-opacity=".08" />
+                <stop offset="1" stop-color="#2a1000" stop-opacity=".45" />
               </radialGradient>
               <linearGradient id="lacquer" x1="0" x2="1">
-                <stop offset="0" stop-color="#7d0a1f" />
-                <stop offset=".3" stop-color="#ef2a4b" />
-                <stop offset=".6" stop-color="#c8102e" />
-                <stop offset="1" stop-color="#5e0716" />
+                <stop offset="0" stop-color="#7a3510" />
+                <stop offset=".3" stop-color="#e7782e" />
+                <stop offset=".6" stop-color="#cf5f1c" />
+                <stop offset="1" stop-color="#5d270a" />
               </linearGradient>
               <linearGradient id="chrome" x1="0" x2="1">
                 <stop offset="0" stop-color="#5b6170" />
@@ -53,25 +55,37 @@
                 <stop offset=".3" stop-color="#fff" stop-opacity="0" />
               </radialGradient>
             </defs>
-            <rect x="92" y="0" width="16" height="30" fill="rgba(200,220,255,.18)" stroke="rgba(255,255,255,.45)" />
+            <rect x="92" y="0" width="16" height="30" fill="rgba(255,225,180,.16)" stroke="rgba(255,255,255,.45)" />
             <path d="M70 160h60l8 34H62z" fill="url(#lacquer)" />
-            <text x="100" y="186" text-anchor="middle" font-family="Titan One" font-size="15" fill="#f6ecd6">
-              bingo
+            <rect x="64" y="181" width="72" height="3" fill="#f0c25a" />
+            <rect x="63" y="185" width="74" height="3" fill="#f4e4c3" />
+            <rect x="62" y="189" width="76" height="3" fill="#a8391f" />
+            <text
+              x="100"
+              y="176"
+              text-anchor="middle"
+              font-family="Fraunces"
+              font-style="italic"
+              font-weight="800"
+              font-size="13"
+              fill="#f4e4c3"
+            >
+              Fireside
             </text>
             <circle cx="100" cy="98" r="70" fill="url(#glass)" />
             <g class="art-balls">
-              <circle cx="72" cy="140" r="11" fill="#1f5fd6" />
-              <circle cx="95" cy="146" r="11" fill="#ff9a1a" />
-              <circle cx="118" cy="142" r="11" fill="#12a150" />
-              <circle cx="138" cy="128" r="11" fill="#e5143a" />
-              <circle cx="60" cy="120" r="11" fill="#efe8d8" />
-              <circle cx="84" cy="124" r="11" fill="#e5143a" />
-              <circle cx="107" cy="124" r="11" fill="#1f5fd6" />
-              <circle cx="128" cy="108" r="11" fill="#efe8d8" />
-              <circle cx="96" cy="100" r="11" fill="#12a150" />
-              <circle cx="74" cy="100" r="11" fill="#ff9a1a" />
-              <circle cx="116" cy="84" r="11" fill="#e5143a" />
-              <circle cx="88" cy="70" r="11" fill="#1f5fd6" />
+              <circle cx="72" cy="140" r="11" fill="#2a7c7a" />
+              <circle cx="95" cy="146" r="11" fill="#e3a127" />
+              <circle cx="118" cy="142" r="11" fill="#7f8d2d" />
+              <circle cx="138" cy="128" r="11" fill="#c4462c" />
+              <circle cx="60" cy="120" r="11" fill="#eee0c0" />
+              <circle cx="84" cy="124" r="11" fill="#c4462c" />
+              <circle cx="107" cy="124" r="11" fill="#2a7c7a" />
+              <circle cx="128" cy="108" r="11" fill="#eee0c0" />
+              <circle cx="96" cy="100" r="11" fill="#7f8d2d" />
+              <circle cx="74" cy="100" r="11" fill="#e3a127" />
+              <circle cx="116" cy="84" r="11" fill="#c4462c" />
+              <circle cx="88" cy="70" r="11" fill="#2a7c7a" />
               <g fill="url(#shine)">
                 <circle cx="72" cy="140" r="11" />
                 <circle cx="95" cy="146" r="11" />

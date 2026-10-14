@@ -14,27 +14,47 @@
 .sign {
   position: relative;
   margin-top: clamp(0px, 2vh, 24px);
-  padding: clamp(10px, 2vw, 18px) clamp(18px, 4vw, 40px) clamp(14px, 2.4vw, 22px);
+  padding: clamp(8px, 1.6vw, 14px) clamp(16px, 3.4vw, 34px) clamp(14px, 2.4vw, 22px);
   border-radius: 10px;
-  background: var(--paper) url(../assets/img/paper.jpg) 0 0 / 300px;
-  background-blend-mode: multiply;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 40%, transparent 55%, rgba(130, 80, 20, 0.22) 100%),
+    url(../assets/img/paper.jpg) 0 0 / 300px,
+    var(--paper);
+  background-blend-mode: normal, multiply, normal;
   box-shadow:
     0 2px 2px rgba(0, 0, 0, 0.35),
     0 18px 30px rgba(0, 0, 0, 0.45);
   rotate: -2deg;
   text-align: center;
 }
+.sign__title {
+  margin: 0;
+  font-weight: 400;
+}
+.sign__fire {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-bottom: -0.14em;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 10vw, 5.8rem);
+  line-height: 1;
+  color: var(--rust);
+  text-shadow: 0.045em 0.045em 0 var(--mustard);
+  rotate: -3deg;
+}
 .sign__word {
   display: flex;
+  justify-content: center;
   gap: clamp(4px, 1vw, 12px);
-  margin: 0;
-  padding: 0.06em 0.3em 0.12em;
+  padding: 0.08em 0.3em 0.1em;
   border-radius: 12px;
   background: var(--ink);
   color: var(--paper);
   font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(4.2rem, 15vw, 9rem);
+  font-size: clamp(3.6rem, 13vw, 8rem);
   line-height: 1;
   filter: url(#f-paint);
 }
@@ -59,19 +79,18 @@
     translate: 0 -0.04em;
   }
 }
-.sign__tag {
+/* 70s stripes running out from under the sign. */
+.sign__stripes {
   position: absolute;
-  right: -0.4em;
-  bottom: -0.55em;
-  margin: 0;
-  padding: 0.05em 0.45em 0.12em;
-  border-radius: 8px;
-  background: var(--red);
-  color: #fff;
-  font-family: var(--display);
-  font-size: clamp(1.4rem, 4.4vw, 2.4rem);
-  rotate: 6deg;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  left: -9%;
+  right: -9%;
+  bottom: -26px;
+  height: 18px;
+  z-index: -1;
+  border-radius: 3px;
+  background: linear-gradient(var(--mustard) 0 6px, var(--orange) 6px 12px, var(--rust) 12px 18px);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.35);
+  rotate: 1.5deg;
 }
 
 /* The two choices ------------------------------------------------------------------ */
@@ -98,17 +117,18 @@
 .choice--blower {
   rotate: -2.5deg;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 35%, rgba(120, 170, 255, 0.35), transparent 70%),
+    radial-gradient(ellipse 70% 60% at 50% 35%, rgba(255, 160, 70, 0.3), transparent 70%),
+    repeating-conic-gradient(from 3deg at 50% 32%, rgba(255, 196, 110, 0.12) 0deg 7.5deg, transparent 7.5deg 15deg),
     url(../assets/img/paper.jpg) 0 0 / 300px,
-    var(--royal);
-  background-blend-mode: screen, multiply, normal;
+    #5a331b;
+  background-blend-mode: screen, normal, multiply, normal;
   color: var(--cream);
 }
 .choice--card {
   rotate: 2deg;
   background: var(--paper) url(../assets/img/paper.jpg) 0 0 / 300px;
   background-blend-mode: multiply;
-  color: var(--royal-deep);
+  color: var(--brown);
 }
 .choice:hover,
 .choice:focus-visible {
@@ -166,12 +186,17 @@
   padding: 16px 22px 22px;
 }
 .choice__title {
-  font-family: var(--display);
-  font-size: clamp(1.7rem, 3.6vw, 2.3rem);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(1.9rem, 3.8vw, 2.5rem);
   line-height: 1.05;
 }
+.choice--blower .choice__title {
+  color: var(--mustard);
+}
 .choice--card .choice__title {
-  color: var(--ink);
+  color: var(--rust);
 }
 .choice__blurb {
   font-size: 1rem;

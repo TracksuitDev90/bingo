@@ -7,8 +7,9 @@
 
 import { letterOf } from './bingo.js';
 
-export const BALL_COLORS = { B: '#1f5fd6', I: '#e5143a', N: '#efe8d8', G: '#12a150', O: '#ff9a1a' };
-const LABEL_INK = { B: '#163a8a', I: '#a50d2a', N: '#1d3e9e', G: '#0b6b35', O: '#b35a00' };
+// A 70s set: teal, tomato, cream, avocado and harvest gold.
+export const BALL_COLORS = { B: '#2a7c7a', I: '#c4462c', N: '#eee0c0', G: '#7f8d2d', O: '#e3a127' };
+export const LABEL_INK = { B: '#174948', I: '#7a2414', N: '#5b3a22', G: '#465017', O: '#7f4e05' };
 
 const TAU = Math.PI * 2;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -113,6 +114,14 @@ export class BlowerMachine {
       g.beginPath();
       g.arc(D / 2, D / 2, D / 2 - 1, 0, TAU);
       g.fill();
+      // Old, slightly worn plastic: fine speckle across the surface.
+      g.save();
+      g.clip();
+      for (let i = 0; i < D * D * 0.05; i++) {
+        g.fillStyle = Math.random() < 0.5 ? 'rgba(0,0,0,0.09)' : 'rgba(255,240,210,0.09)';
+        g.fillRect(Math.random() * D, Math.random() * D, 1, 1);
+      }
+      g.restore();
       this.body[L] = c;
     }
     // Number labels are drawn at twice the ball's resolution so they stay
@@ -125,12 +134,12 @@ export class BlowerMachine {
       c.width = c.height = LS;
       const g = c.getContext('2d');
       const L = letterOf(n);
-      g.fillStyle = '#fbf8f0';
+      g.fillStyle = '#f7ead0';
       g.beginPath();
       g.arc(LS / 2, LS / 2, LS / 2 - 2, 0, TAU);
       g.fill();
       g.lineWidth = LS * 0.05;
-      g.strokeStyle = L === 'N' ? '#1d3e9e' : 'rgba(0,0,0,.12)';
+      g.strokeStyle = L === 'N' ? '#5b3a22' : 'rgba(60,30,10,.15)';
       g.stroke();
       g.fillStyle = LABEL_INK[L];
       g.textAlign = 'center';
@@ -146,7 +155,7 @@ export class BlowerMachine {
       const grad = g.createRadialGradient(D * 0.42, D * 0.38, D * 0.1, D / 2, D / 2, D / 2);
       grad.addColorStop(0, 'rgba(0,0,0,0)');
       grad.addColorStop(0.62, 'rgba(0,0,0,0)');
-      grad.addColorStop(1, 'rgba(0,0,20,0.45)');
+      grad.addColorStop(1, 'rgba(25,10,0,0.45)');
       g.fillStyle = grad;
       g.beginPath();
       g.arc(D / 2, D / 2, D / 2 - 1, 0, TAU);
@@ -156,8 +165,8 @@ export class BlowerMachine {
     {
       const [c, g] = mk();
       const grad = g.createRadialGradient(D * 0.34, D * 0.28, 0, D * 0.34, D * 0.28, D * 0.32);
-      grad.addColorStop(0, 'rgba(255,255,255,0.95)');
-      grad.addColorStop(0.25, 'rgba(255,255,255,0.45)');
+      grad.addColorStop(0, 'rgba(255,250,235,0.85)');
+      grad.addColorStop(0.25, 'rgba(255,250,235,0.38)');
       grad.addColorStop(1, 'rgba(255,255,255,0)');
       g.fillStyle = grad;
       g.fillRect(0, 0, D, D);
@@ -407,14 +416,14 @@ export class BlowerMachine {
 
     // Neck tube (behind).
     const tw = r * 1.32;
-    ctx.fillStyle = 'rgba(190,215,255,0.10)';
+    ctx.fillStyle = 'rgba(255,225,180,0.09)';
     ctx.fillRect(cx - tw, 0, tw * 2, top + R * 0.05);
 
     // Globe interior.
     const inner = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.3, R * 0.1, cx, cy, R);
-    inner.addColorStop(0, 'rgba(255,255,255,0.10)');
-    inner.addColorStop(0.75, 'rgba(170,205,255,0.06)');
-    inner.addColorStop(1, 'rgba(5,15,50,0.38)');
+    inner.addColorStop(0, 'rgba(255,240,215,0.10)');
+    inner.addColorStop(0.75, 'rgba(255,200,140,0.05)');
+    inner.addColorStop(1, 'rgba(40,15,0,0.4)');
     ctx.fillStyle = inner;
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, TAU);
@@ -569,35 +578,50 @@ export class BlowerMachine {
     ctx.beginPath();
     ctx.ellipse(cx, y1, R * 1.1, R * 0.16, 0, 0, TAU);
     ctx.fill();
-    // Red lacquered pedestal.
+    // Burnt-orange enamel pedestal with a 70s stripe band.
     const w0 = R * 0.42;
     const w1 = R * 0.78;
+    const shape = new Path2D();
+    shape.moveTo(cx - w0, y0);
+    shape.lineTo(cx + w0, y0);
+    shape.quadraticCurveTo(cx + w0 * 1.05, y1 - R * 0.1, cx + w1, y1 - R * 0.04);
+    shape.lineTo(cx + w1, y1);
+    shape.lineTo(cx - w1, y1);
+    shape.lineTo(cx - w1, y1 - R * 0.04);
+    shape.quadraticCurveTo(cx - w0 * 1.05, y1 - R * 0.1, cx - w0, y0);
     const body = ctx.createLinearGradient(cx - w1, 0, cx + w1, 0);
-    body.addColorStop(0, '#7d0a1f');
-    body.addColorStop(0.3, '#ef2a4b');
-    body.addColorStop(0.55, '#c8102e');
-    body.addColorStop(1, '#5e0716');
+    body.addColorStop(0, '#7a3510');
+    body.addColorStop(0.3, '#e7782e');
+    body.addColorStop(0.55, '#cf5f1c');
+    body.addColorStop(1, '#5d270a');
     ctx.fillStyle = body;
-    ctx.beginPath();
-    ctx.moveTo(cx - w0, y0);
-    ctx.lineTo(cx + w0, y0);
-    ctx.quadraticCurveTo(cx + w0 * 1.05, y1 - R * 0.1, cx + w1, y1 - R * 0.04);
-    ctx.lineTo(cx + w1, y1);
-    ctx.lineTo(cx - w1, y1);
-    ctx.lineTo(cx - w1, y1 - R * 0.04);
-    ctx.quadraticCurveTo(cx - w0 * 1.05, y1 - R * 0.1, cx - w0, y0);
-    ctx.fill();
-    // Cream pin stripe and lettering.
-    ctx.strokeStyle = 'rgba(246,236,214,0.85)';
-    ctx.lineWidth = R * 0.018;
-    ctx.beginPath();
-    ctx.moveTo(cx - w1 * 0.97, y1 - R * 0.07);
-    ctx.lineTo(cx + w1 * 0.97, y1 - R * 0.07);
-    ctx.stroke();
-    ctx.fillStyle = '#f6ecd6';
+    ctx.fill(shape);
+    ctx.save();
+    ctx.clip(shape);
+    const band = y1 - R * 0.25;
+    const sw = R * 0.045;
+    [
+      ['#f0c25a', 0],
+      ['#f4e4c3', 1],
+      ['#a8391f', 2],
+    ].forEach(([c, k]) => {
+      ctx.fillStyle = c;
+      ctx.fillRect(cx - w1, band + k * sw, w1 * 2, sw * 0.82);
+    });
+    const shine = ctx.createLinearGradient(cx - w1, 0, cx + w1, 0);
+    shine.addColorStop(0, 'rgba(0,0,0,0.35)');
+    shine.addColorStop(0.3, 'rgba(255,255,255,0.12)');
+    shine.addColorStop(0.6, 'rgba(0,0,0,0)');
+    shine.addColorStop(1, 'rgba(0,0,0,0.4)');
+    ctx.fillStyle = shine;
+    ctx.fillRect(cx - w1, y0, w1 * 2, y1 - y0);
+    ctx.restore();
+    ctx.fillStyle = '#f4e4c3';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = `${R * 0.17}px "Titan One", sans-serif`;
-    ctx.fillText('bingo', cx, y0 + (y1 - y0) * 0.5);
+    const top = y0 + R * 0.1;
+    const room = band - top;
+    ctx.font = `italic 800 ${Math.min(R * 0.15, room * 0.85)}px Fraunces, Georgia, serif`;
+    ctx.fillText('Fireside', cx, top + room * 0.5);
   }
 }

@@ -9,6 +9,9 @@ titan-one.woff2
 fredoka.woff2
   Copyright 2016 The Fredoka Project Authors (https://github.com/hafontia/Fredoka-One)
 
+fraunces-italic.woff2 (Black italic, SOFT 100, WONK 1 instance)
+  Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces)
+
 itim.woff2
   Copyright (c) 2015, Cadson Demak (info@cadsondemak.com),
   Copyright (c) 2014, Pablo Impallari (www.impallari.com|impallari@gmail.com)
