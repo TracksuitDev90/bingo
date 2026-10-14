@@ -1,0 +1,134 @@
+/* Pokémon player screen skin, on top of css/card.css. */
+
+.poke .hint {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgba(251, 251, 247, 0.9);
+}
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The card's route, as a little signpost. */
+.route-chip {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  min-width: 52px;
+  min-height: 44px;
+  padding: 5px 9px;
+  border: 3px solid #4b3524;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #fffef6, #efe9d6);
+  color: var(--pk-text);
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    0 3px 0 #2b1d12;
+  touch-action: manipulation;
+}
+.route-chip small {
+  font-family: var(--pixel);
+  font-size: 0.42rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.route-chip b {
+  font-family: var(--pixel);
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.poke .tray__name {
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.poke .bottle[aria-checked='true']::after {
+  background: var(--pk-yellow);
+  box-shadow: 0 0 10px var(--pk-yellow);
+}
+
+/* BINGO! in the logo lettering, crackling once a line is done. */
+.poke .btn--bingo {
+  font-family: var(--display);
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  color: var(--pk-blue);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+.poke .btn--bingo.is-ready {
+  box-shadow:
+    0 4px 0 var(--pk-black),
+    0 0 0 4px rgba(255, 203, 5, 0.4),
+    0 0 26px rgba(255, 220, 60, 0.75);
+}
+.poke .btn--bingo.is-ready::after {
+  border-color: var(--pk-yellow);
+}
+.poke .btn--bingo.is-ready::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  right: -12px;
+  width: 26px;
+  height: 34px;
+  background: var(--pk-yellow);
+  clip-path: polygon(62% 0, 12% 56%, 44% 56%, 30% 100%, 90% 38%, 56% 38%, 78% 0);
+  filter: drop-shadow(0 0 4px #fff59a);
+  animation: zap 1.5s steps(2) 4;
+  pointer-events: none;
+}
+@keyframes zap {
+  50% {
+    opacity: 0.2;
+    transform: rotate(-10deg) scale(0.9);
+  }
+}
+
+.poke .shared__title {
+  font-family: var(--display);
+  font-size: 2rem;
+}
+.poke .shared__meta {
+  font-family: var(--ui);
+  font-weight: 600;
+}
+.poke .share__note {
+  color: #59617a !important;
+}
+
+@media (max-width: 760px) {
+  .poke .hint {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 400px) {
+  .poke .hint {
+    font-size: 0.82rem;
+  }
+  .topbar__right {
+    gap: 6px;
+  }
+}
+@media (max-width: 420px) {
+  .poke .btn--bingo {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 360px) {
+  .poke .actions {
+    gap: 6px;
+  }
+  .poke .actions .btn--small {
+    padding: 0.4em 0.65em;
+    font-size: 0.8rem;
+  }
+  .poke .btn--bingo {
+    padding: 0.3em 0.8em;
+    font-size: 1.35rem;
+  }
+}

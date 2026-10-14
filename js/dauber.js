@@ -377,13 +377,25 @@ export function markJitter(seed) {
 }
 
 let uid = 0;
+// The bottle's printed label. A themed edition can pass its own.
+const CLASSIC_LABEL = {
+  paper: '#f2e6cb',
+  ink: '#2f80c0',
+  title: 'bingo',
+  titleFont: 'Titan One, sans-serif',
+  subtitle: 'dauber ink',
+  subtitleFont: 'Itim, sans-serif',
+  nameFont: 'Titan One, sans-serif',
+};
+
 /**
  * A bingo dauber bottle as an SVG string: translucent plastic showing the
  * ink inside, a paper label printed like the cards, a ridged cap that lifts
  * off when the bottle is picked up, a foam tip, ink dribbles and scuffs.
  * No filters or images, so the cap animation stays cheap to repaint.
  */
-export function dauberSVG({ id: n, name, color }) {
+export function dauberSVG({ id: n, name, color }, label = CLASSIC_LABEL) {
+  const L = { ...CLASSIC_LABEL, ...label };
   const id = `db${++uid}`;
   const rnd = seeded(n * 7919);
   const c = rgb(color);
@@ -439,13 +451,13 @@ export function dauberSVG({ id: n, name, color }) {
   <path d="M5 ${level}H59V157A11 11 0 0 1 48 168H16A11 11 0 0 1 5 157Z" fill="url(#${id}b)" opacity=".92"/>
   <path d="M6 ${level}q26 3 52 0" fill="none" stroke="${lite}" stroke-width="1.2" opacity=".8"/>
   <g>
-    <rect x="5" y="94" width="54" height="56" fill="#f2e6cb"/>
-    <rect x="9" y="98" width="46" height="15" rx="2.4" fill="#2f80c0"/>
-    <text x="32" y="109.6" text-anchor="middle" font-family="Titan One, sans-serif" font-size="11" letter-spacing=".6" fill="#f2e6cb">bingo</text>
-    <rect x="9" y="115" width="46" height="1.4" rx=".7" fill="#2f80c0"/>
-    <text x="32" y="126" text-anchor="middle" font-family="Itim, sans-serif" font-size="7" letter-spacing=".8" fill="#2f80c0">dauber ink</text>
+    <rect x="5" y="94" width="54" height="56" fill="${L.paper}"/>
+    <rect x="9" y="98" width="46" height="15" rx="2.4" fill="${L.ink}"/>
+    <text x="32" y="109.6" text-anchor="middle" font-family="${L.titleFont}" font-size="11" letter-spacing=".6" fill="${L.paper}">${L.title}</text>
+    <rect x="9" y="115" width="46" height="1.4" rx=".7" fill="${L.ink}"/>
+    <text x="32" y="126" text-anchor="middle" font-family="${L.subtitleFont}" font-size="7" letter-spacing=".8" fill="${L.ink}">${L.subtitle}</text>
     <rect x="9" y="132" width="46" height="11" rx="5.5" fill="${color}"/>
-    <text x="32" y="140.4" text-anchor="middle" font-family="Titan One, sans-serif" font-size="${name.length > 6 ? 5.6 : 7.2}" fill="#fff8e6">${name}</text>
+    <text x="32" y="140.4" text-anchor="middle" font-family="${L.nameFont}" font-size="${name.length > 6 ? 5.6 : 7.2}" fill="#fff8e6">${name}</text>
     <rect x="5" y="94" width="54" height="56" fill="url(#${id}w)"/>
     <path d="M5 94h54M5 150h54" stroke="rgba(20,40,60,.25)" stroke-width=".6"/>
     ${smudge}

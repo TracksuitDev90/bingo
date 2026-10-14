@@ -1,0 +1,276 @@
+/* Pokémon blower skin, on top of css/blower.css. */
+
+.poke .b-machine {
+  background: radial-gradient(closest-side at 50% 52%, rgba(255, 220, 60, 0.18), transparent);
+}
+.poke .b-left {
+  font-family: var(--ui);
+  font-weight: 600;
+  color: rgba(251, 251, 247, 0.75);
+}
+
+/* A route signpost, top right of the globe. */
+.route-sign {
+  position: absolute;
+  top: 2%;
+  right: 0;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-width: 64px;
+  padding: 6px 10px 7px;
+  border: 3px solid #4b3524;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #fffef6, #efe9d6);
+  color: var(--pk-text);
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    0 4px 0 #2b1d12,
+    0 8px 14px rgba(3, 8, 30, 0.35);
+  touch-action: manipulation;
+  z-index: 2;
+}
+/* Its post. */
+.route-sign::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 8px;
+  height: 14px;
+  margin-left: -4px;
+  background: linear-gradient(90deg, #6e4d33, #4b3524);
+  z-index: -1;
+}
+.route-sign small {
+  font-family: var(--pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.route-sign b {
+  font-family: var(--pixel);
+  font-weight: 400;
+  font-size: clamp(0.95rem, 2.4vh, 1.6rem);
+  line-height: 1;
+}
+@media (hover: hover) {
+  .route-sign:hover {
+    transform: translateY(-2px);
+  }
+}
+.route-sign:focus-visible {
+  outline: 3px solid var(--pk-yellow);
+  outline-offset: 3px;
+}
+
+/* Header chips. */
+.poke .b-pattern {
+  border: 2px solid var(--pk-black);
+  background: var(--pk-white);
+  color: var(--pk-text);
+  box-shadow: 0 3px 0 var(--pk-black);
+}
+.poke .b-pattern__text small {
+  font-family: var(--pixel);
+  font-size: 0.45rem;
+  letter-spacing: 0.06em;
+  color: #59617a;
+}
+.poke .b-pattern__text b {
+  margin-top: 3px;
+  color: var(--pk-blue);
+}
+.poke .mini {
+  background: var(--pk-blue);
+  box-shadow: inset 0 0 0 1.5px var(--pk-black);
+}
+
+/* The call: a Pokémon name, outlined like the logo, with its ball and number. */
+.poke .b-now__slot.is-empty::before {
+  border-color: rgba(255, 203, 5, 0.45);
+}
+.poke .b-now__hint {
+  font-family: var(--ui);
+  font-weight: 600;
+  color: rgba(251, 251, 247, 0.8);
+}
+.b-dex {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 0.45em;
+  font-family: var(--pixel);
+  font-size: clamp(0.62rem, 1.6vh, 1.05rem);
+  color: rgba(251, 251, 247, 0.85);
+  transition: opacity 0.3s;
+}
+.b-dex:empty {
+  display: none;
+}
+.b-dex.is-dim {
+  opacity: 0.35;
+}
+/* A little CSS Poké Ball in the column's colour. */
+.b-dex__ball,
+.b-row__letter {
+  --c: var(--pk-red);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border: 2px solid var(--pk-black);
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--c) 0 44%, var(--pk-black) 44% 56%, #f4f5f8 56%);
+  color: var(--pk-black);
+  font-family: var(--display);
+  line-height: 1;
+}
+.b-dex__ball {
+  width: 1.9em;
+  height: 1.9em;
+}
+.b-dex__ball::before,
+.b-row__letter i {
+  content: '';
+  position: absolute;
+  inset: 30%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--pk-black);
+  border-radius: 50%;
+  background: #fff;
+  font-style: normal;
+}
+.poke .b-call {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 8.5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  padding: 0 0.08em 0.14em;
+}
+.poke .b-count {
+  font-family: var(--ui);
+  font-weight: 600;
+  color: rgba(251, 251, 247, 0.75);
+}
+.poke .rball {
+  box-shadow: 0 2px 5px rgba(3, 8, 30, 0.45);
+}
+
+/* The board: a Pokédex screen in a red frame. ---------------------------------------- */
+.poke .b-board {
+  background: linear-gradient(180deg, #f7f8fc, #e9ecf5);
+  border: 3px solid var(--pk-black);
+  box-shadow:
+    0 0 0 4px var(--pk-red),
+    0 0 0 6px var(--pk-black),
+    0 14px 30px rgba(3, 8, 30, 0.45);
+  margin: 6px;
+}
+.poke .b-row__letter {
+  width: var(--tile-h);
+  height: var(--tile-h);
+  box-shadow: none;
+  border-width: 1.5px;
+  /* The letter only goes on the button when there's room to read it. */
+  font-size: 0;
+}
+.b-row__letter i {
+  border-width: 1.5px;
+}
+.poke .tile {
+  border: 1.5px solid rgba(37, 86, 168, 0.22);
+  background: rgba(255, 255, 255, 0.7);
+  overflow: visible;
+}
+.poke .tile canvas {
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+.poke .tile.is-called {
+  border-color: rgba(37, 86, 168, 0.5);
+  background: #fff;
+}
+.poke .tile.is-latest::after {
+  border-color: var(--pk-red);
+}
+
+/* The latest Pokémon to be called pops out of its silhouette. */
+.poke .tile.is-latest canvas {
+  animation: reveal 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.5) both;
+}
+@keyframes reveal {
+  from {
+    transform: scale(0.4);
+    filter: brightness(3) saturate(0);
+  }
+  60% {
+    filter: brightness(1.6);
+  }
+}
+
+/* Pattern picker and card check in the dialog style. */
+.poke .pattern-opt {
+  border: 2px solid rgba(34, 35, 41, 0.25);
+  background: #fff;
+  color: var(--pk-text);
+}
+.poke .pattern-opt[aria-checked='true'] {
+  border-color: var(--pk-black);
+  box-shadow: 0 0 0 3px var(--pk-yellow);
+}
+.poke .pattern-opt b {
+  color: var(--pk-blue);
+}
+.poke .stamp {
+  font-family: var(--display);
+}
+.poke .stamp--yes {
+  color: #1f8a3a;
+}
+.poke .stamp--no {
+  color: var(--pk-red);
+}
+.poke .check-log summary {
+  color: var(--pk-blue);
+}
+.poke .check-error {
+  background: rgba(227, 53, 43, 0.12);
+  color: var(--pk-red-deep) !important;
+}
+
+@media (min-width: 600px) {
+  .poke .b-call {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+  }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .poke .b-call {
+    font-size: clamp(1.4rem, 8vh, 2.4rem);
+  }
+  .route-sign {
+    min-width: 52px;
+    padding: 4px 7px 5px;
+  }
+}
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) and (min-height: 521px) {
+  .poke .b-call {
+    font-size: clamp(2.4rem, 8vh, 6rem);
+  }
+  .route-sign small {
+    font-size: 0.65rem;
+  }
+  .route-sign {
+    min-width: 92px;
+    padding: 8px 14px 10px;
+    gap: 6px;
+  }
+  .poke .b-row__letter {
+    font-size: calc(var(--tile-h) * 0.4);
+  }
+  .b-row__letter i {
+    inset: 20%;
+  }
+}

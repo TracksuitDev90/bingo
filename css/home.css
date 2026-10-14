@@ -180,6 +180,49 @@
   color: var(--cream);
 }
 
+/* The Pokémon edition, in Pikachu yellow. ------------------------------------------ */
+@font-face {
+  font-family: 'Luckiest Guy';
+  src: url(../assets/fonts/luckiest-guy.woff2) format('woff2');
+  font-display: swap;
+}
+.action--poke {
+  position: relative;
+  overflow: hidden;
+  border-color: #222329;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cpath d='M30 6 16 32h10l-5 22 20-28H30l7-20z' fill='%23fff' fill-opacity='.22'/%3E%3C/svg%3E")
+      right -10px top -6px / 90px no-repeat,
+    linear-gradient(160deg, #ffe766, #ffcb05 55%, #f5b800);
+  color: #2b2a1f;
+}
+.action--poke .action__art img {
+  display: block;
+  width: 100%;
+  filter: drop-shadow(0 2px 3px rgba(60, 40, 0, 0.35));
+}
+.action__kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c4291f;
+}
+.action--poke .action__title {
+  font-family: 'Luckiest Guy', var(--display);
+  letter-spacing: 0.03em;
+  color: #2556a8;
+}
+.action--poke .action__cta {
+  background: #2556a8;
+  color: #fff;
+}
+@media (hover: hover) {
+  .action--poke:hover .action__cta {
+    background: #1d4590;
+  }
+}
+
 /* How it works --------------------------------------------------------------------- */
 .how {
   padding-top: 16px;
@@ -236,6 +279,9 @@
   .actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
+  }
+  .action--poke {
+    grid-column: 1 / -1;
   }
   .action {
     grid-template-columns: 76px minmax(0, 1fr);

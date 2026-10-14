@@ -1,0 +1,307 @@
+/* Pokémon edition skin, shared by its three pages. Loaded after the classic
+   stylesheets, so the layouts (and all their phone and desktop tuning) are
+   the classic ones; this only changes the look: Pikachu yellow, Poké Ball
+   red, logo blue, an electric night sky with lightning in it, chunky
+   cartoon lettering and Game Boy-style dialog boxes. */
+
+@font-face {
+  font-family: 'Luckiest Guy';
+  src: url(../../assets/fonts/luckiest-guy.woff2) format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pixelify Sans';
+  src: url(../../assets/fonts/pixelify-sans.woff2) format('woff2');
+  font-weight: 500 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url(../../assets/fonts/press-start-2p.woff2) format('woff2');
+  font-display: swap;
+}
+
+.poke {
+  --pk-yellow: #ffcb05;
+  --pk-yellow-lite: #ffe766;
+  --pk-yellow-deep: #c28f00;
+  --pk-blue: #2556a8;
+  --pk-blue-lite: #3d7fd8;
+  --pk-blue-deep: #13306e;
+  --pk-night: #142a6b;
+  --pk-red: #e3352b;
+  --pk-red-deep: #9a1a14;
+  --pk-black: #222329;
+  --pk-white: #fbfbf7;
+  --pk-text: #1d2230;
+
+  /* The classic tokens, re-pointed so shared rules pick up the theme. */
+  --ink: var(--pk-blue);
+  --ink-deep: var(--pk-blue-deep);
+  --ink-dark: var(--pk-text);
+  --paper: var(--pk-white);
+  --cream: var(--pk-white);
+  --table: #18347f;
+  --table-deep: #0c1a45;
+  --tomato: var(--pk-red);
+  --gold: var(--pk-yellow);
+  --gold-deep: var(--pk-yellow-deep);
+  --display: 'Luckiest Guy', 'Titan One', system-ui, sans-serif;
+  --ui: 'Pixelify Sans', 'Fredoka', system-ui, sans-serif;
+  --hand: 'Pixelify Sans', 'Fredoka', system-ui, sans-serif;
+  --pixel: 'Press Start 2P', ui-monospace, monospace;
+  background-color: var(--table);
+}
+
+/* Night sky with faint lightning bolts in it, and a glow of electricity. */
+.poke.table,
+.poke-sky {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 26%, rgba(255, 214, 40, 0.17), transparent 70%),
+    radial-gradient(ellipse 130% 100% at 50% 40%, transparent 50%, rgba(3, 8, 30, 0.55) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='%23ffcb05' fill-opacity='.075'%3E%3Cpath d='M38 8 20 40h12l-6 26 24-34H38l8-24z'/%3E%3Cpath d='M96 60 80 88h10l-5 22 21-30H94l7-20z'/%3E%3C/g%3E%3C/svg%3E")
+      0 0 / 150px,
+    linear-gradient(180deg, #1f3e93, var(--pk-night) 70%);
+  background-blend-mode: normal;
+}
+
+/* Lettering with a fat blue outline, like the logo. Text shadows rather
+   than text-stroke so it looks the same in every browser. */
+.poke-outline {
+  color: var(--pk-yellow);
+  text-shadow:
+    0.06em 0 0 var(--pk-blue),
+    -0.06em 0 0 var(--pk-blue),
+    0 0.06em 0 var(--pk-blue),
+    0 -0.06em 0 var(--pk-blue),
+    0.045em 0.045em 0 var(--pk-blue),
+    -0.045em 0.045em 0 var(--pk-blue),
+    0.045em -0.045em 0 var(--pk-blue),
+    -0.045em -0.045em 0 var(--pk-blue),
+    0 0.12em 0 var(--pk-blue-deep),
+    0.05em 0.12em 0 var(--pk-blue-deep),
+    -0.05em 0.12em 0 var(--pk-blue-deep);
+}
+
+/* Buttons ------------------------------------------------------------------- */
+.poke .btn {
+  --bg: var(--pk-white);
+  --fg: var(--pk-text);
+  --edge: #8d93a6;
+  border: 2px solid var(--pk-black);
+  font-family: var(--ui);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 4px 0 var(--pk-black),
+    0 8px 16px rgba(3, 8, 30, 0.35);
+}
+.poke .btn:active {
+  box-shadow:
+    0 1px 0 var(--pk-black),
+    0 3px 8px rgba(3, 8, 30, 0.35);
+}
+.poke .btn--gold {
+  --bg: var(--pk-yellow);
+  --fg: var(--pk-text);
+  background: linear-gradient(180deg, var(--pk-yellow-lite), var(--pk-yellow) 55%, #f5b800);
+}
+.poke .btn--ink {
+  --bg: var(--pk-blue);
+  --fg: #fff;
+}
+.poke .btn--danger {
+  --bg: var(--pk-red);
+  --fg: #fff;
+}
+.poke .btn--ghost {
+  --bg: rgba(255, 255, 255, 0.12);
+  --fg: var(--pk-white);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 4px 0 rgba(3, 8, 30, 0.6),
+    0 8px 16px rgba(3, 8, 30, 0.3);
+}
+.poke .btn kbd {
+  font-family: var(--ui);
+}
+
+/* Back-home tag: a Poké Ball-red pill. */
+.poke .tag {
+  background: var(--pk-red);
+  color: #fff;
+  border: 2px solid var(--pk-black);
+  border-radius: 999px;
+  font-family: var(--ui);
+  box-shadow: 0 3px 0 var(--pk-black);
+  transform: none;
+}
+@media (hover: hover) {
+  .poke .tag:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Wordmark */
+.poke .brand {
+  gap: 0.15em;
+  font-family: var(--display);
+  line-height: 1;
+}
+.brand__poke,
+.poke .brand__bingo {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 3vh, 1.9rem);
+  letter-spacing: 0.02em;
+}
+.brand__poke {
+  color: var(--pk-yellow);
+}
+.poke .brand__bingo {
+  color: var(--pk-white);
+}
+.poke .brand > span {
+  text-shadow:
+    0.06em 0.06em 0 var(--pk-blue-deep),
+    -0.04em -0.04em 0 var(--pk-blue-deep),
+    0.06em -0.04em 0 var(--pk-blue-deep),
+    -0.04em 0.06em 0 var(--pk-blue-deep);
+}
+
+.poke .icon-btn {
+  background: rgba(3, 8, 30, 0.35);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+/* Game Boy-style dialog boxes -------------------------------------------------- */
+.poke dialog.sheet {
+  font-family: var(--sans);
+  font-weight: 400;
+  border: 4px solid var(--pk-black);
+  border-radius: 12px;
+  background: var(--pk-white);
+  color: var(--pk-text);
+  box-shadow:
+    inset 0 0 0 3px #fff,
+    inset 0 0 0 6px #6f86c4,
+    0 30px 80px rgba(3, 8, 30, 0.6);
+}
+.poke dialog.sheet::backdrop {
+  background: rgba(5, 12, 40, 0.7);
+}
+.poke .sheet__body {
+  padding: 28px 26px 24px;
+}
+.poke .sheet h2 {
+  color: var(--pk-blue);
+  letter-spacing: 0.02em;
+}
+.poke .sheet p {
+  color: #3b4256;
+}
+.poke .sheet__close {
+  top: 12px;
+  right: 12px;
+  color: var(--pk-text);
+}
+.poke .field input {
+  border: 2px solid var(--pk-black);
+  background: #fff;
+}
+.poke .field input:focus {
+  border-color: var(--pk-blue);
+  box-shadow: 0 0 0 4px rgba(255, 203, 5, 0.45);
+}
+
+/* Route number picker. */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 6px 0 10px;
+}
+.stepper__btn {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--pk-black);
+  border-radius: 50%;
+  background: var(--pk-yellow);
+  color: var(--pk-text);
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 1.7rem;
+  line-height: 1;
+  box-shadow: 0 3px 0 var(--pk-black);
+  touch-action: manipulation;
+}
+.stepper__btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--pk-black);
+}
+.stepper__num {
+  width: 4.2em;
+  height: 64px;
+  border: 3px solid var(--pk-black);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--pk-text);
+  font-family: var(--pixel);
+  font-size: 1.6rem;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.stepper__num::-webkit-inner-spin-button,
+.stepper__num::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.stepper__num:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 203, 5, 0.6);
+}
+.route-note {
+  min-height: 1.45em;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Toast: a little dialog box. */
+.poke .toast {
+  border: 3px solid var(--pk-black);
+  border-radius: 10px;
+  background: var(--pk-white);
+  color: var(--pk-text);
+  font-family: var(--ui);
+  font-weight: 600;
+  box-shadow:
+    inset 0 0 0 2px #fff,
+    inset 0 0 0 4px #6f86c4,
+    0 10px 30px rgba(3, 8, 30, 0.45);
+}
+
+/* The trading-card card: rounder corners to match its yellow border. */
+.poke .card {
+  border-radius: 4.2% / 3.2%;
+  background: #f8cd1e;
+  box-shadow:
+    0 1px 1px rgba(3, 8, 30, 0.35),
+    0 10px 22px rgba(3, 8, 30, 0.45);
+}
+.poke .card.is-ready {
+  background: none;
+}
+@media (hover: hover) {
+  .poke .card__hit:hover {
+    background: radial-gradient(circle, rgba(255, 203, 5, 0.28) 0 42%, transparent 44%);
+  }
+}
+
+/* Focus rings in Pikachu yellow everywhere. */
+.poke :focus-visible {
+  outline-color: var(--pk-yellow);
+}

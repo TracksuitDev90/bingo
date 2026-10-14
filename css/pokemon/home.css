@@ -1,0 +1,160 @@
+/* Pokémon landing page skin, on top of css/home.css. */
+
+.poke.home {
+  color: var(--pk-white);
+}
+.poke-back {
+  align-self: flex-start;
+  padding: 6px 2px;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: rgba(251, 251, 247, 0.78);
+  text-decoration: none;
+}
+.poke-back:hover {
+  color: var(--pk-white);
+  text-decoration: underline;
+}
+
+/* Wordmark, with Pikachu perched on the end. */
+.poke .masthead {
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.poke-logo {
+  position: relative;
+  width: min(86%, 520px);
+  margin: 0;
+}
+.poke-logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 6px 14px rgba(3, 8, 30, 0.45));
+}
+.poke-logo__pika {
+  position: absolute;
+  right: -9%;
+  top: -48%;
+  width: 18%;
+  aspect-ratio: 1;
+  transform: rotate(8deg);
+  filter: drop-shadow(0 3px 2px rgba(3, 8, 30, 0.5));
+}
+.poke-edition {
+  margin: 0;
+  padding: 7px 12px 6px;
+  border: 2px solid var(--pk-black);
+  border-radius: 999px;
+  background: var(--pk-red);
+  color: #fff;
+  font-family: var(--pixel);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 var(--pk-black);
+}
+
+/* The two actions as chunky panels. */
+.poke .action {
+  border: 3px solid var(--pk-black);
+  box-shadow: 0 5px 0 var(--pk-black);
+}
+.poke .action--primary {
+  background: var(--pk-white);
+  color: #3b4256;
+}
+.poke .action--primary .action__title {
+  color: var(--pk-blue);
+}
+.poke .action--secondary {
+  border-color: var(--pk-black);
+  background: linear-gradient(180deg, #2e56b5, #1f3e93);
+  color: rgba(251, 251, 247, 0.88);
+}
+.poke .action__title {
+  font-family: var(--display);
+  letter-spacing: 0.02em;
+}
+.poke .action__desc {
+  font-family: var(--sans);
+}
+.poke .action__cta {
+  border: 2px solid var(--pk-black);
+  font-family: var(--ui);
+  font-weight: 700;
+  box-shadow: 0 3px 0 var(--pk-black);
+}
+.poke .action--primary .action__cta {
+  background: linear-gradient(180deg, var(--pk-yellow-lite), var(--pk-yellow) 60%);
+  color: var(--pk-text);
+}
+.poke .action--secondary .action__cta {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 3px 0 var(--pk-black);
+  color: var(--pk-white);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+@media (hover: hover) {
+  .poke .action--primary:hover .action__cta {
+    background: var(--pk-yellow-lite);
+  }
+}
+.poke .action:focus-visible {
+  outline-color: var(--pk-yellow);
+}
+.poke .action__art .card,
+.tcg {
+  border-radius: 4.2% / 3.2%;
+  box-shadow: 0 2px 5px rgba(3, 8, 30, 0.4);
+}
+.tcg {
+  display: block;
+  aspect-ratio: 100 / 131;
+}
+.tcg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* How it works, with Poké Ball numbers. */
+.poke .how {
+  border-top-color: rgba(251, 251, 247, 0.18);
+}
+.poke .how__title {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+}
+.poke .how__steps li {
+  align-items: center;
+  font-family: var(--sans);
+  color: rgba(251, 251, 247, 0.9);
+}
+.poke .how__steps li::before {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--pk-black);
+  background: linear-gradient(180deg, var(--pk-red) 0 44%, var(--pk-black) 44% 56%, #fff 56%);
+  color: transparent;
+  font-size: 0;
+}
+.how__note {
+  margin: 16px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: rgba(251, 251, 247, 0.72);
+  text-wrap: pretty;
+}
+.poke-legal {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: rgba(251, 251, 247, 0.5);
+  text-align: center;
+  text-wrap: pretty;
+}

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Poké Bingo</title>
+    <meta
+      name="description"
+      content="Poké Bingo: bingo with Pokémon. Get a card full of Gen 1 and Gen 2 Pokémon, or host a game and blow the Poké Balls on a shared screen."
+    />
+    <meta name="theme-color" content="#18347f" />
+    <meta property="og:title" content="Poké Bingo" />
+    <meta property="og:description" content="Grab a card. Daub the Pokémon. Call bingo!" />
+    <link rel="icon" href="../assets/img/pokeball.svg" type="image/svg+xml" />
+    <link rel="preload" href="../assets/pokemon/sprites.webp" as="image" />
+    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/press-start-2p.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/cardview.css" />
+    <link rel="stylesheet" href="../css/home.css" />
+    <link rel="stylesheet" href="../css/pokemon/theme.css" />
+    <link rel="stylesheet" href="../css/pokemon/home.css" />
+  </head>
+  <body class="home poke poke-sky">
+    <div class="home__inner">
+      <a class="poke-back" href="../">← Classic Fireside Bingo</a>
+
+      <header class="masthead">
+        <h1 class="poke-logo">
+          <svg viewBox="0 0 880 200" role="img" aria-label="Poké Bingo">
+            <g
+              font-family="'Luckiest Guy', 'Titan One', sans-serif"
+              font-size="138"
+              text-anchor="middle"
+              stroke-linejoin="round"
+              paint-order="stroke"
+            >
+              <text x="440" y="158" fill="#13306e" stroke="#13306e" stroke-width="30">Poké Bingo</text>
+              <text x="440" y="146" fill="#ffcb05" stroke="#2556a8" stroke-width="24">Poké Bingo</text>
+            </g>
+          </svg>
+          <canvas class="poke-logo__pika" id="pika" aria-hidden="true"></canvas>
+        </h1>
+        <p class="poke-edition">Pokémon edition</p>
+      </header>
+
+      <main class="home__main">
+        <nav class="actions" aria-label="Start playing">
+          <a class="action action--primary" href="card.html">
+            <span class="action__art" aria-hidden="true"><span class="mini-card" id="mini-card"></span></span>
+            <span class="action__body">
+              <span class="action__title">Get a card</span>
+              <span class="action__desc">Your own card of Pokémon, on the caller's route.</span>
+              <span class="action__cta">I choose you! <span aria-hidden="true">→</span></span>
+            </span>
+          </a>
+
+          <a class="action action--secondary" href="blower.html">
+            <span class="action__art" aria-hidden="true">
+              <!-- The Poké Ball blower, on a little trading card. -->
+              <span class="tcg">
+                <svg viewBox="0 0 100 131">
+                  <rect x="1" y="1" width="98" height="129" rx="6" fill="#f8cd1e" stroke="#9a6d00" stroke-width="1" />
+                  <rect x="5" y="5" width="90" height="121" rx="3.5" fill="#1f3e93" />
+                  <path d="M32 44l-8 15h6l-3 12 12-16h-6l4-11z" fill="#ffcb05" opacity=".35" />
+                  <path d="M76 36l-7 13h5l-3 10 10-14h-5l3-9z" fill="#ffcb05" opacity=".35" />
+                  <rect
+                    x="45"
+                    y="14"
+                    width="10"
+                    height="16"
+                    fill="#cfe2ff"
+                    fill-opacity=".35"
+                    stroke="#fff"
+                    stroke-width="1"
+                  />
+                  <circle cx="50" cy="60" r="29" fill="#cfe2ff" fill-opacity=".18" stroke="#fff" stroke-width="1.6" />
+                  <defs>
+                    <g id="pb" stroke="#222329" stroke-width=".8">
+                      <circle r="5.6" fill="#f4f5f8" />
+                      <path d="M-5.6 0a5.6 5.6 0 0 1 11.2 0z" fill="currentColor" />
+                      <path d="M-5.6 0h11.2" stroke-width="1.4" />
+                      <circle r="1.7" fill="#fff" />
+                    </g>
+                  </defs>
+                  <use href="#pb" color="#e3352b" transform="translate(38 76)" />
+                  <use href="#pb" color="#e3352b" transform="translate(62 76) rotate(20)" />
+                  <use href="#pb" color="#2f6cd3" transform="translate(50 79)" />
+                  <use href="#pb" color="#2b2c33" transform="translate(44 66) rotate(-25)" />
+                  <use href="#pb" color="#7b3ec0" transform="translate(57 65) rotate(15)" />
+                  <use href="#pb" color="#4f9a3f" transform="translate(51 45) rotate(-10)" />
+                  <path d="M36 88h28l8 26H28z" fill="#ffcb05" stroke="#9a6d00" stroke-width=".8" />
+                  <text
+                    x="50"
+                    y="106"
+                    text-anchor="middle"
+                    font-family="'Luckiest Guy', sans-serif"
+                    font-size="9"
+                    fill="#2556a8"
+                  >
+                    BINGO
+                  </text>
+                  <g fill="#fff6c2">
+                    <circle cx="33" cy="111" r="1.1" />
+                    <circle cx="39" cy="111" r="1.1" />
+                    <circle cx="45" cy="111" r="1.1" />
+                    <circle cx="51" cy="111" r="1.1" />
+                    <circle cx="57" cy="111" r="1.1" />
+                    <circle cx="63" cy="111" r="1.1" />
+                    <circle cx="69" cy="111" r="1.1" />
+                  </g>
+                </svg>
+              </span>
+            </span>
+            <span class="action__body">
+              <span class="action__title">Host a game</span>
+              <span class="action__desc"
+                >Blow the Poké Balls, call the Pokémon, share your screen and check cards.</span
+              >
+              <span class="action__cta">Start hosting <span aria-hidden="true">→</span></span>
+            </span>
+          </a>
+        </nav>
+
+        <section class="how" aria-labelledby="how-title">
+          <h2 class="how__title" id="how-title">How it works</h2>
+          <ol class="how__steps">
+            <li>Host shares the blower screen.</li>
+            <li>Players get a card on the route shown on the sign.</li>
+            <li>Daub Pokémon as they're called, then call bingo.</li>
+          </ol>
+          <p class="how__note">
+            Every route has 75 Pokémon: 60 from Kanto and 15 from Johto. Each new game moves on to the next route, so
+            they all get a turn.
+          </p>
+        </section>
+      </main>
+
+      <footer class="poke-legal">
+        A fan-made game, not affiliated with Nintendo. Pokémon and its sprites are © Nintendo, Creatures Inc., GAME
+        FREAK inc. and The Pokémon Company.
+      </footer>
+    </div>
+
+    <script type="module" src="../js/pokemon/home.js"></script>
+  </body>
+</html>
