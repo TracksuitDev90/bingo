@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Your Bingo Card</title>
+    <meta name="description" content="Your own one-of-a-kind bingo card. Daub the numbers as they're called." />
+    <meta name="theme-color" content="#2a160a" />
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/itim.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/img/wood.jpg" as="image" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/cardview.css" />
+    <link rel="stylesheet" href="css/card.css" />
+  </head>
+  <body class="table card-page">
+    <header class="topbar">
+      <a class="tag" href="./"><span aria-hidden="true">←</span> Home</a>
+      <p class="hint" id="hint">tap a number to daub it</p>
+      <button class="icon-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound effects">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 9h4l5-4v14l-5-4H4z" />
+          <path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" />
+        </svg>
+      </button>
+    </header>
+
+    <main class="desk">
+      <div class="stage" id="stage"></div>
+
+      <section class="tray" id="tray" aria-label="Choose your dauber">
+        <div class="tray__bottles" id="bottles" role="radiogroup" aria-label="Dauber colour"></div>
+        <p class="tray__name" id="dauber-name"></p>
+      </section>
+
+      <section class="shared" id="shared" hidden>
+        <p class="shared__title">Shared card</p>
+        <p class="shared__meta" id="shared-meta"></p>
+        <a class="btn btn--royal" id="shared-check" href="blower.html">Check it on my blower</a>
+        <a class="btn btn--small btn--ghost" href="card.html">Get my own card</a>
+      </section>
+    </main>
+
+    <footer class="actions" id="actions">
+      <button class="btn btn--small btn--ghost" id="new-card" type="button">New card</button>
+      <button class="btn btn--red btn--bingo" id="bingo" type="button">BINGO!</button>
+      <button class="btn btn--small btn--ghost" id="wipe" type="button">Wipe daubs</button>
+    </footer>
+
+    <dialog class="sheet" id="share-sheet" aria-labelledby="share-title">
+      <form method="dialog" class="sheet__body">
+        <button class="sheet__close" value="close" aria-label="Close">×</button>
+        <h2 id="share-title">Call it in!</h2>
+        <p>
+          Send this link to your caller. It carries your card and every daub, sealed so nobody can read or change it.
+          They paste it into the blower to check your bingo.
+        </p>
+        <div class="field">
+          <input id="share-url" readonly aria-label="Your sealed card link" />
+          <button type="button" class="btn btn--royal" id="copy">Copy</button>
+        </div>
+        <p class="share__note" id="share-note"></p>
+        <div class="sheet__actions">
+          <button type="button" class="btn btn--small" id="native-share" hidden>Share…</button>
+          <button class="btn btn--small btn--red" value="close">Done</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="js/card-page.js"></script>
+  </body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Bingo Blower</title>
+    <meta name="description" content="The caller's ball blower. Blow the balls, call the numbers, check the cards." />
+    <meta name="theme-color" content="#10276b" />
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/itim.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/cardview.css" />
+    <link rel="stylesheet" href="css/blower.css" />
+  </head>
+  <body class="blower-page">
+    <header class="b-top">
+      <a class="tag" href="./"><span aria-hidden="true">←</span> Home</a>
+      <button class="b-pattern" id="pattern-btn" type="button" aria-label="Change winning pattern">
+        <span class="mini" id="pattern-mini" aria-hidden="true"></span>
+        <span class="b-pattern__text"><small>Playing for</small><b id="pattern-name">Any Line</b></span>
+      </button>
+      <div class="b-tools">
+        <button
+          class="icon-btn"
+          id="voice"
+          type="button"
+          aria-pressed="false"
+          aria-label="Announce numbers out loud"
+          title="Announce numbers out loud"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z" />
+            <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+            <path class="slash" d="M4 4l16 16" />
+          </svg>
+        </button>
+        <button
+          class="icon-btn"
+          id="sound"
+          type="button"
+          aria-pressed="true"
+          aria-label="Sound effects"
+          title="Sound effects"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9h4l5-4v14l-5-4H4z" />
+            <path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" />
+          </svg>
+        </button>
+        <button class="icon-btn" id="fullscreen" type="button" aria-label="Full screen" title="Full screen (F)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="b-main">
+      <section class="b-machine">
+        <canvas id="globe" role="img" aria-label="Glass ball blower full of bingo balls"></canvas>
+        <p class="b-left" id="left"></p>
+      </section>
+
+      <section class="b-caller">
+        <div class="b-now">
+          <div class="b-now__slot" id="now-slot"></div>
+          <div class="b-now__text">
+            <p class="b-call" id="call-text" aria-live="assertive"></p>
+            <p class="b-count" id="count"></p>
+          </div>
+        </div>
+        <div class="b-recent" id="recent" aria-label="Previous balls"></div>
+        <div class="b-controls">
+          <button class="btn btn--red btn--blow" id="blow" type="button">Blow next ball <kbd>Space</kbd></button>
+          <div class="b-controls__row">
+            <button class="btn btn--small" id="check" type="button">Check a card</button>
+            <button class="btn btn--small btn--ghost" id="new-game" type="button">New game</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section class="b-board" id="board" aria-label="Called numbers"></section>
+
+    <dialog class="sheet sheet--wide" id="check-sheet" aria-labelledby="check-title">
+      <form method="dialog" class="sheet__body">
+        <button class="sheet__close" value="close" aria-label="Close">×</button>
+        <h2 id="check-title">Card check</h2>
+        <p class="check-intro">
+          Paste the link a player sent you. The card's seal is opened and every daub is checked against the balls you've
+          blown.
+        </p>
+        <div class="field">
+          <input
+            id="check-input"
+            placeholder="Paste a player's card link"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Player's card link"
+            autofocus
+          />
+          <button type="button" class="btn btn--royal" id="check-go">Check</button>
+        </div>
+        <p class="check-error" id="check-error" role="alert" hidden></p>
+        <div class="check-result" id="check-result" hidden>
+          <div class="check-card" id="check-card"></div>
+          <div class="check-verdict">
+            <div class="stamp" id="stamp"></div>
+            <ul class="facts" id="facts"></ul>
+            <div class="legend" aria-hidden="true">
+              <span><i class="lg lg--win"></i>winning line</span>
+              <span><i class="lg lg--bad"></i>daubed, not called</span>
+              <span><i class="lg lg--missed"></i>called, not daubed</span>
+            </div>
+          </div>
+        </div>
+        <details class="check-log" id="check-log" hidden>
+          <summary>Cards checked this game</summary>
+          <ol id="check-log-list"></ol>
+        </details>
+      </form>
+    </dialog>
+
+    <dialog class="sheet" id="pattern-sheet" aria-labelledby="pattern-title">
+      <form method="dialog" class="sheet__body">
+        <button class="sheet__close" value="close" aria-label="Close">×</button>
+        <h2 id="pattern-title">Playing for…</h2>
+        <p>Pick the pattern that wins this game. Card checks use it, and it's shown on screen for everyone.</p>
+        <div class="patterns" id="pattern-list" role="radiogroup" aria-label="Winning pattern"></div>
+      </form>
+    </dialog>
+
+    <script type="module" src="js/blower-page.js"></script>
+  </body>
+</html>

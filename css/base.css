@@ -1,0 +1,321 @@
+@font-face {
+  font-family: 'Titan One';
+  src: url(../assets/fonts/titan-one.woff2) format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fredoka';
+  src: url(../assets/fonts/fredoka.woff2) format('woff2');
+  font-weight: 500 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Itim';
+  src: url(../assets/fonts/itim.woff2) format('woff2');
+  font-display: swap;
+}
+
+:root {
+  --ink: #2a87d3;
+  --ink-deep: #1c64a8;
+  --paper: #f2e5c9;
+  --cream: #f6ecd6;
+  --red: #e5143a;
+  --red-deep: #a60d29;
+  --royal: #1d3e9e;
+  --royal-deep: #0f2462;
+  --night: #0a1840;
+  --gold: #ffc300;
+  --wood-dark: #2a160a;
+  --display: 'Titan One', 'Fredoka', system-ui, sans-serif;
+  --ui: 'Fredoka', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --hand: 'Itim', 'Fredoka', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+body {
+  font-family: var(--ui);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: inherit;
+}
+[hidden] {
+  display: none !important;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Wooden table ------------------------------------------------------------- */
+.table {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255, 196, 120, 0.22), transparent 70%),
+    radial-gradient(ellipse 120% 90% at 50% 45%, transparent 45%, rgba(10, 4, 0, 0.62) 100%),
+    url(../assets/img/wood.jpg) center / cover fixed,
+    var(--wood-dark);
+  background-color: var(--wood-dark);
+}
+/* iOS ignores fixed backgrounds; avoid the zoomed, blurry fallback there. */
+@supports (-webkit-touch-callout: none) {
+  .table {
+    background-attachment: scroll;
+  }
+}
+
+/* Chunky retro buttons ------------------------------------------------------ */
+.btn {
+  --bg: var(--cream);
+  --fg: var(--royal-deep);
+  --edge: rgba(0, 0, 0, 0.55);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 46px;
+  padding: 0.55em 1.2em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow:
+    0 4px 0 var(--edge),
+    0 8px 18px rgba(0, 0, 0, 0.28);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s;
+  user-select: none;
+}
+.btn:hover {
+  filter: brightness(1.05);
+}
+.btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 var(--edge),
+    0 3px 8px rgba(0, 0, 0, 0.28);
+}
+.btn:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.btn[disabled] {
+  cursor: not-allowed;
+  filter: saturate(0.3) brightness(0.85);
+  transform: none;
+}
+.btn--red {
+  --bg: var(--red);
+  --fg: #fff;
+  --edge: var(--red-deep);
+}
+.btn--royal {
+  --bg: var(--royal);
+  --fg: var(--cream);
+  --edge: var(--royal-deep);
+}
+.btn--ghost {
+  --bg: rgba(255, 255, 255, 0.1);
+  --fg: var(--cream);
+  --edge: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+}
+.btn--small {
+  min-height: 38px;
+  font-size: 0.9rem;
+  padding: 0.4em 0.95em;
+}
+.btn kbd {
+  font: inherit;
+  font-size: 0.7em;
+  opacity: 0.75;
+  border: 1.5px solid currentColor;
+  border-radius: 6px;
+  padding: 0.05em 0.4em;
+}
+
+/* Paper tag used for the little "back home" link. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.45em 0.9em 0.45em 0.75em;
+  background: var(--cream) url(../assets/img/paper.jpg);
+  background-blend-mode: multiply;
+  color: var(--ink-deep);
+  border-radius: 6px;
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.3),
+    0 6px 14px rgba(0, 0, 0, 0.35);
+  transform: rotate(-2deg);
+  transition: transform 0.15s;
+}
+.tag:hover {
+  transform: rotate(-2deg) translateY(-2px);
+}
+.tag:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Paper dialog -------------------------------------------------------------- */
+dialog.sheet {
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: var(--cream) url(../assets/img/paper.jpg);
+  background-blend-mode: multiply;
+  color: #23314f;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.3),
+    0 30px 80px rgba(0, 0, 0, 0.55);
+  overflow: auto;
+}
+dialog.sheet[open] {
+  animation: sheet-in 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+dialog.sheet::backdrop {
+  background: rgba(8, 10, 24, 0.62);
+  backdrop-filter: blur(3px);
+}
+@keyframes sheet-in {
+  from {
+    transform: translateY(30px) rotate(-1.5deg) scale(0.96);
+    opacity: 0;
+  }
+}
+.sheet__body {
+  padding: 26px 24px 22px;
+}
+.sheet h2 {
+  margin: 0 0 6px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.9rem;
+  color: var(--royal);
+  letter-spacing: 0.01em;
+}
+.sheet p {
+  margin: 0 0 14px;
+  line-height: 1.45;
+  color: #3b4663;
+}
+.sheet__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+.sheet__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #5a6482;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.sheet__close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.field {
+  display: flex;
+  gap: 8px;
+}
+.field input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border: 2px solid rgba(29, 62, 158, 0.35);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  color: #1c2848;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+}
+.field input:focus {
+  outline: none;
+  border-color: var(--royal);
+  box-shadow: 0 0 0 4px rgba(29, 62, 158, 0.18);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 50;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #1b1f33;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, 140%);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  pointer-events: none;
+}
+.toast.is-on {
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (hover: none) {
+  .btn kbd {
+    display: none;
+  }
+}

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Bingo Night</title>
+    <meta
+      name="description"
+      content="Online bingo for friends. One person runs the ball blower, everyone else grabs a one-of-a-kind card."
+    />
+    <meta name="theme-color" content="#2a160a" />
+    <meta property="og:title" content="Bingo Night" />
+    <meta property="og:description" content="Grab a card. Daub the numbers. Shout BINGO!" />
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/img/wood.jpg" as="image" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/cardview.css" />
+    <link rel="stylesheet" href="css/home.css" />
+  </head>
+  <body class="table home">
+    <header class="sign">
+      <h1 class="sign__word" aria-label="Bingo">
+        <span>b</span><span>i</span><span>n</span><span>g</span><span>o</span>
+      </h1>
+      <p class="sign__tag">night</p>
+    </header>
+
+    <main class="choices">
+      <a class="choice choice--blower" href="blower.html">
+        <span class="choice__art" aria-hidden="true">
+          <svg viewBox="0 0 200 210">
+            <defs>
+              <radialGradient id="glass" cx=".4" cy=".35" r=".7">
+                <stop offset="0" stop-color="#fff" stop-opacity=".22" />
+                <stop offset=".8" stop-color="#9cc3ff" stop-opacity=".08" />
+                <stop offset="1" stop-color="#061642" stop-opacity=".45" />
+              </radialGradient>
+              <linearGradient id="lacquer" x1="0" x2="1">
+                <stop offset="0" stop-color="#7d0a1f" />
+                <stop offset=".3" stop-color="#ef2a4b" />
+                <stop offset=".6" stop-color="#c8102e" />
+                <stop offset="1" stop-color="#5e0716" />
+              </linearGradient>
+              <linearGradient id="chrome" x1="0" x2="1">
+                <stop offset="0" stop-color="#5b6170" />
+                <stop offset=".35" stop-color="#f5f7fb" />
+                <stop offset=".6" stop-color="#a7afbf" />
+                <stop offset="1" stop-color="#434855" />
+              </linearGradient>
+              <radialGradient id="shine" cx=".35" cy=".3" r=".6">
+                <stop offset="0" stop-color="#fff" stop-opacity=".9" />
+                <stop offset=".3" stop-color="#fff" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <rect x="92" y="0" width="16" height="30" fill="rgba(200,220,255,.18)" stroke="rgba(255,255,255,.45)" />
+            <path d="M70 160h60l8 34H62z" fill="url(#lacquer)" />
+            <text x="100" y="186" text-anchor="middle" font-family="Titan One" font-size="15" fill="#f6ecd6">
+              bingo
+            </text>
+            <circle cx="100" cy="98" r="70" fill="url(#glass)" />
+            <g class="art-balls">
+              <circle cx="72" cy="140" r="11" fill="#1f5fd6" />
+              <circle cx="95" cy="146" r="11" fill="#ff9a1a" />
+              <circle cx="118" cy="142" r="11" fill="#12a150" />
+              <circle cx="138" cy="128" r="11" fill="#e5143a" />
+              <circle cx="60" cy="120" r="11" fill="#efe8d8" />
+              <circle cx="84" cy="124" r="11" fill="#e5143a" />
+              <circle cx="107" cy="124" r="11" fill="#1f5fd6" />
+              <circle cx="128" cy="108" r="11" fill="#efe8d8" />
+              <circle cx="96" cy="100" r="11" fill="#12a150" />
+              <circle cx="74" cy="100" r="11" fill="#ff9a1a" />
+              <circle cx="116" cy="84" r="11" fill="#e5143a" />
+              <circle cx="88" cy="70" r="11" fill="#1f5fd6" />
+              <g fill="url(#shine)">
+                <circle cx="72" cy="140" r="11" />
+                <circle cx="95" cy="146" r="11" />
+                <circle cx="118" cy="142" r="11" />
+                <circle cx="138" cy="128" r="11" />
+                <circle cx="60" cy="120" r="11" />
+                <circle cx="84" cy="124" r="11" />
+                <circle cx="107" cy="124" r="11" />
+                <circle cx="128" cy="108" r="11" />
+                <circle cx="96" cy="100" r="11" />
+                <circle cx="74" cy="100" r="11" />
+                <circle cx="116" cy="84" r="11" />
+                <circle cx="88" cy="70" r="11" />
+              </g>
+            </g>
+            <circle cx="100" cy="98" r="70" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" />
+            <path
+              d="M48 70a62 62 0 0 1 30-34"
+              fill="none"
+              stroke="rgba(255,255,255,.35)"
+              stroke-width="6"
+              stroke-linecap="round"
+            />
+            <ellipse cx="100" cy="162" rx="38" ry="7" fill="url(#chrome)" />
+            <rect x="86" y="24" width="28" height="7" rx="2" fill="url(#chrome)" />
+          </svg>
+        </span>
+        <span class="choice__text">
+          <span class="choice__title">The Blower</span>
+          <span class="choice__blurb">For the caller. Blow the balls, put it on stream, and check winning cards.</span>
+          <span class="choice__go">Run the game <span aria-hidden="true">→</span></span>
+        </span>
+      </a>
+
+      <a class="choice choice--card" href="card.html">
+        <span class="choice__art" aria-hidden="true"><span class="mini-card" id="mini-card"></span></span>
+        <span class="choice__text">
+          <span class="choice__title">Get a Card</span>
+          <span class="choice__blurb"
+            >For players. A one-of-a-kind card, your pick of dauber, and a big BINGO! button.</span
+          >
+          <span class="choice__go">Deal me in <span aria-hidden="true">→</span></span>
+        </span>
+      </a>
+    </main>
+
+    <section class="how" aria-labelledby="how-title">
+      <h2 id="how-title" class="sr-only">How it works</h2>
+      <ol>
+        <li><b>Caller</b> opens the Blower and shares their screen.</li>
+        <li><b>Players</b> each grab a card. Every card is different.</li>
+        <li><b>Daub</b> numbers as they're called. Got a line? Hit BINGO! and send the link.</li>
+        <li><b>Caller</b> pastes the link into Check a card. The machine says if it's real.</li>
+      </ol>
+    </section>
+
+    <script type="module" src="js/home.js"></script>
+  </body>
+</html>
