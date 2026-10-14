@@ -73,6 +73,8 @@ The BINGO! link packs the card's numbers, every daub (and its colour), the seria
 3. Under **Build and deployment**, choose **Deploy from a branch**, then pick `main` and `/ (root)`. Save.
 4. After a minute the game is live at `https://<your-username>.github.io/bingo/`.
 
+**After changing any file, run `npm run stamp` before committing.** GitHub Pages lets browsers reuse files for ten minutes, so right after an update a page could run new scripts against old cached copies of the files they import, and stop dead. The stamp tool (`tools/stamp.mjs`) adds a hash of each file to every reference to it (`codec.js?v=1a2b3c4d`), so a changed file gets a new address and browsers always load matching copies. `npm test` fails if a stamp is out of date. If a game page ever can't start anyway, it says so and offers a Reload button.
+
 The site needs to be served over `https://` (or `localhost`), because the sealed links use the browser's WebCrypto API, which only works there. GitHub Pages is https by default.
 
 ## Running it locally
@@ -92,27 +94,27 @@ npm test
 
 ## What's where
 
-| Path                                                   | What it does                                                                              |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| `index.html`, `css/home.css`                           | Home screen: Get a card, Host a game, and how it works                                    |
-| `blower.html`, `js/blower-page.js`                     | Caller screen: draws, board, rack of recent balls, pattern, card check                    |
-| `js/machine.js`                                        | The globe: canvas physics, glass, pedestal and marquee lights, the draw                   |
-| `js/balls.js`                                          | Ball sprites with 3D-rolling labels, shared by the globe, the flight and the rack         |
-| `js/flight.js`                                         | The drawn ball's pop, tumble and bounce into the "now calling" spot                       |
-| `card.html`, `js/card-page.js`                         | Player screen: card on the table, daubers, line sparkle, BINGO! sharing, shared-card view |
-| `js/cardview.js`, `css/cardview.css`                   | The paper card itself, painted on canvas (used by every page)                             |
-| `js/dauber.js`                                         | Ink splotch painter and the dauber bottles                                                |
-| `js/bingo.js`                                          | Rules: ranges, dealing, patterns, `checkCard`                                             |
-| `js/codec.js`                                          | Sealed links (AES-GCM)                                                                    |
-| `js/rng.js`                                            | Unbiased crypto randomness                                                                |
-| `js/sound.js`                                          | Synthesised sound effects (no audio files)                                                |
-| `pokemon/`, `css/pokemon/`                             | Pokémon edition pages (home, blower, card) and their skin over the classic layouts        |
-| `js/pokemon/dex.js`                                    | Routes: which 75 Pokémon are in play, and the rotation                                    |
-| `js/pokemon/pokeballs.js`                              | Poké Ball sprites (same API as `js/balls.js`) and the column emblems                      |
-| `js/pokemon/cardface.js`                               | The trading-card face, painted on the classic card's grid                                 |
-| `js/pokemon/sprites.js`, `pokedex-data.js`             | Crisp pixel-art sprites from the sheet; names and sheet positions (generated)             |
-| `js/pokemon/blower-page.js`, `card-page.js`, `home.js` | The Pokémon edition's screens                                                             |
-| `tools/`                                               | Scripts that generated the paper texture and the Pokémon sprite sheet                     |
+| Path                                                   | What it does                                                                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `index.html`, `css/home.css`                           | Home screen: Get a card, Host a game, and how it works                                                       |
+| `blower.html`, `js/blower-page.js`                     | Caller screen: draws, board, rack of recent balls, pattern, card check                                       |
+| `js/machine.js`                                        | The globe: canvas physics, glass, pedestal and marquee lights, the draw                                      |
+| `js/balls.js`                                          | Ball sprites with 3D-rolling labels, shared by the globe, the flight and the rack                            |
+| `js/flight.js`                                         | The drawn ball's pop, tumble and bounce into the "now calling" spot                                          |
+| `card.html`, `js/card-page.js`                         | Player screen: card on the table, daubers, line sparkle, BINGO! sharing, shared-card view                    |
+| `js/cardview.js`, `css/cardview.css`                   | The paper card itself, painted on canvas (used by every page)                                                |
+| `js/dauber.js`                                         | Ink splotch painter and the dauber bottles                                                                   |
+| `js/bingo.js`                                          | Rules: ranges, dealing, patterns, `checkCard`                                                                |
+| `js/codec.js`                                          | Sealed links (AES-GCM)                                                                                       |
+| `js/rng.js`                                            | Unbiased crypto randomness                                                                                   |
+| `js/sound.js`                                          | Synthesised sound effects (no audio files)                                                                   |
+| `pokemon/`, `css/pokemon/`                             | Pokémon edition pages (home, blower, card) and their skin over the classic layouts                           |
+| `js/pokemon/dex.js`                                    | Routes: which 75 Pokémon are in play, and the rotation                                                       |
+| `js/pokemon/pokeballs.js`                              | Poké Ball sprites (same API as `js/balls.js`) and the column emblems                                         |
+| `js/pokemon/cardface.js`                               | The trading-card face, painted on the classic card's grid                                                    |
+| `js/pokemon/sprites.js`, `pokedex-data.js`             | Crisp pixel-art sprites from the sheet; names and sheet positions (generated)                                |
+| `js/pokemon/blower-page.js`, `card-page.js`, `home.js` | The Pokémon edition's screens                                                                                |
+| `tools/`                                               | Cache-busting stamps (`stamp.mjs`), and the scripts that made the paper texture and the Pokémon sprite sheet |
 
 ## Credits
 
