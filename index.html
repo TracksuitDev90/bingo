@@ -6,11 +6,11 @@
     <title>Fireside Bingo</title>
     <meta
       name="description"
-      content="Fireside Bingo: online bingo for friends. One person runs the ball blower, everyone else grabs a one-of-a-kind card."
+      content="Fireside Bingo: online bingo for friends. Get your own card, or host a game and call the numbers on a shared screen."
     />
-    <meta name="theme-color" content="#173f66" />
+    <meta name="theme-color" content="#1c4a74" />
     <meta property="og:title" content="Fireside Bingo" />
-    <meta property="og:description" content="Grab a card. Daub the numbers. Shout BINGO!" />
+    <meta property="og:description" content="Grab a card. Mark the numbers. Call bingo!" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
@@ -19,132 +19,121 @@
     <link rel="stylesheet" href="css/cardview.css" />
     <link rel="stylesheet" href="css/home.css" />
   </head>
-  <body class="table home">
-    <header class="sign">
-      <h1 class="sign__title">
-        <span class="sign__fire">Fireside</span>
-        <span class="sign__word"><span>b</span><span>i</span><span>n</span><span>g</span><span>o</span></span>
-      </h1>
-      <i class="sign__balls" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></i>
-    </header>
+  <body class="home">
+    <div class="home__inner">
+      <header class="masthead">
+        <h1 class="logo">
+          <span class="logo__fire">Fireside</span>
+          <span class="logo__word">bingo</span>
+        </h1>
+      </header>
 
-    <main class="choices">
-      <a class="choice choice--blower" href="blower.html">
-        <span class="choice__art" aria-hidden="true">
-          <svg viewBox="0 0 200 210">
-            <defs>
-              <radialGradient id="glass" cx=".4" cy=".35" r=".7">
-                <stop offset="0" stop-color="#fff" stop-opacity=".2" />
-                <stop offset=".8" stop-color="#cfe6ff" stop-opacity=".08" />
-                <stop offset="1" stop-color="#05142d" stop-opacity=".45" />
-              </radialGradient>
-              <linearGradient id="enamel" x1="0" x2="1">
-                <stop offset="0" stop-color="#18466f" />
-                <stop offset=".3" stop-color="#3a8fd0" />
-                <stop offset=".6" stop-color="#2f80c0" />
-                <stop offset="1" stop-color="#123a5e" />
-              </linearGradient>
-              <linearGradient id="chrome" x1="0" x2="1">
-                <stop offset="0" stop-color="#5b6170" />
-                <stop offset=".35" stop-color="#f5f7fb" />
-                <stop offset=".6" stop-color="#a7afbf" />
-                <stop offset="1" stop-color="#434855" />
-              </linearGradient>
-              <radialGradient id="shine" cx=".35" cy=".3" r=".6">
-                <stop offset="0" stop-color="#fff" stop-opacity=".9" />
-                <stop offset=".3" stop-color="#fff" stop-opacity="0" />
-              </radialGradient>
-            </defs>
-            <rect x="92" y="0" width="16" height="30" fill="rgba(220,235,255,.14)" stroke="rgba(255,255,255,.45)" />
-            <path d="M70 160h60l8 34H62z" fill="url(#enamel)" />
-            <text
-              x="100"
-              y="179"
-              text-anchor="middle"
-              font-family="Titan One, sans-serif"
-              font-size="14"
-              fill="#f4ead4"
-            >
-              bingo
-            </text>
-            <g class="art-bulbs" fill="#ffe9a8">
-              <circle cx="70" cy="189" r="1.8" />
-              <circle cx="80" cy="189" r="1.8" />
-              <circle cx="90" cy="189" r="1.8" />
-              <circle cx="100" cy="189" r="1.8" />
-              <circle cx="110" cy="189" r="1.8" />
-              <circle cx="120" cy="189" r="1.8" />
-              <circle cx="130" cy="189" r="1.8" />
-            </g>
-            <circle cx="100" cy="98" r="70" fill="url(#glass)" />
-            <g class="art-balls">
-              <circle cx="72" cy="140" r="11" fill="#2a7c7a" />
-              <circle cx="95" cy="146" r="11" fill="#e3a127" />
-              <circle cx="118" cy="142" r="11" fill="#7f8d2d" />
-              <circle cx="138" cy="128" r="11" fill="#c4462c" />
-              <circle cx="60" cy="120" r="11" fill="#eee0c0" />
-              <circle cx="84" cy="124" r="11" fill="#c4462c" />
-              <circle cx="107" cy="124" r="11" fill="#2a7c7a" />
-              <circle cx="128" cy="108" r="11" fill="#eee0c0" />
-              <circle cx="96" cy="100" r="11" fill="#7f8d2d" />
-              <circle cx="74" cy="100" r="11" fill="#e3a127" />
-              <circle cx="116" cy="84" r="11" fill="#c4462c" />
-              <circle cx="88" cy="70" r="11" fill="#2a7c7a" />
-              <g fill="url(#shine)">
-                <circle cx="72" cy="140" r="11" />
-                <circle cx="95" cy="146" r="11" />
-                <circle cx="118" cy="142" r="11" />
-                <circle cx="138" cy="128" r="11" />
-                <circle cx="60" cy="120" r="11" />
-                <circle cx="84" cy="124" r="11" />
-                <circle cx="107" cy="124" r="11" />
-                <circle cx="128" cy="108" r="11" />
-                <circle cx="96" cy="100" r="11" />
-                <circle cx="74" cy="100" r="11" />
-                <circle cx="116" cy="84" r="11" />
-                <circle cx="88" cy="70" r="11" />
-              </g>
-            </g>
-            <circle cx="100" cy="98" r="70" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" />
-            <path
-              d="M48 70a62 62 0 0 1 30-34"
-              fill="none"
-              stroke="rgba(255,255,255,.35)"
-              stroke-width="6"
-              stroke-linecap="round"
-            />
-            <ellipse cx="100" cy="162" rx="38" ry="7" fill="url(#chrome)" />
-            <rect x="86" y="24" width="28" height="7" rx="2" fill="url(#chrome)" />
-          </svg>
-        </span>
-        <span class="choice__text">
-          <span class="choice__title">The Blower</span>
-          <span class="choice__blurb">For the caller. Blow the balls, put it on stream, and check winning cards.</span>
-          <span class="choice__go">Run the game <span aria-hidden="true">→</span></span>
-        </span>
-      </a>
+      <main class="home__main">
+        <nav class="actions" aria-label="Start playing">
+          <a class="action action--primary" href="card.html">
+            <span class="action__art" aria-hidden="true"><span class="mini-card" id="mini-card"></span></span>
+            <span class="action__body">
+              <span class="action__title">Get a card</span>
+              <span class="action__desc">Your own bingo card, ready to play.</span>
+              <span class="action__cta">Deal me in <span aria-hidden="true">→</span></span>
+            </span>
+          </a>
 
-      <a class="choice choice--card" href="card.html">
-        <span class="choice__art" aria-hidden="true"><span class="mini-card" id="mini-card"></span></span>
-        <span class="choice__text">
-          <span class="choice__title">Get a Card</span>
-          <span class="choice__blurb"
-            >For players. A one-of-a-kind card, your pick of dauber, and a big BINGO! button.</span
-          >
-          <span class="choice__go">Deal me in <span aria-hidden="true">→</span></span>
-        </span>
-      </a>
-    </main>
+          <a class="action action--secondary" href="blower.html">
+            <span class="action__art" aria-hidden="true">
+              <!-- The ball blower, printed in the same blue ink as the bingo card. -->
+              <span class="print">
+                <svg viewBox="0 0 100 131">
+                  <defs>
+                    <mask id="host-knockout" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="131">
+                      <rect width="100" height="131" fill="#fff" />
+                      <text
+                        x="50"
+                        y="15.4"
+                        text-anchor="middle"
+                        dominant-baseline="central"
+                        font-family="Titan One, sans-serif"
+                        font-size="15"
+                        letter-spacing="1.2"
+                        fill="#000"
+                      >
+                        caller
+                      </text>
+                      <g fill="#000">
+                        <circle cx="39" cy="88" r="3" />
+                        <circle cx="61" cy="88" r="3" />
+                        <circle cx="44.5" cy="77" r="3" />
+                        <circle cx="67" cy="77" r="3" />
+                        <circle cx="53" cy="66" r="3" />
+                        <circle cx="42" cy="110" r="1" />
+                        <circle cx="46" cy="110" r="1" />
+                        <circle cx="50" cy="110" r="1" />
+                        <circle cx="54" cy="110" r="1" />
+                        <circle cx="58" cy="110" r="1" />
+                      </g>
+                    </mask>
+                  </defs>
+                  <g fill="#2f80c0" stroke="#2f80c0" mask="url(#host-knockout)">
+                    <rect x="5.2" y="5" width="89.6" height="20" rx="1.6" stroke="none" />
+                    <rect x="5.2" y="27" width="89.6" height="2.3" rx="1" stroke="none" />
+                    <rect x="45" y="35" width="10" height="11" fill="none" stroke-width="1.4" />
+                    <rect x="42" y="33" width="16" height="3" rx="0.8" stroke="none" />
+                    <circle cx="50" cy="72" r="27" fill="none" stroke-width="1.6" />
+                    <path d="M31 63a20 20 0 0 1 10-13" fill="none" stroke-width="1.4" stroke-linecap="round" />
+                    <g stroke="none">
+                      <circle cx="39" cy="88" r="6" />
+                      <circle cx="50" cy="89.5" r="6" />
+                      <circle cx="61" cy="88" r="6" />
+                      <circle cx="33" cy="77" r="6" />
+                      <circle cx="44.5" cy="77" r="6" />
+                      <circle cx="56" cy="77.5" r="6" />
+                      <circle cx="67" cy="77" r="6" />
+                      <circle cx="40" cy="66" r="6" />
+                      <circle cx="53" cy="66" r="6" />
+                      <rect x="38" y="97" width="24" height="4" rx="1" />
+                      <path d="M41 100h18l5 16H36z" />
+                    </g>
+                    <path
+                      d="M30 126.4H95"
+                      fill="none"
+                      stroke-width="0.84"
+                      stroke-dasharray="0 2.6"
+                      stroke-linecap="round"
+                    />
+                    <text
+                      x="5.2"
+                      y="127.8"
+                      stroke="none"
+                      font-family="Fraunces, Georgia, serif"
+                      font-style="italic"
+                      font-weight="800"
+                      font-size="4.3"
+                    >
+                      Fireside Bingo
+                    </text>
+                  </g>
+                  <circle cx="61" cy="55" r="5.4" fill="#f0b429" />
+                </svg>
+              </span>
+            </span>
+            <span class="action__body">
+              <span class="action__title">Host a game</span>
+              <span class="action__desc">Call numbers, share your screen, and check winning cards.</span>
+              <span class="action__cta">Start hosting <span aria-hidden="true">→</span></span>
+            </span>
+          </a>
+        </nav>
 
-    <section class="how" aria-labelledby="how-title">
-      <h2 id="how-title" class="sr-only">How it works</h2>
-      <ol>
-        <li><b>Caller</b> opens the Blower and shares their screen.</li>
-        <li><b>Players</b> each grab a card. Every card is different.</li>
-        <li><b>Daub</b> numbers as they're called. Got a line? Hit BINGO! and send the link.</li>
-        <li><b>Caller</b> pastes the link into Check a card. The machine says if it's real.</li>
-      </ol>
-    </section>
+        <section class="how" aria-labelledby="how-title">
+          <h2 class="how__title" id="how-title">How it works</h2>
+          <ol class="how__steps">
+            <li>Host shares the caller screen.</li>
+            <li>Players open their cards.</li>
+            <li>Mark numbers and call bingo.</li>
+          </ol>
+        </section>
+      </main>
+    </div>
 
     <script type="module" src="js/home.js"></script>
   </body>

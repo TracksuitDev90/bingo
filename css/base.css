@@ -43,6 +43,8 @@
   --serif: 'Fraunces', 'Cooper Black', Georgia, serif;
   --ui: 'Fredoka', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --hand: 'Itim', 'Fredoka', system-ui, sans-serif;
+  /* Plain, readable text: descriptions, buttons, instructions. */
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   color-scheme: light;
 }
 
