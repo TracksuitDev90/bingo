@@ -6,7 +6,7 @@
 // from, so every card can always reach bingo, whichever device it lives on.
 // Cells are stored row-major (index = row * 5 + col); index 12 is the free spot.
 
-import { randomInt, sample } from './rng.js';
+import { randomInt, sample } from './rng.js?v=d7e59606';
 
 export const LETTERS = ['B', 'I', 'N', 'G', 'O'];
 export const BALLS = 75;

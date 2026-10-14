@@ -4,21 +4,21 @@
 // Pokémon?") that light up in colour as they're called, and every game is
 // played on a route that players match on their cards.
 
-import { BALLS, LETTERS, PATTERNS, letterOf, columnOf, checkCard, patternPreview } from '../bingo.js';
-import { randomInt, hash } from '../rng.js';
-import { BlowerMachine } from '../machine.js';
-import { flyBall } from '../flight.js';
-import { paintSplotch, markJitter } from '../dauber.js';
-import { openPokemonCard, extractToken } from '../codec.js';
-import { createCardView } from '../cardview.js';
-import { sound } from '../sound.js';
-import { confetti } from '../confetti.js';
-import { store, toast, confirmSheet, openSheet, copyText, formatTime } from '../ui.js';
-import { pokemonOf, nameOf, spokenName, dexNo, isRoute, MAX_ROUTE } from './dex.js';
-import { pokeBalls, BALL_TYPES } from './pokeballs.js';
-import { loadSprites, spriteCanvas } from './sprites.js';
-import { paintPokemonFace, loadFonts } from './cardface.js';
-import { electricArcs } from './effects.js';
+import { BALLS, LETTERS, PATTERNS, letterOf, columnOf, checkCard, patternPreview } from '../bingo.js?v=3f6ee08f';
+import { randomInt, hash } from '../rng.js?v=d7e59606';
+import { BlowerMachine } from '../machine.js?v=1f0b3b9a';
+import { flyBall } from '../flight.js?v=21700ca4';
+import { paintSplotch, markJitter } from '../dauber.js?v=31409a63';
+import { openPokemonCard, extractToken } from '../codec.js?v=86133dcf';
+import { createCardView } from '../cardview.js?v=66979a92';
+import { sound } from '../sound.js?v=36bb5e44';
+import { confetti } from '../confetti.js?v=fe532583';
+import { store, toast, confirmSheet, openSheet, copyText, formatTime } from '../ui.js?v=f98984b4';
+import { pokemonOf, nameOf, spokenName, dexNo, isRoute, MAX_ROUTE } from './dex.js?v=b5b23e78';
+import { pokeBalls, BALL_TYPES } from './pokeballs.js?v=3b588ab7';
+import { loadSprites, spriteCanvas } from './sprites.js?v=26842faa';
+import { paintPokemonFace, loadFonts } from './cardface.js?v=72e1f0df';
+import { electricArcs } from './effects.js?v=1bed0993';
 
 const GAME_KEY = 'bingo:pokemon:game';
 const VOICE_KEY = 'bingo:voice';
@@ -615,6 +615,7 @@ function initToggles() {
   soundBtn.addEventListener('click', () => {
     sound.on = !sound.on;
     syncSound();
+    toast(sound.on ? 'Sound effects on' : 'Sound effects off', 1400);
   });
   syncSound();
 
@@ -626,7 +627,7 @@ function initToggles() {
     voiceOn = !voiceOn;
     store.set(VOICE_KEY, voiceOn);
     syncVoice();
-    toast(voiceOn ? 'Pokémon will be called out loud' : 'Voice off', 1600);
+    toast(voiceOn ? 'Each Pokémon will be called out loud' : 'Calling out loud is off', 1800);
   });
   syncVoice();
 
@@ -728,3 +729,6 @@ if (linked) {
   history.replaceState(null, '', location.pathname);
   openCheck(linked);
 }
+
+// Booted: tells the page's load check the game started.
+document.documentElement.setAttribute('data-ready', '');

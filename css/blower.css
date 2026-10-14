@@ -46,7 +46,7 @@
   padding: 5px 14px 5px 6px;
   border: 0;
   border-radius: 999px;
-  background: var(--paper) url(../assets/img/paper.jpg) 0 0 / 200px;
+  background: var(--paper) url(../assets/img/paper.jpg?v=1212cfcc) 0 0 / 200px;
   background-blend-mode: multiply;
   color: var(--ink-dark);
   text-align: left;
@@ -316,7 +316,7 @@
   gap: 3px;
   padding: 6px;
   border-radius: 12px;
-  background: var(--paper) url(../assets/img/paper.jpg) 0 0 / 360px;
+  background: var(--paper) url(../assets/img/paper.jpg?v=1212cfcc) 0 0 / 360px;
   background-blend-mode: multiply;
   box-shadow:
     0 2px 2px rgba(4, 14, 32, 0.3),

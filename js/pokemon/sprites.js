@@ -6,7 +6,7 @@
 // square), then scaled smoothly to its final size, which is never far off.
 // Those blown-up copies are cached, as are their silhouettes.
 
-import { RECTS } from './pokedex-data.js';
+import { RECTS } from './pokedex-data.js?v=05c22653';
 
 let sheet = null;
 let loading;
@@ -14,7 +14,7 @@ let loading;
 export function loadSprites() {
   loading ??= new Promise((resolve) => {
     const img = new Image();
-    img.src = new URL('../../assets/pokemon/sprites.webp', import.meta.url).href;
+    img.src = new URL('../../assets/pokemon/sprites.webp?v=1472e9f4', import.meta.url).href;
     img
       .decode()
       .then(() => {

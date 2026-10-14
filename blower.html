@@ -6,13 +6,13 @@
     <title>The Blower · Fireside Bingo</title>
     <meta name="description" content="The caller's ball blower. Blow the balls, call the numbers, check the cards." />
     <meta name="theme-color" content="#173f66" />
-    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="assets/fonts/itim.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/cardview.css" />
-    <link rel="stylesheet" href="css/blower.css" />
+    <link rel="icon" href="assets/img/favicon.svg?v=7b6f6967" type="image/svg+xml" />
+    <link rel="preload" href="assets/fonts/titan-one.woff2?v=2f15f138" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/itim.woff2?v=733235ca" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/fredoka.woff2?v=99d6c78e" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="css/base.css?v=e2307bd2" />
+    <link rel="stylesheet" href="css/cardview.css?v=0151b63e" />
+    <link rel="stylesheet" href="css/blower.css?v=fcac92c4" />
   </head>
   <body class="table blower-page">
     <header class="b-top">
@@ -142,6 +142,26 @@
       </form>
     </dialog>
 
-    <script type="module" src="js/blower-page.js"></script>
+    <script>
+      // If the game's scripts can't start (say, a half-updated browser cache),
+      // say so and offer a reload instead of leaving an empty table.
+      addEventListener('load', function () {
+        setTimeout(function () {
+          if (document.documentElement.hasAttribute('data-ready')) return;
+          var p = document.createElement('p');
+          p.id = 'load-fail';
+          p.setAttribute('role', 'alert');
+          p.style.cssText =
+            'position:fixed;left:50%;top:50%;z-index:99;transform:translate(-50%,-50%);width:min(320px,calc(100vw - 32px));margin:0;padding:18px 20px;border-radius:14px;background:#fff;color:#1d2230;font:600 1rem/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45)';
+          p.innerHTML =
+            'The game didn\u2019t load properly.<br><button type="button" style="margin-top:12px;padding:10px 22px;border:0;border-radius:999px;background:#f0b429;color:#1d2230;font:inherit">Reload</button>';
+          p.querySelector('button').onclick = function () {
+            location.reload();
+          };
+          document.body.appendChild(p);
+        }, 800);
+      });
+    </script>
+    <script type="module" src="js/blower-page.js?v=406441f8"></script>
   </body>
 </html>

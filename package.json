@@ -5,6 +5,7 @@
   "description": "Online 75-ball bingo: a streamed ball blower plus one-of-a-kind player cards.",
   "scripts": {
     "start": "npx --yes http-server -c-1 -p 8080 .",
+    "stamp": "node tools/stamp.mjs",
     "test": "node --test tests/*.test.mjs"
   }
 }

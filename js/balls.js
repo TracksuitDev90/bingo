@@ -8,7 +8,7 @@
 // surface as the ball tumbles. The label disc sits wholly inside the sphere
 // (offset² + radius² < 1), so it never needs clipping to the silhouette.
 
-import { letterOf } from './bingo.js';
+import { letterOf } from './bingo.js?v=3f6ee08f';
 
 // Teal, tomato, cream, avocado and harvest gold.
 export const BALL_COLORS = { B: '#2a7c7a', I: '#c4462c', N: '#eee0c0', G: '#7f8d2d', O: '#e3a127' };
