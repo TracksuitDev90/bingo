@@ -1,0 +1,234 @@
+.card-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  color: var(--cream);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 4px;
+}
+.hint {
+  margin: 0;
+  font-family: var(--hand);
+  font-size: 1.25rem;
+  color: rgba(255, 240, 215, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.5s;
+}
+.hint.is-gone {
+  opacity: 0;
+}
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--cream);
+}
+.icon-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon-btn[aria-pressed='false'] .wave {
+  opacity: 0.15;
+}
+.icon-btn:focus-visible {
+  outline: 3px solid var(--gold);
+}
+
+.desk {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 6px 12px;
+}
+
+.stage {
+  --w: min(calc(100vw - 28px), calc((100dvh - 300px) / 1.31), 540px);
+  width: var(--w);
+  rotate: -1.2deg;
+}
+.stage .card {
+  transform-origin: 50% 60%;
+}
+.stage.is-dealing .card {
+  animation: deal 0.62s cubic-bezier(0.18, 0.85, 0.32, 1.08) both;
+}
+.stage.is-leaving .card {
+  animation: leave 0.36s cubic-bezier(0.5, 0, 0.9, 0.4) both;
+}
+@keyframes deal {
+  from {
+    translate: -18vw -85vh;
+    rotate: -28deg;
+  }
+}
+@keyframes leave {
+  to {
+    translate: 70vw 12vh;
+    rotate: 24deg;
+  }
+}
+
+/* Dauber bottles */
+.tray {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.tray__bottles {
+  display: flex;
+  gap: clamp(2px, 1.2vw, 10px);
+  align-items: flex-end;
+}
+.bottle {
+  position: relative;
+  width: clamp(30px, min(9.5vw, 5.4dvh), 46px);
+  aspect-ratio: 60 / 160;
+  padding: 0;
+  border: 0;
+  background: none;
+  transition: translate 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+}
+.bottle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.35));
+}
+.bottle[aria-checked='true'] {
+  translate: 0 -12px;
+}
+.bottle[aria-checked='true']::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 7px;
+  height: 7px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+}
+.bottle:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+.tray__name {
+  margin: 6px 0 0;
+  min-height: 1.4em;
+  font-family: var(--hand);
+  font-size: 1.2rem;
+  color: rgba(255, 240, 215, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 12px max(16px, env(safe-area-inset-bottom));
+}
+.actions .btn {
+  white-space: nowrap;
+}
+.btn--bingo {
+  min-height: 58px;
+  padding: 0.3em 1.4em;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.7rem;
+  letter-spacing: 0.04em;
+}
+
+.share__note {
+  margin: 12px 0 0 !important;
+  font-size: 0.92rem;
+  color: #5a6482 !important;
+}
+.share__note.is-warn {
+  color: #a3401a !important;
+}
+
+/* Shared (read-only) card */
+.shared {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.shared__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.5rem;
+  color: var(--cream);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+}
+.shared__meta {
+  margin: 0 0 4px;
+  color: rgba(255, 240, 215, 0.85);
+}
+.is-shared .tray,
+.is-shared .actions,
+.is-shared .hint {
+  display: none;
+}
+
+/* Wide screens: dauber caddy beside the card. */
+@media (min-width: 880px) and (min-aspect-ratio: 1/1) {
+  .desk {
+    flex-direction: row;
+    gap: clamp(28px, 5vw, 80px);
+  }
+  .stage {
+    --w: min(540px, calc((100dvh - 160px) / 1.31));
+  }
+  .tray__bottles {
+    display: grid;
+    grid-template-columns: repeat(4, 54px);
+    gap: 18px 14px;
+  }
+  .bottle {
+    width: 54px;
+  }
+  .shared {
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 420px) {
+  .actions {
+    gap: 8px;
+  }
+  .actions .btn--small {
+    padding: 0.4em 0.8em;
+    font-size: 0.85rem;
+  }
+  .btn--bingo {
+    font-size: 1.45rem;
+    padding: 0.3em 1em;
+  }
+}
