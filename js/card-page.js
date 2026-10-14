@@ -109,7 +109,7 @@ function buildTray() {
     b.dataset.id = d.id;
     b.setAttribute('role', 'radio');
     b.setAttribute('aria-label', `${d.name} dauber`);
-    b.innerHTML = dauberSVG(d.color);
+    b.innerHTML = dauberSVG(d);
     b.addEventListener('click', () => chooseDauber(d.id, { announce: true }));
     tray.append(b);
   }

@@ -19,7 +19,7 @@
   inset: 0;
   border-radius: 0.8cqw;
   background:
-    radial-gradient(ellipse 85% 75% at 45% 40%, transparent 55%, rgba(120, 80, 20, 0.13) 100%),
+    radial-gradient(ellipse 85% 75% at 45% 40%, transparent 50%, rgba(130, 80, 20, 0.24) 100%),
     linear-gradient(170deg, rgba(255, 255, 255, 0.25), transparent 40%, rgba(90, 60, 20, 0.06)),
     url(../assets/img/paper.jpg) 0 0 / 60cqw,
     var(--paper);
@@ -126,30 +126,27 @@
 .card__foot {
   position: absolute;
   left: var(--side);
-  right: 34cqw;
-  top: 125.4cqw;
+  right: 31cqw;
+  top: 123.9cqw;
+  height: 4.6cqw;
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+}
+.card__brand {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 4.3cqw;
+  line-height: 1;
+  white-space: nowrap;
+}
+.card__dots {
+  flex: 1;
   height: 2cqw;
   background: radial-gradient(circle, var(--ink) 0.42cqw, transparent 0.55cqw) 0 50% / 2.6cqw 2cqw repeat-x;
-  -webkit-mask: linear-gradient(
-    90deg,
-    #000 0 14%,
-    transparent 14% 18%,
-    #000 18% 41%,
-    transparent 41% 45%,
-    #000 45% 62%,
-    transparent 62% 67%,
-    #000 67%
-  );
-  mask: linear-gradient(
-    90deg,
-    #000 0 14%,
-    transparent 14% 18%,
-    #000 18% 41%,
-    transparent 41% 45%,
-    #000 45% 62%,
-    transparent 62% 67%,
-    #000 67%
-  );
+  -webkit-mask: linear-gradient(90deg, #000 0 22%, transparent 22% 28%, #000 28% 61%, transparent 61% 68%, #000 68%);
+  mask: linear-gradient(90deg, #000 0 22%, transparent 22% 28%, #000 28% 61%, transparent 61% 68%, #000 68%);
 }
 .card__serial {
   position: absolute;
@@ -159,8 +156,8 @@
   font-weight: 700;
   font-size: 4cqw;
   letter-spacing: 0.08em;
-  color: #d0213a;
-  opacity: 0.85;
+  color: #c23b22;
+  opacity: 0.88;
   mix-blend-mode: multiply;
 }
 .card__serial::before {

@@ -3,19 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Bingo Blower</title>
+    <title>The Blower · Fireside Bingo</title>
     <meta name="description" content="The caller's ball blower. Blow the balls, call the numbers, check the cards." />
-    <meta name="theme-color" content="#10276b" />
+    <meta name="theme-color" content="#3a2414" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/itim.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/cardview.css" />
     <link rel="stylesheet" href="css/blower.css" />
   </head>
   <body class="blower-page">
     <header class="b-top">
-      <a class="tag" href="./"><span aria-hidden="true">←</span> Home</a>
+      <div class="b-left-tools">
+        <a class="tag" href="./"><span aria-hidden="true">←</span> Home</a>
+        <p class="brand"><span class="brand__fire">Fireside</span><span class="brand__bingo">bingo</span></p>
+      </div>
       <button class="b-pattern" id="pattern-btn" type="button" aria-label="Change winning pattern">
         <span class="mini" id="pattern-mini" aria-hidden="true"></span>
         <span class="b-pattern__text"><small>Playing for</small><b id="pattern-name">Any Line</b></span>
@@ -98,7 +102,7 @@
             aria-label="Player's card link"
             autofocus
           />
-          <button type="button" class="btn btn--royal" id="check-go">Check</button>
+          <button type="button" class="btn btn--teal" id="check-go">Check</button>
         </div>
         <p class="check-error" id="check-error" role="alert" hidden></p>
         <div class="check-result" id="check-result" hidden>

@@ -1,7 +1,8 @@
-/* The caller's stage: a royal-blue printed poster with cream type and red ink. */
+/* The caller's stage: a 70s den. Cocoa-brown grainy print, a sunburst behind
+   the machine, harvest-gold and burnt-orange stripes, cream type. */
 
 .blower-page {
-  --tile-ink: var(--ink);
+  --tile-ink: var(--brown);
   height: 100vh;
   height: 100dvh;
   display: grid;
@@ -9,20 +10,44 @@
   overflow: hidden;
   color: var(--cream);
   background:
-    radial-gradient(ellipse 38% 50% at 25% 46%, rgba(120, 170, 255, 0.28), transparent 70%),
-    radial-gradient(ellipse 120% 100% at 50% 40%, transparent 50%, rgba(3, 10, 40, 0.65) 100%),
+    radial-gradient(ellipse 40% 52% at 25% 46%, rgba(255, 160, 70, 0.22), transparent 70%),
+    radial-gradient(ellipse 120% 100% at 50% 40%, transparent 45%, rgba(15, 6, 0, 0.7) 100%),
+    radial-gradient(circle, rgba(0, 0, 0, 0.16) 0.9px, transparent 1.3px) 0 0 / 5px 5px,
     url(../assets/img/paper.jpg) 0 0 / 420px,
-    var(--royal);
-  background-blend-mode: screen, normal, multiply, normal;
+    #57331b;
+  background-blend-mode: screen, normal, normal, multiply, normal;
 }
 
 /* Header --------------------------------------------------------------------- */
 .b-top {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: max(12px, env(safe-area-inset-top)) clamp(12px, 2vw, 28px) 0;
+  padding: max(12px, env(safe-area-inset-top)) clamp(12px, 2vw, 28px) 12px;
+}
+/* The three 70s stripes. */
+.b-top::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 13px;
+  background: linear-gradient(
+    var(--mustard) 0 4px,
+    transparent 4px 4.5px,
+    var(--orange) 4.5px 8.5px,
+    transparent 8.5px 9px,
+    var(--rust) 9px 13px
+  );
+  opacity: 0.9;
+}
+.b-left-tools {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 24px);
 }
 .b-tools {
   display: flex;
@@ -72,7 +97,7 @@
   border-radius: 999px;
   background: var(--cream) url(../assets/img/paper.jpg);
   background-blend-mode: multiply;
-  color: var(--royal-deep);
+  color: var(--brown);
   text-align: left;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
 }
@@ -106,15 +131,15 @@
   height: 34px;
   padding: 3px;
   border-radius: 6px;
-  background: var(--royal);
+  background: var(--brown);
 }
 .mini i {
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 240, 210, 0.2);
 }
 .mini i.on {
-  background: var(--red);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+  background: var(--orange);
+  box-shadow: 0 0 0 1px rgba(255, 230, 180, 0.6);
 }
 
 /* Main stage ---------------------------------------------------------------------- */
@@ -128,6 +153,20 @@
 .b-machine {
   position: relative;
   min-height: 0;
+}
+/* Sunburst behind the globe. */
+.b-machine::before {
+  content: '';
+  position: absolute;
+  inset: -12% -25%;
+  background: repeating-conic-gradient(
+    from 3deg at 50% 47%,
+    rgba(255, 196, 110, 0.13) 0deg 7.5deg,
+    transparent 7.5deg 15deg
+  );
+  -webkit-mask: radial-gradient(circle at 50% 47%, #000 18%, transparent 58%);
+  mask: radial-gradient(circle at 50% 47%, #000 18%, transparent 58%);
+  pointer-events: none;
 }
 .b-machine canvas {
   position: absolute;
@@ -187,7 +226,7 @@
   color: var(--cream);
   letter-spacing: 0.01em;
   text-shadow:
-    0 0.06em 0 var(--royal-deep),
+    0 0.06em 0 #2b190d,
     0 0.1em 0.25em rgba(0, 0, 0, 0.35);
   white-space: nowrap;
 }
@@ -268,8 +307,8 @@
 /* Bingo balls (DOM) --------------------------------------------------------------- */
 .ball {
   --size: 64px;
-  --c: #1f5fd6;
-  --t: #163a8a;
+  --c: #2a7c7a;
+  --t: #174948;
   position: relative;
   flex: none;
   width: var(--size);
@@ -280,9 +319,9 @@
   container-type: inline-size;
   background: radial-gradient(
     circle at 37% 31%,
-    color-mix(in srgb, var(--c) 60%, white) 0,
+    color-mix(in srgb, var(--c) 62%, #fff4dc) 0,
     var(--c) 46%,
-    color-mix(in srgb, var(--c) 45%, black) 100%
+    color-mix(in srgb, var(--c) 48%, #1a0a00) 100%
   );
   box-shadow:
     0 calc(var(--size) * 0.05) calc(var(--size) * 0.1) rgba(0, 0, 0, 0.45),
@@ -294,9 +333,21 @@
   inset: 0;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 33% 26%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.35) 9%, transparent 22%),
-    radial-gradient(circle at 45% 40%, transparent 58%, rgba(0, 0, 25, 0.3) 100%);
+    radial-gradient(circle at 33% 26%, rgba(255, 250, 235, 0.85), rgba(255, 250, 235, 0.3) 9%, transparent 22%),
+    radial-gradient(circle at 45% 40%, transparent 58%, rgba(30, 10, 0, 0.32) 100%);
   z-index: 1;
+  pointer-events: none;
+}
+/* Fine print grain over the whole ball, label included. */
+.ball::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 50%;
+  background: url(../assets/img/paper.jpg) 0 0 / 55%;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
   pointer-events: none;
 }
 .ball__label {
@@ -305,7 +356,7 @@
   width: 62%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #fbf8f0;
+  background: #f7ead0;
   color: var(--t);
   text-align: center;
   box-shadow:
@@ -315,7 +366,7 @@
 .ball--N .ball__label {
   box-shadow:
     inset 0 -2cqw 4cqw rgba(0, 0, 0, 0.12),
-    0 0 0 3cqw var(--royal);
+    0 0 0 3cqw var(--brown);
 }
 .ball__letter {
   font-family: var(--display);
@@ -392,27 +443,27 @@
   display: grid;
   place-items: center;
   height: clamp(24px, 4.6vh, 50px);
-  border: 2px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  border: 2px solid color-mix(in srgb, var(--tile-ink) 40%, transparent);
   border-radius: 7px;
   font-family: var(--hand);
   font-size: clamp(0.85rem, 2.9vh, 1.9rem);
   line-height: 1;
-  color: var(--ink);
+  color: var(--tile-ink);
 }
 .tile .daub {
   z-index: 1;
 }
 .tile.is-called {
-  color: var(--ink-deep);
+  color: var(--brown-deep);
 }
 .tile.is-latest {
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(229, 20, 58, 0.35);
+  border-color: var(--rust);
+  box-shadow: 0 0 0 3px rgba(181, 67, 42, 0.4);
   animation: latest 1.2s ease-in-out infinite alternate;
 }
 @keyframes latest {
   to {
-    box-shadow: 0 0 0 6px rgba(229, 20, 58, 0.12);
+    box-shadow: 0 0 0 6px rgba(181, 67, 42, 0.12);
   }
 }
 
@@ -427,16 +478,16 @@
   align-items: center;
   gap: 12px;
   padding: 10px;
-  border: 2px solid rgba(29, 62, 158, 0.18);
+  border: 2px solid rgba(91, 58, 34, 0.2);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 250, 238, 0.5);
   text-align: left;
-  color: #23314f;
+  color: #3a2a1c;
 }
 .pattern-opt[aria-checked='true'] {
-  border-color: var(--royal);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(29, 62, 158, 0.18);
+  border-color: var(--rust);
+  background: #fffaf0;
+  box-shadow: 0 0 0 3px rgba(181, 67, 42, 0.2);
 }
 .pattern-opt .mini {
   width: 52px;
@@ -447,14 +498,15 @@
 }
 .pattern-opt b {
   display: block;
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: 1.1rem;
-  color: var(--royal);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--rust);
 }
 .pattern-opt small {
   font-size: 0.85rem;
-  color: #5a6482;
+  color: #7a6450;
 }
 
 /* Card check --------------------------------------------------------------------------- */
@@ -510,7 +562,7 @@ dialog.sheet--wide {
   animation: stamp 0.42s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
 }
 .stamp--yes {
-  color: #0d8a3e;
+  color: #3d7a2c;
 }
 .stamp--no {
   color: #c8102e;
@@ -537,17 +589,17 @@ dialog.sheet--wide {
   grid-template-columns: 22px 1fr;
   gap: 8px;
   line-height: 1.4;
-  color: #2b3654;
+  color: #3a2a1c;
 }
 .facts li::before {
   content: '•';
   font-weight: 700;
   text-align: center;
-  color: #7a83a0;
+  color: #a08870;
 }
 .facts li.ok::before {
   content: '✓';
-  color: #0d8a3e;
+  color: #3d7a2c;
 }
 .facts li.bad::before {
   content: '✗';
@@ -558,7 +610,7 @@ dialog.sheet--wide {
   color: #b85a00;
 }
 .facts b {
-  color: #18223f;
+  color: #2b190d;
 }
 .legend {
   display: flex;
@@ -566,7 +618,7 @@ dialog.sheet--wide {
   gap: 6px 16px;
   margin-top: 16px;
   font-size: 0.82rem;
-  color: #5a6482;
+  color: #7a6450;
 }
 .legend span {
   display: inline-flex;
@@ -591,13 +643,13 @@ dialog.sheet--wide {
 .check-log {
   margin-top: 22px;
   padding-top: 14px;
-  border-top: 1px dashed rgba(29, 62, 158, 0.3);
-  color: #3b4663;
+  border-top: 1px dashed rgba(91, 58, 34, 0.35);
+  color: #4e3d2e;
 }
 .check-log summary {
   cursor: pointer;
   font-weight: 700;
-  color: var(--royal);
+  color: var(--rust);
 }
 .check-log ol {
   margin: 10px 0 0;
@@ -651,6 +703,11 @@ dialog.sheet--wide {
     padding-right: 12px;
   }
   .b-pattern__text small {
+    display: none;
+  }
+}
+@media (max-width: 1100px) {
+  .b-top .brand {
     display: none;
   }
 }

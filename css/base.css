@@ -10,24 +10,42 @@
   font-display: swap;
 }
 @font-face {
+  font-family: 'Fraunces';
+  src: url(../assets/fonts/fraunces-italic.woff2) format('woff2');
+  font-style: italic;
+  font-weight: 800;
+  font-display: swap;
+}
+@font-face {
   font-family: 'Itim';
   src: url(../assets/fonts/itim.woff2) format('woff2');
   font-display: swap;
 }
 
 :root {
-  --ink: #2a87d3;
-  --ink-deep: #1c64a8;
-  --paper: #f2e5c9;
-  --cream: #f6ecd6;
-  --red: #e5143a;
-  --red-deep: #a60d29;
-  --royal: #1d3e9e;
-  --royal-deep: #0f2462;
-  --night: #0a1840;
-  --gold: #ffc300;
-  --wood-dark: #2a160a;
+  /* Card ink: the painted blue from the reference card, aged a touch. */
+  --ink: #2f80c0;
+  --ink-deep: #1d5c94;
+  /* 60s/70s kitchen palette. */
+  --paper: #ecd7ae;
+  --cream: #f4e4c3;
+  --rust: #b5432a;
+  --rust-deep: #7a2814;
+  --orange: #d9661f;
+  --mustard: #e0a526;
+  --avocado: #7e8c2c;
+  --teal: #2a7472;
+  --teal-deep: #164644;
+  --brown: #5b3a22;
+  --brown-deep: #3a2414;
+  --cocoa: #2b190d;
+  /* Button colours, named by role. */
+  --red: #c8442a;
+  --red-deep: #7f2a12;
+  --gold: #f2b632;
+  --wood-dark: #2a1508;
   --display: 'Titan One', 'Fredoka', system-ui, sans-serif;
+  --serif: 'Fraunces', 'Cooper Black', Georgia, serif;
   --ui: 'Fredoka', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --hand: 'Itim', 'Fredoka', system-ui, sans-serif;
   color-scheme: light;
@@ -75,11 +93,59 @@ a {
 /* Wooden table ------------------------------------------------------------- */
 .table {
   background:
-    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255, 196, 120, 0.22), transparent 70%),
-    radial-gradient(ellipse 120% 90% at 50% 45%, transparent 45%, rgba(10, 4, 0, 0.62) 100%),
+    radial-gradient(ellipse 70% 55% at 55% 38%, rgba(255, 190, 110, 0.18), transparent 70%),
+    radial-gradient(ellipse 120% 90% at 50% 45%, transparent 42%, rgba(12, 4, 0, 0.7) 100%),
     url(../assets/img/wood.jpg) center / cover fixed,
     var(--wood-dark);
   background-color: var(--wood-dark);
+}
+/* Light from a fire just off the table, gently flickering. */
+.table::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 75% 85% at -5% 105%, rgba(255, 128, 30, 0.42), transparent 70%),
+    radial-gradient(ellipse 45% 55% at 0% 100%, rgba(255, 196, 90, 0.32), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 105% -5%, rgba(255, 150, 60, 0.1), transparent 70%);
+  mix-blend-mode: screen;
+  animation: firelight 6s linear infinite;
+  will-change: opacity;
+}
+@keyframes firelight {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  9% {
+    opacity: 1;
+  }
+  15% {
+    opacity: 0.74;
+  }
+  27% {
+    opacity: 0.95;
+  }
+  38% {
+    opacity: 0.8;
+  }
+  46% {
+    opacity: 1;
+  }
+  59% {
+    opacity: 0.86;
+  }
+  64% {
+    opacity: 0.72;
+  }
+  78% {
+    opacity: 0.97;
+  }
+  88% {
+    opacity: 0.8;
+  }
 }
 /* iOS ignores fixed backgrounds; avoid the zoomed, blurry fallback there. */
 @supports (-webkit-touch-callout: none) {
@@ -91,7 +157,7 @@ a {
 /* Chunky retro buttons ------------------------------------------------------ */
 .btn {
   --bg: var(--cream);
-  --fg: var(--royal-deep);
+  --fg: var(--brown);
   --edge: rgba(0, 0, 0, 0.55);
   position: relative;
   display: inline-flex;
@@ -141,10 +207,10 @@ a {
   --fg: #fff;
   --edge: var(--red-deep);
 }
-.btn--royal {
-  --bg: var(--royal);
+.btn--teal {
+  --bg: var(--teal);
   --fg: var(--cream);
-  --edge: var(--royal-deep);
+  --edge: var(--teal-deep);
 }
 .btn--ghost {
   --bg: rgba(255, 255, 255, 0.1);
@@ -174,7 +240,7 @@ a {
   padding: 0.45em 0.9em 0.45em 0.75em;
   background: var(--cream) url(../assets/img/paper.jpg);
   background-blend-mode: multiply;
-  color: var(--ink-deep);
+  color: var(--brown);
   border-radius: 6px;
   font-family: var(--ui);
   font-weight: 700;
@@ -194,6 +260,28 @@ a {
   outline-offset: 3px;
 }
 
+/* Fireside wordmark */
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  margin: 0;
+  color: var(--cream);
+  line-height: 1;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+.brand__fire {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3.4vh, 2.2rem);
+  color: var(--mustard);
+}
+.brand__bingo {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 3.2vh, 2rem);
+}
 /* Paper dialog -------------------------------------------------------------- */
 dialog.sheet {
   width: min(560px, calc(100vw - 24px));
@@ -203,7 +291,7 @@ dialog.sheet {
   border-radius: 14px;
   background: var(--cream) url(../assets/img/paper.jpg);
   background-blend-mode: multiply;
-  color: #23314f;
+  color: #3a2a1c;
   box-shadow:
     0 2px 3px rgba(0, 0, 0, 0.3),
     0 30px 80px rgba(0, 0, 0, 0.55);
@@ -213,7 +301,7 @@ dialog.sheet[open] {
   animation: sheet-in 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.2);
 }
 dialog.sheet::backdrop {
-  background: rgba(8, 10, 24, 0.62);
+  background: rgba(24, 12, 4, 0.62);
   backdrop-filter: blur(3px);
 }
 @keyframes sheet-in {
@@ -227,16 +315,17 @@ dialog.sheet::backdrop {
 }
 .sheet h2 {
   margin: 0 0 6px;
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: 1.9rem;
-  color: var(--royal);
-  letter-spacing: 0.01em;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 2.1rem;
+  line-height: 1.1;
+  color: var(--rust);
 }
 .sheet p {
   margin: 0 0 14px;
   line-height: 1.45;
-  color: #3b4663;
+  color: #4e3d2e;
 }
 .sheet__actions {
   display: flex;
@@ -254,7 +343,7 @@ dialog.sheet::backdrop {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #5a6482;
+  color: #7a6450;
   font-size: 1.6rem;
   line-height: 1;
 }
@@ -271,17 +360,17 @@ dialog.sheet::backdrop {
   min-width: 0;
   height: 48px;
   padding: 0 14px;
-  border: 2px solid rgba(29, 62, 158, 0.35);
+  border: 2px solid rgba(91, 58, 34, 0.35);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.75);
-  color: #1c2848;
+  background: rgba(255, 252, 244, 0.8);
+  color: #2b1d12;
   font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   font-size: 0.85rem;
 }
 .field input:focus {
   outline: none;
-  border-color: var(--royal);
-  box-shadow: 0 0 0 4px rgba(29, 62, 158, 0.18);
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(42, 116, 114, 0.2);
 }
 
 /* Toast */
@@ -292,7 +381,7 @@ dialog.sheet::backdrop {
   z-index: 50;
   padding: 10px 18px;
   border-radius: 999px;
-  background: #1b1f33;
+  background: #2b190d;
   color: #fff;
   font-weight: 600;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);

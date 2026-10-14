@@ -1,6 +1,6 @@
 import { BALLS, LETTERS, PATTERNS, letterOf, callName, checkCard, patternPreview } from './bingo.js';
 import { randomInt, hash } from './rng.js';
-import { BlowerMachine, BALL_COLORS } from './machine.js';
+import { BlowerMachine, BALL_COLORS, LABEL_INK } from './machine.js';
 import { paintSplotch, markJitter } from './dauber.js';
 import { openCard, extractToken } from './codec.js';
 import { createCardView } from './cardview.js';
@@ -10,7 +10,6 @@ import { store, toast, confirmSheet, openSheet, formatTime } from './ui.js';
 
 const GAME_KEY = 'bingo:game';
 const VOICE_KEY = 'bingo:voice';
-const LABEL_INK = { B: '#163a8a', I: '#a50d2a', N: '#1d3e9e', G: '#0b6b35', O: '#b35a00' };
 const $ = (id) => document.getElementById(id);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -70,7 +69,7 @@ function buildBoard() {
     badge.className = 'b-row__letter';
     badge.textContent = L;
     badge.style.setProperty('--c', BALL_COLORS[L]);
-    if (L === 'N') badge.style.setProperty('--t-on', 'var(--royal)');
+    if (L === 'N') badge.style.setProperty('--t-on', 'var(--brown)');
     const nums = document.createElement('div');
     nums.className = 'b-row__nums';
     for (let k = 1; k <= 15; k++) {
@@ -99,7 +98,7 @@ function daubTile(n, animate) {
   const tile = tiles.get(n);
   tile.classList.add('is-called');
   tile.querySelector('.daub')?.remove();
-  const size = Math.round(Math.min(tile.offsetWidth, tile.offsetHeight) * 1.25);
+  const size = Math.round(Math.min(tile.offsetWidth, tile.offsetHeight) * 1.38);
   if (!size) return;
   const seed = hash(game.id, n);
   const j = markJitter(seed);
@@ -109,7 +108,7 @@ function daubTile(n, animate) {
   daub.style.setProperty('--dy', `${j.dy * 60}%`);
   daub.style.setProperty('--rot', `${j.rot}deg`);
   const c = document.createElement('canvas');
-  paintSplotch(c, { color: '#e5143a', seed, size });
+  paintSplotch(c, { color: '#d63a22', seed, size });
   daub.append(c);
   tile.append(daub);
 }
@@ -484,7 +483,9 @@ addEventListener('storage', (e) => {
 
 machine = new BlowerMachine($('globe'), { onClack: (s) => sound.clack(s) });
 machine.load(remaining());
-document.fonts.load('40px "Titan One"').then(() => machine.buildSprites());
+Promise.all([document.fonts.load('40px "Titan One"'), document.fonts.load('italic 800 40px Fraunces')]).then(() =>
+  machine.buildSprites(),
+);
 
 buildBoard();
 buildPatternSheet();

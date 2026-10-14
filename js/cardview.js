@@ -56,7 +56,7 @@ export function createCardView(card, { interactive = false, onTap } = {}) {
               : `<span class="card__num">${card.numbers[i]}</span>`
           }${row < 4 ? '<i class="card__bar"></i>' : ''}</div>`,
       )}</div>
-      <div class="card__foot"></div>
+      <div class="card__foot"><span class="card__brand">Fireside Bingo</span><i class="card__dots"></i></div>
     </div>
     <div class="card__serial">${String(card.serial).padStart(6, '0')}</div>
     <div class="card__grid card__marks" aria-hidden="true">${columns((i) => `<div class="card__cell"><div class="card__slot" data-i="${i}"></div></div>`)}</div>
@@ -106,7 +106,7 @@ export function createCardView(card, { interactive = false, onTap } = {}) {
     // offsetWidth/Height ignore the card's tilt; fall back to the rect.
     const w = slots[0].offsetWidth || r.width;
     const h = slots[0].offsetHeight || r.height;
-    const next = Math.round(Math.min(w, h) * 1.42);
+    const next = Math.round(Math.min(w, h) * 1.55);
     if (next && next !== markSize) {
       markSize = next;
       for (let i = 0; i < 25; i++) paint(i, false);
