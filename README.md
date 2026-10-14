@@ -1,13 +1,13 @@
 # Fireside Bingo
 
-Online 75-ball bingo for a group of friends, printed like a hand-painted paper bingo card: cream card stock, sky-blue ink, a deep blue table, and balls in teal, tomato, cream, avocado and harvest gold. One person runs **The Blower** and streams it; everyone else opens **Get a Card** on their own phone or laptop and daubs along.
+Online 75-ball bingo for a group of friends, printed like a hand-painted paper bingo card: cream card stock, sky-blue ink, a deep blue table, and balls in teal, tomato, cream, avocado and harvest gold. One person picks **Host a game**, which opens the ball blower, and streams it; everyone else picks **Get a card** on their own phone or laptop and daubs along.
 
 No server, no accounts, no build step. It's a static site, so GitHub Pages can host it as-is.
 
 ## How a game goes
 
-1. **Caller** opens the site, picks **The Blower**, and shares that screen on the stream.
-2. **Players** open the same site and pick **Get a Card**. Each player is dealt their own random card.
+1. **Caller** opens the site, picks **Host a game**, and shares that screen (the blower) on the stream.
+2. **Players** open the same site and pick **Get a card**. Each player is dealt their own random card.
 3. The caller hits **Blow next ball** (or presses <kbd>Space</kbd>). The globe roars and shudders, the marquee lights race, one ball is sucked up the neck and pops out in a shower of sparks, tumbles through the air and bounces into the spotlight. It's called out on screen and daubed on the board. Tap the glass any time to give the balls a puff of air.
 4. Players tap numbers to daub them. Seven ink bottles sit on the table; picking one up pops its cap. Ink goes down the instant your finger touches the card, with a squash, a splash and a wet shine that dries off. Every daub is painted fresh, so no two marks look alike: some presses are heavy and wet, some light and streaky, some tilted, smeared or double-tapped. Finish a line and it sparkles, and the BINGO! button starts dancing.
 5. A player with a bingo taps **BINGO!** and sends the caller the sealed link it gives them.
@@ -72,7 +72,7 @@ npm test
 
 | Path | What it does |
 | --- | --- |
-| `index.html` | Home screen with the two choices |
+| `index.html`, `css/home.css` | Home screen: Get a card, Host a game, and how it works |
 | `blower.html`, `js/blower-page.js` | Caller screen: draws, board, rack of recent balls, pattern, card check |
 | `js/machine.js` | The globe: canvas physics, glass, pedestal and marquee lights, the draw |
 | `js/balls.js` | Ball sprites with 3D-rolling labels, shared by the globe, the flight and the rack |
