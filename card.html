@@ -8,12 +8,12 @@
       name="description"
       content="Your own one-of-a-kind Fireside Bingo card. Daub the numbers as they're called."
     />
-    <meta name="theme-color" content="#2a160a" />
+    <meta name="theme-color" content="#173f66" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/itim.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="assets/img/wood.jpg" as="image" />
+    <link rel="preload" href="assets/img/paper.jpg" as="image" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/cardview.css" />
     <link rel="stylesheet" href="css/card.css" />
@@ -21,7 +21,9 @@
   <body class="table card-page">
     <header class="topbar">
       <div class="topbar__left">
-        <a class="tag" href="./"><span aria-hidden="true">←</span> Home</a>
+        <a class="tag" href="./" aria-label="Home"
+          ><span aria-hidden="true">←</span><span class="tag__text">Home</span></a
+        >
         <p class="brand"><span class="brand__fire">Fireside</span><span class="brand__bingo">bingo</span></p>
       </div>
       <p class="hint" id="hint">tap a number to daub it</p>
@@ -44,14 +46,14 @@
       <section class="shared" id="shared" hidden>
         <p class="shared__title">Shared card</p>
         <p class="shared__meta" id="shared-meta"></p>
-        <a class="btn btn--teal" id="shared-check" href="blower.html">Check it on my blower</a>
+        <a class="btn btn--gold" id="shared-check" href="blower.html">Check it on my blower</a>
         <a class="btn btn--small btn--ghost" href="card.html">Get my own card</a>
       </section>
     </main>
 
     <footer class="actions" id="actions">
       <button class="btn btn--small btn--ghost" id="new-card" type="button">New card</button>
-      <button class="btn btn--red btn--bingo" id="bingo" type="button">BINGO!</button>
+      <button class="btn btn--gold btn--bingo" id="bingo" type="button">BINGO!</button>
       <button class="btn btn--small btn--ghost" id="wipe" type="button">Wipe daubs</button>
     </footer>
 
@@ -65,12 +67,12 @@
         </p>
         <div class="field">
           <input id="share-url" readonly aria-label="Your sealed card link" />
-          <button type="button" class="btn btn--teal" id="copy">Copy</button>
+          <button type="button" class="btn btn--ink" id="copy">Copy</button>
         </div>
         <p class="share__note" id="share-note"></p>
         <div class="sheet__actions">
           <button type="button" class="btn btn--small" id="native-share" hidden>Share…</button>
-          <button class="btn btn--small btn--red" value="close">Done</button>
+          <button class="btn btn--small btn--gold" value="close">Done</button>
         </div>
       </form>
     </dialog>

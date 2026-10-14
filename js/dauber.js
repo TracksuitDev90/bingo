@@ -58,7 +58,7 @@ function blob(rnd, cx, cy, R, squash, angle, lump) {
   const ca = Math.cos(angle);
   const sa = Math.sin(angle);
   const path = new Path2D();
-  const N = 180;
+  const N = 140;
   for (let i = 0; i <= N; i++) {
     const t = (i / N) * TAU;
     let r = 1;
@@ -87,11 +87,31 @@ function dot(ctx, x, y, r) {
  * smears and droplets still fit inside.
  */
 export function paintSplotch(canvas, { color, seed, size }) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const px = Math.max(8, Math.round(size * dpr));
   canvas.width = canvas.height = px;
   canvas.style.width = canvas.style.height = `${size}px`;
-  const ctx = canvas.getContext('2d');
+  renderSplotch(canvas.getContext('2d'), px, color, seed);
+}
+
+// Painted marks, kept so a tap only has to blit one. Keyed by colour, seed
+// and pixel size; old entries fall out once there are plenty.
+const cache = new Map();
+/** A splotch on its own `px`-square canvas, painted once and reused. */
+export function splotch(color, seed, px) {
+  px = Math.max(8, Math.round(px));
+  const key = `${color}|${seed}|${px}`;
+  let c = cache.get(key);
+  if (c) return c;
+  c = document.createElement('canvas');
+  c.width = c.height = px;
+  renderSplotch(c.getContext('2d'), px, color, seed);
+  cache.set(key, c);
+  if (cache.size > 160) cache.delete(cache.keys().next().value);
+  return c;
+}
+
+function renderSplotch(ctx, px, color, seed) {
   ctx.setTransform(px / 100, 0, 0, px / 100, 0, 0);
   ctx.clearRect(0, 0, 100, 100);
 
@@ -359,8 +379,9 @@ export function markJitter(seed) {
 let uid = 0;
 /**
  * A bingo dauber bottle as an SVG string: translucent plastic showing the
- * ink inside, a printed paper label in 70s stripes, a ridged cap that lifts
+ * ink inside, a paper label printed like the cards, a ridged cap that lifts
  * off when the bottle is picked up, a foam tip, ink dribbles and scuffs.
+ * No filters or images, so the cap animation stays cheap to repaint.
  */
 export function dauberSVG({ id: n, name, color }) {
   const id = `db${++uid}`;
@@ -379,10 +400,10 @@ export function dauberSVG({ id: n, name, color }) {
     return `M${x - w} 46 Q${x - w} ${46 + len} ${x} ${47 + len} Q${x + w} ${46 + len} ${x + w} 46Z`;
   }).join('');
   const crust = `<path d="M15 44.5q4 2.5 8 .8t9 1.2 8-.6 9 .4v2.4q-5 1.4-9 .2t-9 .6-8-.4-8 .2z${runs}" fill="${mid}" stroke="${deep}" stroke-width=".4"/>`;
-  const sx = rnd() < 0.5 ? 7 + rnd() * 6 : 51 + rnd() * 6;
-  const sy = 112 + rnd() * 30;
-  const sr = 5 + rnd() * 3;
-  const smudge = `<g clip-path="url(#${id}c)" opacity=".75"><path d="M${sx - sr} ${sy}c0-${sr * 0.6} ${sr * 0.5}-${sr} ${sr}-${sr}s${sr * 1.1} ${sr * 0.3} ${sr} ${sr}-${sr * 0.4} ${sr * 1.05}-${sr} ${sr}-${sr}-${sr * 0.5}-${sr}-${sr}z" fill="${color}" style="mix-blend-mode:multiply"/></g>`;
+  const sx = rnd() < 0.5 ? 9 + rnd() * 5 : 50 + rnd() * 5;
+  const sy = 128 + rnd() * 14;
+  const sr = 4 + rnd() * 2.5;
+  const smudge = `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${sr.toFixed(1)}" fill="${color}" opacity=".35"/>`;
   const scuffs = Array.from({ length: 4 }, () => {
     const x = 12 + rnd() * 40;
     const y = 64 + rnd() * 96;
@@ -401,62 +422,44 @@ export function dauberSVG({ id: n, name, color }) {
       <stop offset="1" stop-color="${deep}" stop-opacity=".6"/>
     </linearGradient>
     <linearGradient id="${id}w" x1="0" x2="1">
-      <stop offset="0" stop-color="#3a2210" stop-opacity=".35"/><stop offset=".22" stop-color="#3a2210" stop-opacity="0"/>
-      <stop offset=".7" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#3a2210" stop-opacity=".45"/>
+      <stop offset="0" stop-color="#14304c" stop-opacity=".3"/><stop offset=".22" stop-color="#14304c" stop-opacity="0"/>
+      <stop offset=".7" stop-color="#fff" stop-opacity=".14"/><stop offset="1" stop-color="#14304c" stop-opacity=".4"/>
     </linearGradient>
     <radialGradient id="${id}t" cx=".38" cy=".3" r=".75">
       <stop offset="0" stop-color="${mid}"/><stop offset="1" stop-color="${deep}"/>
     </radialGradient>
-    <pattern id="${id}p" patternUnits="userSpaceOnUse" width="80" height="80">
-      <image href="assets/img/paper.jpg" width="80" height="80" preserveAspectRatio="none"/>
-    </pattern>
-    <pattern id="${id}f" patternUnits="userSpaceOnUse" width="3" height="3">
-      <circle cx="1" cy="1" r=".55" fill="rgba(0,0,0,.35)"/>
-    </pattern>
-    <clipPath id="${id}c"><rect x="5" y="94" width="54" height="56"/></clipPath>
-    <filter id="${id}g" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="${n}" result="n"/>
-      <feColorMatrix in="n" type="matrix" values=".5 0 0 0 .7  .5 0 0 0 .7  .5 0 0 0 .7  0 0 0 0 1" result="m"/>
-      <feBlend in="SourceGraphic" in2="m" mode="multiply" result="b"/>
-      <feComposite in="b" in2="SourceGraphic" operator="in"/>
-    </filter>
   </defs>
-  <ellipse cx="32" cy="170" rx="27" ry="5" fill="rgba(20,8,0,.4)"/>
-  <g filter="url(#${id}g)">
-    <ellipse cx="32" cy="27" rx="11.5" ry="12" fill="url(#${id}t)"/>
-    <ellipse cx="32" cy="27" rx="11.5" ry="12" fill="url(#${id}f)"/>
-    <ellipse cx="28" cy="22" rx="4" ry="2.6" fill="rgba(255,255,255,.4)"/>
-    <path d="M17 36h30l2 10H15z" fill="#2b2622"/>
-    <path d="M17 36h30v2H17z" fill="rgba(255,255,255,.25)"/>
-    <path d="M15 46h34c6 0 9 6 10 16H5c1-10 4-16 10-16z" fill="url(#${id}e)"/>
-    <rect x="5" y="60" width="54" height="108" rx="11" fill="url(#${id}e)"/>
-    <path d="M5 ${level}H59V157A11 11 0 0 1 48 168H16A11 11 0 0 1 5 157Z" fill="url(#${id}b)" opacity=".92"/>
-    <path d="M6 ${level}q26 3 52 0" fill="none" stroke="${lite}" stroke-width="1.2" opacity=".8"/>
-    <g>
-      <rect x="5" y="94" width="54" height="56" fill="#efdcb4"/>
-      <rect x="5" y="94" width="54" height="56" fill="url(#${id}p)" style="mix-blend-mode:multiply"/>
-      <rect x="5" y="97" width="54" height="3.2" fill="#b5432a"/>
-      <rect x="5.6" y="100.6" width="54" height="3.2" fill="#d9661f"/>
-      <rect x="5" y="104.2" width="54" height="3.2" fill="#e0a526"/>
-      <text x="32" y="120" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="800" font-size="11.5" fill="#5b3a22">Fireside</text>
-      <text x="32" y="128.5" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="5.6" letter-spacing="1.1" fill="#8a5a3a">BINGO INK</text>
-      <rect x="9" y="132" width="46" height="11" rx="5.5" fill="${color}"/>
-      <text x="32" y="140.4" text-anchor="middle" font-family="Titan One, sans-serif" font-size="${name.length > 6 ? 5.6 : 7.2}" fill="#fff8e6">${name}</text>
-      <rect x="5" y="94" width="54" height="56" fill="url(#${id}w)"/>
-      <path d="M5 94h54M5 150h54" stroke="rgba(60,30,10,.25)" stroke-width=".6"/>
-      ${smudge}
-    </g>
-    ${crust}
-    <path d="M10 66v92" stroke="rgba(255,255,255,.5)" stroke-width="3.5" stroke-linecap="round"/>
-    <path d="M14 70v30" stroke="rgba(255,255,255,.3)" stroke-width="1.2" stroke-linecap="round"/>
-    <path d="M54 66v92" stroke="rgba(0,0,0,.2)" stroke-width="3" stroke-linecap="round"/>
-    <path d="${scuffs}" stroke="rgba(255,255,255,.35)" stroke-width=".5"/>
-    <g class="cap">
-      <path d="M14 38V14C14 6 22 2 32 2s18 4 18 12v24z" fill="url(#${id}b)"/>
-      <path d="${ridges}" stroke="rgba(0,0,0,.22)" stroke-width="1.4"/>
-      <path d="M18 9c3-4 8-5 12-5" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/>
-      <path d="M14 34h36v4H14z" fill="rgba(0,0,0,.25)"/>
-    </g>
+  <ellipse cx="32" cy="170" rx="27" ry="5" fill="rgba(4,14,32,.4)"/>
+  <ellipse cx="32" cy="27" rx="11.5" ry="12" fill="url(#${id}t)"/>
+  <ellipse cx="28" cy="22" rx="4" ry="2.6" fill="rgba(255,255,255,.4)"/>
+  <path d="M17 36h30l2 10H15z" fill="#262a30"/>
+  <path d="M17 36h30v2H17z" fill="rgba(255,255,255,.25)"/>
+  <path d="M15 46h34c6 0 9 6 10 16H5c1-10 4-16 10-16z" fill="url(#${id}e)"/>
+  <rect x="5" y="60" width="54" height="108" rx="11" fill="url(#${id}e)"/>
+  <path d="M5 ${level}H59V157A11 11 0 0 1 48 168H16A11 11 0 0 1 5 157Z" fill="url(#${id}b)" opacity=".92"/>
+  <path d="M6 ${level}q26 3 52 0" fill="none" stroke="${lite}" stroke-width="1.2" opacity=".8"/>
+  <g>
+    <rect x="5" y="94" width="54" height="56" fill="#f2e6cb"/>
+    <rect x="9" y="98" width="46" height="15" rx="2.4" fill="#2f80c0"/>
+    <text x="32" y="109.6" text-anchor="middle" font-family="Titan One, sans-serif" font-size="11" letter-spacing=".6" fill="#f2e6cb">bingo</text>
+    <rect x="9" y="115" width="46" height="1.4" rx=".7" fill="#2f80c0"/>
+    <text x="32" y="126" text-anchor="middle" font-family="Itim, sans-serif" font-size="7" letter-spacing=".8" fill="#2f80c0">dauber ink</text>
+    <rect x="9" y="132" width="46" height="11" rx="5.5" fill="${color}"/>
+    <text x="32" y="140.4" text-anchor="middle" font-family="Titan One, sans-serif" font-size="${name.length > 6 ? 5.6 : 7.2}" fill="#fff8e6">${name}</text>
+    <rect x="5" y="94" width="54" height="56" fill="url(#${id}w)"/>
+    <path d="M5 94h54M5 150h54" stroke="rgba(20,40,60,.25)" stroke-width=".6"/>
+    ${smudge}
+  </g>
+  ${crust}
+  <path d="M10 66v92" stroke="rgba(255,255,255,.5)" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M14 70v30" stroke="rgba(255,255,255,.3)" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M54 66v92" stroke="rgba(0,0,0,.2)" stroke-width="3" stroke-linecap="round"/>
+  <path d="${scuffs}" stroke="rgba(255,255,255,.35)" stroke-width=".5"/>
+  <g class="cap">
+    <path d="M14 38V14C14 6 22 2 32 2s18 4 18 12v24z" fill="url(#${id}b)"/>
+    <path d="${ridges}" stroke="rgba(0,0,0,.22)" stroke-width="1.4"/>
+    <path d="M18 9c3-4 8-5 12-5" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M14 34h36v4H14z" fill="rgba(0,0,0,.25)"/>
   </g>
 </svg>`;
 }

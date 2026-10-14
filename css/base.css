@@ -22,28 +22,23 @@
   font-display: swap;
 }
 
+/* Paper and ink: the look of the painted bingo card, carried through the
+   whole game. Cream card stock, sky-blue painted print, a deep blue table,
+   and the bingo-ball colours for everything that's fun. */
 :root {
-  /* Card ink: the painted blue from the reference card, aged a touch. */
   --ink: #2f80c0;
   --ink-deep: #1d5c94;
-  /* 60s/70s kitchen palette. */
-  --paper: #ecd7ae;
-  --cream: #f4e4c3;
-  --rust: #b5432a;
-  --rust-deep: #7a2814;
-  --orange: #d9661f;
-  --mustard: #e0a526;
-  --avocado: #7e8c2c;
-  --teal: #2a7472;
-  --teal-deep: #164644;
-  --brown: #5b3a22;
-  --brown-deep: #3a2414;
-  --cocoa: #2b190d;
-  /* Button colours, named by role. */
-  --red: #c8442a;
-  --red-deep: #7f2a12;
-  --gold: #f2b632;
-  --wood-dark: #2a1508;
+  --ink-dark: #163654;
+  --paper: #f0e3c6;
+  --cream: #f7efdd;
+  --table: #1c4a74;
+  --table-deep: #0f2c4a;
+  /* Ball colours. */
+  --teal: #2a7c7a;
+  --tomato: #c4462c;
+  --avocado: #7f8d2d;
+  --gold: #f0b429;
+  --gold-deep: #a86f08;
   --display: 'Titan One', 'Fredoka', system-ui, sans-serif;
   --serif: 'Fraunces', 'Cooper Black', Georgia, serif;
   --ui: 'Fredoka', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -66,6 +61,7 @@ body {
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+  background-color: var(--table);
 }
 button,
 input {
@@ -90,75 +86,22 @@ a {
   white-space: nowrap;
 }
 
-/* Wooden table ------------------------------------------------------------- */
+/* The table: deep blue, painted on rough paper. Static, so it is painted
+   once and never touched again. */
 .table {
   background:
-    radial-gradient(ellipse 70% 55% at 55% 38%, rgba(255, 190, 110, 0.18), transparent 70%),
-    radial-gradient(ellipse 120% 90% at 50% 45%, transparent 42%, rgba(12, 4, 0, 0.7) 100%),
-    url(../assets/img/wood.jpg) center / cover fixed,
-    var(--wood-dark);
-  background-color: var(--wood-dark);
-}
-/* Light from a fire just off the table, gently flickering. */
-.table::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 75% 85% at -5% 105%, rgba(255, 128, 30, 0.42), transparent 70%),
-    radial-gradient(ellipse 45% 55% at 0% 100%, rgba(255, 196, 90, 0.32), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 105% -5%, rgba(255, 150, 60, 0.1), transparent 70%);
-  mix-blend-mode: screen;
-  animation: firelight 6s linear infinite;
-  will-change: opacity;
-}
-@keyframes firelight {
-  0%,
-  100% {
-    opacity: 0.82;
-  }
-  9% {
-    opacity: 1;
-  }
-  15% {
-    opacity: 0.74;
-  }
-  27% {
-    opacity: 0.95;
-  }
-  38% {
-    opacity: 0.8;
-  }
-  46% {
-    opacity: 1;
-  }
-  59% {
-    opacity: 0.86;
-  }
-  64% {
-    opacity: 0.72;
-  }
-  78% {
-    opacity: 0.97;
-  }
-  88% {
-    opacity: 0.8;
-  }
-}
-/* iOS ignores fixed backgrounds; avoid the zoomed, blurry fallback there. */
-@supports (-webkit-touch-callout: none) {
-  .table {
-    background-attachment: scroll;
-  }
+    radial-gradient(ellipse 75% 55% at 50% 30%, rgba(130, 190, 245, 0.2), transparent 70%),
+    radial-gradient(ellipse 130% 100% at 50% 40%, transparent 50%, rgba(4, 14, 32, 0.5) 100%),
+    url(../assets/img/paper.jpg) 0 0 / 420px,
+    var(--table);
+  background-blend-mode: screen, normal, multiply, normal;
 }
 
-/* Chunky retro buttons ------------------------------------------------------ */
+/* Chunky buttons --------------------------------------------------------------- */
 .btn {
   --bg: var(--cream);
-  --fg: var(--brown);
-  --edge: rgba(0, 0, 0, 0.55);
+  --fg: var(--ink-dark);
+  --edge: rgba(8, 24, 44, 0.55);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -175,23 +118,28 @@ a {
   font-size: 1rem;
   letter-spacing: 0.01em;
   text-decoration: none;
+  white-space: nowrap;
   box-shadow:
     0 4px 0 var(--edge),
-    0 8px 18px rgba(0, 0, 0, 0.28);
+    0 8px 16px rgba(4, 14, 32, 0.28);
   transition:
     transform 0.08s ease,
     box-shadow 0.08s ease,
     filter 0.15s;
   user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
-.btn:hover {
-  filter: brightness(1.05);
+@media (hover: hover) {
+  .btn:hover {
+    filter: brightness(1.06);
+  }
 }
 .btn:active {
   transform: translateY(3px);
   box-shadow:
     0 1px 0 var(--edge),
-    0 3px 8px rgba(0, 0, 0, 0.28);
+    0 3px 8px rgba(4, 14, 32, 0.28);
 }
 .btn:focus-visible {
   outline: 3px solid var(--gold);
@@ -199,24 +147,28 @@ a {
 }
 .btn[disabled] {
   cursor: not-allowed;
-  filter: saturate(0.3) brightness(0.85);
+  filter: saturate(0.4) brightness(0.88);
   transform: none;
 }
-.btn--red {
-  --bg: var(--red);
-  --fg: #fff;
-  --edge: var(--red-deep);
+.btn--gold {
+  --bg: var(--gold);
+  --fg: var(--ink-dark);
+  --edge: var(--gold-deep);
 }
-.btn--teal {
-  --bg: var(--teal);
-  --fg: var(--cream);
-  --edge: var(--teal-deep);
+.btn--ink {
+  --bg: var(--ink);
+  --fg: #fff;
+  --edge: var(--ink-deep);
+}
+.btn--danger {
+  --bg: var(--tomato);
+  --fg: #fff;
+  --edge: #7a2414;
 }
 .btn--ghost {
-  --bg: rgba(255, 255, 255, 0.1);
+  --bg: rgba(255, 255, 255, 0.13);
   --fg: var(--cream);
-  --edge: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(4px);
+  --edge: rgba(4, 14, 32, 0.35);
 }
 .btn--small {
   min-height: 38px;
@@ -225,8 +177,10 @@ a {
 }
 .btn kbd {
   font: inherit;
-  font-size: 0.7em;
-  opacity: 0.75;
+  font-family: var(--ui);
+  font-weight: 600;
+  font-size: 0.55em;
+  opacity: 0.7;
   border: 1.5px solid currentColor;
   border-radius: 6px;
   padding: 0.05em 0.4em;
@@ -237,72 +191,121 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
-  padding: 0.45em 0.9em 0.45em 0.75em;
-  background: var(--cream) url(../assets/img/paper.jpg);
+  min-height: 40px;
+  padding: 0.4em 0.9em 0.4em 0.75em;
+  background: var(--paper) url(../assets/img/paper.jpg) 0 0 / 200px;
   background-blend-mode: multiply;
-  color: var(--brown);
+  color: var(--ink-deep);
   border-radius: 6px;
   font-family: var(--ui);
   font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
   box-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.3),
-    0 6px 14px rgba(0, 0, 0, 0.35);
+    0 1px 1px rgba(4, 14, 32, 0.3),
+    0 5px 12px rgba(4, 14, 32, 0.3);
   transform: rotate(-2deg);
   transition: transform 0.15s;
 }
-.tag:hover {
-  transform: rotate(-2deg) translateY(-2px);
+@media (hover: hover) {
+  .tag:hover {
+    transform: rotate(-2deg) translateY(-2px);
+  }
 }
 .tag:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
 }
 
-/* Fireside wordmark */
+/* Wordmark */
 .brand {
   display: flex;
   align-items: baseline;
-  gap: 0.35em;
+  gap: 0.3em;
   margin: 0;
   color: var(--cream);
   line-height: 1;
-  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
 }
 .brand__fire {
   font-family: var(--serif);
   font-style: italic;
   font-weight: 800;
-  font-size: clamp(1.5rem, 3.4vh, 2.2rem);
-  color: var(--mustard);
+  font-size: clamp(1.35rem, 3vh, 1.9rem);
+  color: var(--paper);
 }
 .brand__bingo {
+  padding: 0.04em 0.28em 0.1em;
+  border-radius: 0.18em;
+  background: var(--ink);
+  color: var(--paper);
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(1.4rem, 3.2vh, 2rem);
+  font-size: clamp(1.25rem, 2.8vh, 1.75rem);
+  box-shadow: 0 0 0 2px rgba(247, 239, 221, 0.25);
 }
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(4, 14, 32, 0.28);
+  color: var(--cream);
+  touch-action: manipulation;
+}
+@media (hover: hover) {
+  .icon-btn:hover {
+    background: rgba(4, 14, 32, 0.42);
+  }
+}
+.icon-btn:focus-visible {
+  outline: 3px solid var(--gold);
+}
+.icon-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon-btn[aria-pressed='false'] .wave {
+  opacity: 0.15;
+}
+.icon-btn .slash {
+  opacity: 0;
+}
+.icon-btn[aria-pressed='false'] .slash {
+  opacity: 1;
+}
+
 /* Paper dialog -------------------------------------------------------------- */
 dialog.sheet {
   width: min(560px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
   max-height: calc(100dvh - 24px);
   padding: 0;
   border: 0;
   border-radius: 14px;
-  background: var(--cream) url(../assets/img/paper.jpg);
+  background: var(--cream) url(../assets/img/paper.jpg) 0 0 / 360px;
   background-blend-mode: multiply;
-  color: #3a2a1c;
+  color: var(--ink-dark);
   box-shadow:
-    0 2px 3px rgba(0, 0, 0, 0.3),
-    0 30px 80px rgba(0, 0, 0, 0.55);
+    0 2px 3px rgba(4, 14, 32, 0.3),
+    0 30px 80px rgba(4, 14, 32, 0.55);
   overflow: auto;
+  overscroll-behavior: contain;
 }
 dialog.sheet[open] {
   animation: sheet-in 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.2);
 }
 dialog.sheet::backdrop {
-  background: rgba(24, 12, 4, 0.62);
-  backdrop-filter: blur(3px);
+  background: rgba(6, 18, 36, 0.66);
 }
 @keyframes sheet-in {
   from {
@@ -314,18 +317,18 @@ dialog.sheet::backdrop {
   padding: 26px 24px 22px;
 }
 .sheet h2 {
-  margin: 0 0 6px;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 800;
-  font-size: 2.1rem;
+  margin: 0 0 8px;
+  padding-right: 36px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.9rem;
   line-height: 1.1;
-  color: var(--rust);
+  color: var(--ink);
 }
 .sheet p {
   margin: 0 0 14px;
   line-height: 1.45;
-  color: #4e3d2e;
+  color: #3a4656;
 }
 .sheet__actions {
   display: flex;
@@ -343,7 +346,7 @@ dialog.sheet::backdrop {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #7a6450;
+  color: #5a6a7d;
   font-size: 1.6rem;
   line-height: 1;
 }
@@ -360,17 +363,17 @@ dialog.sheet::backdrop {
   min-width: 0;
   height: 48px;
   padding: 0 14px;
-  border: 2px solid rgba(91, 58, 34, 0.35);
+  border: 2px solid rgba(29, 92, 148, 0.35);
   border-radius: 10px;
-  background: rgba(255, 252, 244, 0.8);
-  color: #2b1d12;
+  background: rgba(255, 253, 247, 0.85);
+  color: var(--ink-dark);
   font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   font-size: 0.85rem;
 }
 .field input:focus {
   outline: none;
-  border-color: var(--teal);
-  box-shadow: 0 0 0 4px rgba(42, 116, 114, 0.2);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(47, 128, 192, 0.2);
 }
 
 /* Toast */
@@ -379,13 +382,15 @@ dialog.sheet::backdrop {
   left: 50%;
   bottom: max(20px, env(safe-area-inset-bottom));
   z-index: 50;
+  max-width: calc(100vw - 32px);
   padding: 10px 18px;
   border-radius: 999px;
-  background: #2b190d;
+  background: var(--ink-dark);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  transform: translate(-50%, 140%);
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(4, 14, 32, 0.4);
+  transform: translate(-50%, 160%);
   transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
   pointer-events: none;
 }

@@ -1,284 +1,73 @@
-/* The paper bingo card. Every measurement is in cqw (percent of the card's
-   width) so the card scales as one printed object. */
+/* The paper bingo card. The face and the daubs are drawn on one canvas (see
+   js/cardview.js); this file only places it and the layers over it. Sizes
+   are percentages of the card, plus --u (1% of its width, set from JS), so
+   it works without container query units. */
 
 .card {
-  --gap: 1.7cqw;
-  --side: 5.2cqw;
-  container-type: inline-size;
+  --u: 3.4px;
   position: relative;
-  isolation: isolate;
   width: 100%;
   aspect-ratio: 100 / 131;
-  color: var(--ink);
+  border-radius: 1%;
+  background: #f0e3c5;
+  box-shadow:
+    0 1px 1px rgba(4, 14, 32, 0.3),
+    0 10px 20px rgba(4, 14, 32, 0.38);
   user-select: none;
   -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
-
-.card__paper {
+.card.is-ready {
+  background: none;
+}
+.card__canvas {
   position: absolute;
   inset: 0;
-  border-radius: 0.8cqw;
-  background:
-    radial-gradient(ellipse 85% 75% at 45% 40%, transparent 50%, rgba(130, 80, 20, 0.24) 100%),
-    linear-gradient(170deg, rgba(255, 255, 255, 0.25), transparent 40%, rgba(90, 60, 20, 0.06)),
-    url(../assets/img/paper.jpg) 0 0 / 60cqw,
-    var(--paper);
-  background-blend-mode: normal, soft-light, multiply, normal;
-  filter: url(#f-deckle) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35)) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.4));
-}
-
-.card__ink {
-  position: absolute;
-  inset: 0;
-  filter: url(#f-paint);
-}
-
-.card__title {
-  position: absolute;
-  left: var(--side);
-  right: var(--side);
-  top: 5cqw;
-  height: 20cqw;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  column-gap: var(--gap);
-  align-items: center;
-  border-radius: 1.6cqw;
-  background: var(--ink);
-}
-.card__title span {
-  text-align: center;
-  font-family: var(--display);
-  font-size: 17.5cqw;
-  line-height: 1;
-  color: var(--paper);
-  transform: translateY(-0.6cqw);
-}
-
-.card__band {
-  position: absolute;
-  left: var(--side);
-  right: var(--side);
-  top: 27cqw;
-  height: 2.3cqw;
-  border-radius: 1cqw;
-  background: var(--ink);
-}
-
-.card__grid {
-  position: absolute;
-  left: var(--side);
-  right: var(--side);
-  top: 31.6cqw;
-  height: 91.5cqw;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  column-gap: var(--gap);
-}
-.card__col {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  border: 0.85cqw solid var(--ink);
-  border-radius: 1.5cqw;
-}
-.card__marks .card__col,
-.card__hits .card__col {
-  border-color: transparent;
-}
-.card__cell {
-  position: relative;
-  flex: 1;
-  display: grid;
-  place-items: center;
-  min-height: 0;
-}
-.card__num {
-  font-family: var(--hand);
-  font-size: 13.2cqw;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  transform: translateY(-0.3cqw);
-}
-.card__bar {
-  position: absolute;
-  left: 15%;
-  right: 15%;
-  bottom: -0.9cqw;
-  height: 1.8cqw;
-  border-radius: 1cqw;
-  background: var(--ink);
-}
-.card__free {
-  display: grid;
-  place-content: center;
-  width: 84%;
-  height: 78%;
-  border-radius: 1.3cqw;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--hand);
-  font-size: 5.4cqw;
-  line-height: 0.95;
-  text-align: center;
-}
-
-.card__foot {
-  position: absolute;
-  left: var(--side);
-  right: 31cqw;
-  top: 123.9cqw;
-  height: 4.6cqw;
-  display: flex;
-  align-items: center;
-  gap: 2cqw;
-}
-.card__brand {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 800;
-  font-size: 4.3cqw;
-  line-height: 1;
-  white-space: nowrap;
-}
-.card__dots {
-  flex: 1;
-  height: 2cqw;
-  background: radial-gradient(circle, var(--ink) 0.42cqw, transparent 0.55cqw) 0 50% / 2.6cqw 2cqw repeat-x;
-  -webkit-mask: linear-gradient(90deg, #000 0 22%, transparent 22% 28%, #000 28% 61%, transparent 61% 68%, #000 68%);
-  mask: linear-gradient(90deg, #000 0 22%, transparent 22% 28%, #000 28% 61%, transparent 61% 68%, #000 68%);
-}
-.card__serial {
-  position: absolute;
-  right: var(--side);
-  top: 124.2cqw;
-  font-family: 'Courier New', ui-monospace, monospace;
-  font-weight: 700;
-  font-size: 4cqw;
-  letter-spacing: 0.08em;
-  color: #c23b22;
-  opacity: 0.88;
-  mix-blend-mode: multiply;
-}
-.card__serial::before {
-  content: 'No ';
-  font-size: 0.75em;
-}
-
-/* Dauber marks ------------------------------------------------------------- */
-.card__slot {
-  position: absolute;
-  inset: 0;
-}
-.daub {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: calc(-50% + var(--dx, 0%)) calc(-50% + var(--dy, 0%));
-  rotate: var(--rot, 0deg);
-  scale: var(--s, 1);
-  mix-blend-mode: multiply;
-  pointer-events: none;
-  line-height: 0;
-}
-.daub canvas {
+  width: 100%;
+  height: 100%;
   display: block;
-}
-.daub--fresh {
-  animation:
-    daub-stamp 0.32s cubic-bezier(0.2, 0.8, 0.3, 1.15) both,
-    daub-dry 1.8s ease-out both;
-}
-@keyframes daub-stamp {
-  0% {
-    opacity: 0;
-    scale: calc(var(--s, 1) * 1.45);
-  }
-  45% {
-    opacity: 1;
-    scale: calc(var(--s, 1) * 0.92);
-  }
-  100% {
-    scale: var(--s, 1);
-  }
-}
-@keyframes daub-dry {
-  0% {
-    filter: saturate(1.35) brightness(1.08);
-  }
-  100% {
-    filter: none;
-  }
-}
-.daub--lift {
-  animation: daub-lift 0.26s ease-in forwards;
-}
-@keyframes daub-lift {
-  to {
-    opacity: 0;
-    scale: calc(var(--s, 1) * 1.08);
-  }
-}
-/* Wet shine on fresh ink, fading as it dries. */
-.daub-sheen {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 64%;
-  height: 64%;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 34% 30%,
-    rgba(255, 255, 255, 0.75),
-    rgba(255, 255, 255, 0.15) 28%,
-    transparent 55%
-  );
-  pointer-events: none;
-  animation: sheen 1.6s ease-out forwards;
-}
-@keyframes sheen {
-  0% {
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.9;
-  }
-  100% {
-    opacity: 0;
-  }
 }
 
 /* Tap targets --------------------------------------------------------------- */
+.card__hits {
+  position: absolute;
+  inset: 0;
+}
 .card__hit {
   position: absolute;
-  inset: 0.4cqw;
+  margin: 0;
+  padding: 0;
   border: 0;
-  border-radius: 1.4cqw;
+  border-radius: calc(var(--u) * 1.4);
   background: transparent;
   cursor: var(--dauber-cursor, pointer);
   touch-action: manipulation;
+  -webkit-touch-callout: none;
 }
 .card__hit:focus-visible {
-  outline: 0.8cqw solid var(--gold);
-  outline-offset: -0.4cqw;
+  outline: calc(var(--u) * 0.8) solid var(--gold);
+  outline-offset: calc(var(--u) * -0.4);
 }
 @media (hover: hover) {
   .card__hit:hover {
-    background: radial-gradient(
-      circle,
-      color-mix(in srgb, var(--dauber, #e5143a) 16%, transparent) 0 42%,
-      transparent 44%
-    );
+    background: radial-gradient(circle, rgba(47, 128, 192, 0.12) 0 40%, transparent 42%);
   }
 }
 
 /* Card check annotations ------------------------------------------------------ */
-.card__slot.is-win::before {
+.card__notes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.card__note {
+  position: absolute;
+}
+.card__note.is-win::before {
   content: '';
   position: absolute;
   inset: 4% 2%;
-  border-radius: 1.6cqw;
+  border-radius: calc(var(--u) * 1.6);
   background: #ffe14d;
   mix-blend-mode: multiply;
   animation: win-glow 1.4s ease-in-out infinite alternate;
@@ -291,22 +80,53 @@
     opacity: 0.95;
   }
 }
-.card__slot[data-status='bad']::after,
-.card__slot[data-status='missed']::after {
+.card__note[data-status='bad']::after,
+.card__note[data-status='missed']::after {
   content: '';
   position: absolute;
   left: 50%;
   top: 50%;
   width: 86%;
   aspect-ratio: 1;
-  translate: -50% -50%;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
 }
-.card__slot[data-status='bad']::after {
-  border: 1.1cqw solid #d40d2e;
+.card__note[data-status='bad']::after {
+  border: calc(var(--u) * 1.1) solid #d40d2e;
   background: linear-gradient(45deg, transparent 46%, #d40d2e 46% 54%, transparent 54%);
-  box-shadow: 0 0 0 0.5cqw rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 calc(var(--u) * 0.5) rgba(255, 255, 255, 0.7);
 }
-.card__slot[data-status='missed']::after {
-  border: 0.9cqw dashed #138a3e;
+.card__note[data-status='missed']::after {
+  border: calc(var(--u) * 0.9) dashed #138a3e;
+}
+
+/* Daubs and their effects --------------------------------------------------------- */
+.card {
+  isolation: isolate;
+}
+.card__marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.card__mark {
+  position: absolute;
+  display: block;
+  mix-blend-mode: multiply;
+}
+.card__sheen {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2) 35%, transparent 70%);
+  opacity: 0;
+}
+.card__drop {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+}
+.card__spark {
+  position: absolute;
+  background: radial-gradient(circle, #fffbe8 0 18%, #ffd23a 30%);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
 }
