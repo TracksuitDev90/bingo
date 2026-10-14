@@ -1,0 +1,7 @@
+# Unix line endings everywhere, so the cache-busting stamps (tools/stamp.mjs)
+# come out the same on every machine.
+* text=auto eol=lf
+*.woff2 binary
+*.webp binary
+*.jpg binary
+*.png binary

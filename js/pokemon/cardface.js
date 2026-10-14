@@ -6,11 +6,11 @@
 // Pikachu on the free spot and the route and serial number along the foot.
 // It uses the classic card's grid, so daubs land in exactly the same places.
 
-import { FREE, LETTERS } from '../bingo.js?v=3f6ee08f';
-import { GEOMETRY } from '../cardview.js?v=66979a92';
-import { pokemonOf, nameOf, PIKACHU } from './dex.js?v=b5b23e78';
-import { loadSprites, drawSprite } from './sprites.js?v=26842faa';
-import { BALL_TYPES, paintEmblem, fitText } from './pokeballs.js?v=3b588ab7';
+import { FREE, LETTERS } from '../bingo.js?v=11e3ed33';
+import { GEOMETRY } from '../cardview.js?v=4f36c40e';
+import { pokemonOf, nameOf, PIKACHU } from './dex.js?v=1b50d13b';
+import { loadSprites, drawSprite } from './sprites.js?v=4e7b2fda';
+import { BALL_TYPES, paintEmblem, fitText } from './pokeballs.js?v=2a8f0051';
 
 const { W, H, SIDE, GRID_TOP, GRID_H, COL_W, colX, cell } = GEOMETRY;
 export const BLUE = '#2556a8';

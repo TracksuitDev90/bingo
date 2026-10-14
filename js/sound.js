@@ -1,6 +1,6 @@
 // Synthesised sound effects (no audio files to load).
 
-import { store } from './ui.js?v=f98984b4';
+import { store } from './ui.js?v=495bc83d';
 
 let ctx;
 let out;

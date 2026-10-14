@@ -124,7 +124,7 @@
   aspect-ratio: 100 / 131;
   background:
     radial-gradient(ellipse 90% 90% at 45% 42%, transparent 55%, rgba(130, 80, 20, 0.16) 100%),
-    url(../assets/img/paper.jpg?v=1212cfcc) 0 0 / 60% auto,
+    url(../assets/img/paper.jpg?v=b0165fd7) 0 0 / 60% auto,
     #f0e3c5;
   background-blend-mode: normal, multiply, normal;
 }
@@ -183,7 +183,7 @@
 /* The Pokémon edition, in Pikachu yellow. ------------------------------------------ */
 @font-face {
   font-family: 'Luckiest Guy';
-  src: url(../assets/fonts/luckiest-guy.woff2?v=3877b522) format('woff2');
+  src: url(../assets/fonts/luckiest-guy.woff2?v=c874debc) format('woff2');
   font-display: swap;
 }
 .action--poke {

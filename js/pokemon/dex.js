@@ -15,8 +15,8 @@
 //
 // No DOM in here, so the tests can run it under Node.
 
-import { NAMES } from './pokedex-data.js?v=05c22653';
-import { seeded, hash } from '../rng.js?v=d7e59606';
+import { NAMES } from './pokedex-data.js?v=3c45ac0e';
+import { seeded, hash } from '../rng.js?v=7096e9e1';
 
 export const PIKACHU = 25;
 export const MAX_ROUTE = 999;

@@ -9,14 +9,14 @@
       content="Your own one-of-a-kind Fireside Bingo card. Daub the numbers as they're called."
     />
     <meta name="theme-color" content="#173f66" />
-    <link rel="icon" href="assets/img/favicon.svg?v=7b6f6967" type="image/svg+xml" />
-    <link rel="preload" href="assets/fonts/titan-one.woff2?v=2f15f138" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="assets/fonts/itim.woff2?v=733235ca" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="assets/fonts/fraunces-italic.woff2?v=6f6cb6ee" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="assets/img/paper.jpg?v=1212cfcc" as="image" />
-    <link rel="stylesheet" href="css/base.css?v=e2307bd2" />
-    <link rel="stylesheet" href="css/cardview.css?v=0151b63e" />
-    <link rel="stylesheet" href="css/card.css?v=ed3a7eff" />
+    <link rel="icon" href="assets/img/favicon.svg?v=f4fec49b" type="image/svg+xml" />
+    <link rel="preload" href="assets/fonts/titan-one.woff2?v=56655764" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/itim.woff2?v=81ac40e9" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/fraunces-italic.woff2?v=1458807e" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/img/paper.jpg?v=b0165fd7" as="image" />
+    <link rel="stylesheet" href="css/base.css?v=8126ec55" />
+    <link rel="stylesheet" href="css/cardview.css?v=78628ecb" />
+    <link rel="stylesheet" href="css/card.css?v=e6645c6a" />
   </head>
   <body class="table card-page">
     <header class="topbar">
@@ -78,25 +78,52 @@
     </dialog>
 
     <script>
-      // If the game's scripts can't start (say, a half-updated browser cache),
-      // say so and offer a reload instead of leaving an empty table.
+      // If the game's scripts can't start, or the browser mixed old and new
+      // copies of the site's files after an update (two versions of one file),
+      // say so and offer a reload that first fetches fresh copies of them all.
       addEventListener('load', function () {
         setTimeout(function () {
-          if (document.documentElement.hasAttribute('data-ready')) return;
+          var files = performance
+            .getEntriesByType('resource')
+            .map(function (e) {
+              return new URL(e.name);
+            })
+            .filter(function (u) {
+              return u.origin === location.origin;
+            });
+          var seen = {};
+          var mixed = files.some(function (u) {
+            var v = u.searchParams.get('v');
+            var before = seen[u.pathname];
+            if (v) seen[u.pathname] = v;
+            return !!v && !!before && before !== v;
+          });
+          if (document.documentElement.hasAttribute('data-ready') && !mixed) return;
           var p = document.createElement('p');
           p.id = 'load-fail';
           p.setAttribute('role', 'alert');
           p.style.cssText =
             'position:fixed;left:50%;top:50%;z-index:99;transform:translate(-50%,-50%);width:min(320px,calc(100vw - 32px));margin:0;padding:18px 20px;border-radius:14px;background:#fff;color:#1d2230;font:600 1rem/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45)';
           p.innerHTML =
-            'The game didn\u2019t load properly.<br><button type="button" style="margin-top:12px;padding:10px 22px;border:0;border-radius:999px;background:#f0b429;color:#1d2230;font:inherit">Reload</button>';
+            'The game didn’t load properly.<br><button type="button" style="margin-top:12px;padding:10px 22px;border:0;border-radius:999px;background:#f0b429;color:#1d2230;outline-color:#1d2230;font:inherit">Reload</button>';
           p.querySelector('button').onclick = function () {
-            location.reload();
+            this.disabled = true;
+            // A plain reload can keep reusing the stale cached copies.
+            var fresh = window.fetch
+              ? Promise.all(
+                  files.map(function (u) {
+                    return fetch(u.href, { cache: 'reload' }).catch(function () {});
+                  }),
+                )
+              : Promise.resolve();
+            fresh.then(function () {
+              location.reload();
+            });
           };
           document.body.appendChild(p);
         }, 800);
       });
     </script>
-    <script type="module" src="js/card-page.js?v=1e4a03a2"></script>
+    <script type="module" src="js/card-page.js?v=f081c89f"></script>
   </body>
 </html>

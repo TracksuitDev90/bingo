@@ -9,7 +9,7 @@
 // and are laid on the card with `mix-blend-mode: multiply` so the printed
 // number shows through the ink.
 
-import { seeded } from './rng.js?v=d7e59606';
+import { seeded } from './rng.js?v=7096e9e1';
 
 export const DAUBERS = [
   { id: 1, name: 'Cherry', color: '#e5143a' },

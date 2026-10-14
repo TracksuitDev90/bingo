@@ -11,9 +11,9 @@
 // thread. Invisible buttons over the grid take the taps and keep the card
 // accessible.
 
-import { FREE, letterOf } from './bingo.js?v=3f6ee08f';
-import { splotch, dauberById, markJitter } from './dauber.js?v=31409a63';
-import { hash, seeded } from './rng.js?v=d7e59606';
+import { FREE, letterOf } from './bingo.js?v=11e3ed33';
+import { splotch, dauberById, markJitter } from './dauber.js?v=512be50b';
+import { hash, seeded } from './rng.js?v=7096e9e1';
 
 const TAU = Math.PI * 2;
 const PAPER = '#f0e3c5';
@@ -63,7 +63,7 @@ let paperImg;
 function loadPaper() {
   if (!paperImg) {
     const img = new Image();
-    img.src = new URL('../assets/img/paper.jpg?v=1212cfcc', import.meta.url).href;
+    img.src = new URL('../assets/img/paper.jpg?v=b0165fd7', import.meta.url).href;
     paperImg = img
       .decode()
       .then(() => img)

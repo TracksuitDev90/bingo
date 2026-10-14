@@ -1,9 +1,9 @@
-import { dealCard, isValidCard, completedSets, FREE } from './bingo.js?v=3f6ee08f';
-import { createCardView } from './cardview.js?v=66979a92';
-import { DAUBERS, dauberById, dauberSVG } from './dauber.js?v=31409a63';
-import { sealCard, openCard, shareUrl, extractToken } from './codec.js?v=86133dcf';
-import { sound } from './sound.js?v=36bb5e44';
-import { store, toast, confirmSheet, openSheet, copyText, formatTime } from './ui.js?v=f98984b4';
+import { dealCard, isValidCard, completedSets, FREE } from './bingo.js?v=11e3ed33';
+import { createCardView } from './cardview.js?v=4f36c40e';
+import { DAUBERS, dauberById, dauberSVG } from './dauber.js?v=512be50b';
+import { sealCard, openCard, shareUrl, extractToken } from './codec.js?v=ee65e48b';
+import { sound } from './sound.js?v=99f79d06';
+import { store, toast, confirmSheet, openSheet, copyText, formatTime } from './ui.js?v=495bc83d';
 
 const CARD_KEY = 'bingo:card';
 const DAUBER_KEY = 'bingo:dauber';

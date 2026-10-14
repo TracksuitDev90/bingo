@@ -6,24 +6,27 @@
 // square), then scaled smoothly to its final size, which is never far off.
 // Those blown-up copies are cached, as are their silhouettes.
 
-import { RECTS } from './pokedex-data.js?v=05c22653';
+import { RECTS } from './pokedex-data.js?v=3c45ac0e';
 
-let sheet = null;
-let loading;
+// Kept on the page rather than in this module: right after an update a
+// browser can briefly load two copies of this file, and every copy must see
+// the one sheet that has loaded.
+const shared = (globalThis.__pokeSprites ??= { sheet: null, loading: null });
+
 /** Resolves once the sprite sheet has loaded (or failed to). */
 export function loadSprites() {
-  loading ??= new Promise((resolve) => {
+  shared.loading ??= new Promise((resolve) => {
     const img = new Image();
-    img.src = new URL('../../assets/pokemon/sprites.webp?v=1472e9f4', import.meta.url).href;
+    img.src = new URL('../../assets/pokemon/sprites.webp?v=57e3748b', import.meta.url).href;
     img
       .decode()
       .then(() => {
-        sheet = img;
+        shared.sheet = img;
         resolve(img);
       })
       .catch(() => resolve(null));
   });
-  return loading;
+  return shared.loading;
 }
 
 export const rectOf = (dex) => RECTS.subarray((dex - 1) * 4, dex * 4);
@@ -40,7 +43,7 @@ function crisp(dex, k, tint) {
   c.height = h * k;
   const g = c.getContext('2d');
   g.imageSmoothingEnabled = false;
-  g.drawImage(sheet, x, y, w, h, 0, 0, w * k, h * k);
+  g.drawImage(shared.sheet, x, y, w, h, 0, 0, w * k, h * k);
   if (tint) {
     g.globalCompositeOperation = 'source-in';
     g.fillStyle = tint;
@@ -58,7 +61,7 @@ function crisp(dex, k, tint) {
  * until the sheet has loaded.
  */
 export function drawSprite(ctx, dex, x, y, w, h, { tint, ground = false, maxScale = Infinity } = {}) {
-  if (!sheet) return;
+  if (!shared.sheet) return;
   const [, , sw, sh] = rectOf(dex);
   const s = Math.min(w / sw, h / sh, maxScale);
   const dw = sw * s;

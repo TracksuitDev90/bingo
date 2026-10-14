@@ -9,22 +9,22 @@
       content="The caller's Poké Ball blower. Blow the balls, call the Pokémon, check the cards."
     />
     <meta name="theme-color" content="#18347f" />
-    <link rel="icon" href="../assets/img/pokeball.svg?v=d2fb6ab3" type="image/svg+xml" />
-    <link rel="preload" href="../assets/pokemon/sprites.webp?v=1472e9f4" as="image" />
-    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2?v=3877b522" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2?v=4a5633a0" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="../assets/img/pokeball.svg?v=741f29e8" type="image/svg+xml" />
+    <link rel="preload" href="../assets/pokemon/sprites.webp?v=57e3748b" as="image" />
+    <link rel="preload" href="../assets/fonts/luckiest-guy.woff2?v=c874debc" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/pixelify-sans.woff2?v=95555434" as="font" type="font/woff2" crossorigin />
     <link
       rel="preload"
-      href="../assets/fonts/press-start-2p.woff2?v=afec8699"
+      href="../assets/fonts/press-start-2p.woff2?v=9e3e2e69"
       as="font"
       type="font/woff2"
       crossorigin
     />
-    <link rel="stylesheet" href="../css/base.css?v=e2307bd2" />
-    <link rel="stylesheet" href="../css/cardview.css?v=0151b63e" />
-    <link rel="stylesheet" href="../css/blower.css?v=fcac92c4" />
-    <link rel="stylesheet" href="../css/pokemon/theme.css?v=5959b7d0" />
-    <link rel="stylesheet" href="../css/pokemon/blower.css?v=c3dbef31" />
+    <link rel="stylesheet" href="../css/base.css?v=8126ec55" />
+    <link rel="stylesheet" href="../css/cardview.css?v=78628ecb" />
+    <link rel="stylesheet" href="../css/blower.css?v=f0c77b34" />
+    <link rel="stylesheet" href="../css/pokemon/theme.css?v=b7e544a4" />
+    <link rel="stylesheet" href="../css/pokemon/blower.css?v=ba5637f3" />
   </head>
   <body class="table blower-page poke">
     <header class="b-top">
@@ -47,7 +47,7 @@
           aria-label="Call each Pokémon out loud"
           title="Call each Pokémon out loud"
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true" overflow="visible">
             <path
               d="M5.5 21v-3.4C3.6 16 2.6 14 2.6 11.6a6.6 6.6 0 0 1 13.1-1.1l1.6 3.2-1.8.4V16a1.8 1.8 0 0 1-1.8 1.8h-1.6V21"
             />
@@ -190,25 +190,52 @@
     </dialog>
 
     <script>
-      // If the game's scripts can't start (say, a half-updated browser cache),
-      // say so and offer a reload instead of leaving an empty table.
+      // If the game's scripts can't start, or the browser mixed old and new
+      // copies of the site's files after an update (two versions of one file),
+      // say so and offer a reload that first fetches fresh copies of them all.
       addEventListener('load', function () {
         setTimeout(function () {
-          if (document.documentElement.hasAttribute('data-ready')) return;
+          var files = performance
+            .getEntriesByType('resource')
+            .map(function (e) {
+              return new URL(e.name);
+            })
+            .filter(function (u) {
+              return u.origin === location.origin;
+            });
+          var seen = {};
+          var mixed = files.some(function (u) {
+            var v = u.searchParams.get('v');
+            var before = seen[u.pathname];
+            if (v) seen[u.pathname] = v;
+            return !!v && !!before && before !== v;
+          });
+          if (document.documentElement.hasAttribute('data-ready') && !mixed) return;
           var p = document.createElement('p');
           p.id = 'load-fail';
           p.setAttribute('role', 'alert');
           p.style.cssText =
             'position:fixed;left:50%;top:50%;z-index:99;transform:translate(-50%,-50%);width:min(320px,calc(100vw - 32px));margin:0;padding:18px 20px;border-radius:14px;background:#fff;color:#1d2230;font:600 1rem/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45)';
           p.innerHTML =
-            'The game didn\u2019t load properly.<br><button type="button" style="margin-top:12px;padding:10px 22px;border:0;border-radius:999px;background:#f0b429;color:#1d2230;font:inherit">Reload</button>';
+            'The game didn’t load properly.<br><button type="button" style="margin-top:12px;padding:10px 22px;border:0;border-radius:999px;background:#f0b429;color:#1d2230;outline-color:#1d2230;font:inherit">Reload</button>';
           p.querySelector('button').onclick = function () {
-            location.reload();
+            this.disabled = true;
+            // A plain reload can keep reusing the stale cached copies.
+            var fresh = window.fetch
+              ? Promise.all(
+                  files.map(function (u) {
+                    return fetch(u.href, { cache: 'reload' }).catch(function () {});
+                  }),
+                )
+              : Promise.resolve();
+            fresh.then(function () {
+              location.reload();
+            });
           };
           document.body.appendChild(p);
         }, 800);
       });
     </script>
-    <script type="module" src="../js/pokemon/blower-page.js?v=860191bc"></script>
+    <script type="module" src="../js/pokemon/blower-page.js?v=a09ba1b0"></script>
   </body>
 </html>

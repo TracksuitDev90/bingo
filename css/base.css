@@ -1,24 +1,24 @@
 @font-face {
   font-family: 'Titan One';
-  src: url(../assets/fonts/titan-one.woff2?v=2f15f138) format('woff2');
+  src: url(../assets/fonts/titan-one.woff2?v=56655764) format('woff2');
   font-display: swap;
 }
 @font-face {
   font-family: 'Fredoka';
-  src: url(../assets/fonts/fredoka.woff2?v=99d6c78e) format('woff2');
+  src: url(../assets/fonts/fredoka.woff2?v=636524e7) format('woff2');
   font-weight: 500 700;
   font-display: swap;
 }
 @font-face {
   font-family: 'Fraunces';
-  src: url(../assets/fonts/fraunces-italic.woff2?v=6f6cb6ee) format('woff2');
+  src: url(../assets/fonts/fraunces-italic.woff2?v=1458807e) format('woff2');
   font-style: italic;
   font-weight: 800;
   font-display: swap;
 }
 @font-face {
   font-family: 'Itim';
-  src: url(../assets/fonts/itim.woff2?v=733235ca) format('woff2');
+  src: url(../assets/fonts/itim.woff2?v=81ac40e9) format('woff2');
   font-display: swap;
 }
 
@@ -94,7 +94,7 @@ a {
   background:
     radial-gradient(ellipse 75% 55% at 50% 30%, rgba(130, 190, 245, 0.2), transparent 70%),
     radial-gradient(ellipse 130% 100% at 50% 40%, transparent 50%, rgba(4, 14, 32, 0.5) 100%),
-    url(../assets/img/paper.jpg?v=1212cfcc) 0 0 / 420px,
+    url(../assets/img/paper.jpg?v=b0165fd7) 0 0 / 420px,
     var(--table);
   background-blend-mode: screen, normal, multiply, normal;
 }
@@ -195,7 +195,7 @@ a {
   gap: 0.35em;
   min-height: 40px;
   padding: 0.4em 0.9em 0.4em 0.75em;
-  background: var(--paper) url(../assets/img/paper.jpg?v=1212cfcc) 0 0 / 200px;
+  background: var(--paper) url(../assets/img/paper.jpg?v=b0165fd7) 0 0 / 200px;
   background-blend-mode: multiply;
   color: var(--ink-deep);
   border-radius: 6px;
@@ -294,7 +294,7 @@ dialog.sheet {
   padding: 0;
   border: 0;
   border-radius: 14px;
-  background: var(--cream) url(../assets/img/paper.jpg?v=1212cfcc) 0 0 / 360px;
+  background: var(--cream) url(../assets/img/paper.jpg?v=b0165fd7) 0 0 / 360px;
   background-blend-mode: multiply;
   color: var(--ink-dark);
   box-shadow:

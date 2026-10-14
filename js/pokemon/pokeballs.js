@@ -12,10 +12,10 @@
 // Per ball that's a body blit, one filled and one stroked path, the label
 // blit and a shading blit. Labels and bodies are drawn once and cached.
 
-import { FRONT } from '../balls.js?v=3dc5c925';
-import { columnOf } from '../bingo.js?v=3f6ee08f';
-import { pokemonOf, nameOf } from './dex.js?v=b5b23e78';
-import { drawSprite } from './sprites.js?v=26842faa';
+import { FRONT } from '../balls.js?v=5dbd0253';
+import { columnOf } from '../bingo.js?v=11e3ed33';
+import { pokemonOf, nameOf } from './dex.js?v=1b50d13b';
+import { drawSprite } from './sprites.js?v=4e7b2fda';
 
 export const BALL_TYPES = [
   { name: 'Poké Ball', cap: '#e3352b' },

@@ -73,7 +73,7 @@ The BINGO! link packs the card's numbers, every daub (and its colour), the seria
 3. Under **Build and deployment**, choose **Deploy from a branch**, then pick `main` and `/ (root)`. Save.
 4. After a minute the game is live at `https://<your-username>.github.io/bingo/`.
 
-**After changing any file, run `npm run stamp` before committing.** GitHub Pages lets browsers reuse files for ten minutes, so right after an update a page could run new scripts against old cached copies of the files they import, and stop dead. The stamp tool (`tools/stamp.mjs`) adds a hash of each file to every reference to it (`codec.js?v=1a2b3c4d`), so a changed file gets a new address and browsers always load matching copies. `npm test` fails if a stamp is out of date. If a game page ever can't start anyway, it says so and offers a Reload button.
+**After changing any file, run `npm run stamp` before committing.** GitHub Pages lets browsers reuse files for ten minutes, so right after an update a page could run new scripts against old cached copies of the files they import, and stop dead. The stamp tool (`tools/stamp.mjs`) adds a hash to every reference between the site's own files (`codec.js?v=1a2b3c4d`), covering the file and everything it leads to, so a freshly loaded page always gets matching copies. `npm test` fails if a stamp is out of date. A page still sitting in a browser's cache can't be protected that way (Pages ignores the `?v=`), so the game pages check that they started and that no file came in two versions; if not, they say so and offer a Reload that fetches fresh copies first.
 
 The site needs to be served over `https://` (or `localhost`), because the sealed links use the browser's WebCrypto API, which only works there. GitHub Pages is https by default.
 

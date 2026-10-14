@@ -22,7 +22,7 @@
 // additional data, so it can't be changed either: ver · route[2] · iv · ct,
 // 82 characters.
 
-import { FREE, colStart, isValidCard } from './bingo.js?v=3f6ee08f';
+import { FREE, colStart, isValidCard } from './bingo.js?v=11e3ed33';
 
 const FORMATS = {
   1: { aad: 'bingo-card/v1', route: false },

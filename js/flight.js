@@ -5,7 +5,7 @@
 // with a squash, bounces twice and settles with its number facing front.
 // Drawn on a temporary canvas that only covers the flight path.
 
-import { letterOf } from './bingo.js?v=3f6ee08f';
+import { letterOf } from './bingo.js?v=11e3ed33';
 import {
   BALL_COLORS,
   spritesFor as classicSprites,
@@ -13,7 +13,7 @@ import {
   FRONT,
   rotate,
   normalize,
-} from './balls.js?v=3dc5c925';
+} from './balls.js?v=5dbd0253';
 
 const TAU = Math.PI * 2;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
